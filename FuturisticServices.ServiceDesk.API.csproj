@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject></StartupObject>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>true</Prefer32Bit>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
+    <DocumentationFile>C:\TCE\Systems\API\FuturisticServices.ServiceDesk.API\FuturisticServices.ServiceDesk.API.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\z\**" />
+    <Compile Remove="Models\z\**" />
+    <Content Remove="Entities\z\**" />
+    <Content Remove="Models\z\**" />
+    <EmbeddedResource Remove="Entities\z\**" />
+    <EmbeddedResource Remove="Models\z\**" />
+    <None Remove="Entities\z\**" />
+    <None Remove="Models\z\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\CustomersController.cs" />
+    <Compile Remove="Controllers\zTenantUserController.cs" />
+    <Compile Remove="Controllers\zTicketsController.cs" />
+    <Compile Remove="Entities\AppSettings.cs" />
+    <Compile Remove="Entities\ConfigProjectVolumeTickets.cs" />
+    <Compile Remove="Entities\CustomerLookupItem.cs" />
+    <Compile Remove="Entities\CustomerLookupItems.cs" />
+    <Compile Remove="Entities\SystemLookupGroups.cs" />
+    <Compile Remove="Services\CustomerService.cs" />
+    <Compile Remove="Services\DepartmentService.cs" />
+    <Compile Remove="Services\ITicketsService.cs" />
+    <Compile Remove="Services\RegistrationService.cs" />
+    <Compile Remove="Services\SystemService.cs" />
+    <Compile Remove="Services\System\SystemTokensService.cs" />
+    <Compile Remove="Services\Tenants\z_TenantService.cs" />
+    <Compile Remove="Services\zTenantUserService.cs" />
+    <Compile Remove="Services\zTicketsService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.12.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+</Project>

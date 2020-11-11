@@ -1,0 +1,780 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FuturisticServices.ServiceDesk.API</name>
+    </assembly>
+    <members>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.#ctor(FuturisticServices.ServiceDesk.API.Services.System.ISystemTenantsService,FuturisticServices.ServiceDesk.API.Services.System.ISystemLookupItemsService,FuturisticServices.ServiceDesk.API.Services.System.ISystemSubscriptionsService,AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Manages all endpoints for the registration process.
+            </summary>
+            <param name="systemTenantsService"></param>
+            <param name="systemLookupItemsService"></param>
+            <param name="systemSubscriptionsService"></param>
+            <param name="mapper"></param>
+            <param name="configuration"></param>
+            <param name="webHostEnvironment"></param>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.MetaData">
+            <summary>
+            Retrieves all necessary data required to populate the registration input elements upon rendering.
+            </summary>
+            <returns>HttpStatus 200 ~ Success</returns>
+            <returns>HttpStatus 400 ~ Bad request</returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.Tenant(FuturisticServices.ServiceDesk.API.Models.RegistrationModel)">
+            <summary>
+            Creates a new tenant within the FuturisticServices.ServiceDesk-->Tenant container.
+            </summary>
+            <param name="model">RegistrationModel view model.</param>
+            <returns>HttpStatus 200 ~ Success</returns>
+            <returns>HttpStatus 400 ~ Bad Request</returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.PromotionCode(System.String)">
+            <summary>
+            Validates the provided code against existing subscriptions.
+            Success ~ Returns associated subscription if subscription is valid.
+            Failure ~ No subscription found associated to promotion code.
+            </summary>
+            <param name="promotionCode">10 alphanumeric characters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.Moniker(System.String)">
+            <summary>
+            Retrieves information required to populate the registration wizard.
+            </summary>
+            <param name="moniker">3-10 alphanumeric characters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SetupController.Tenant(System.String)">
+            <summary>
+            Create tenant database and containers.
+            </summary>
+            <param name="moniker">Unique tenant ID used when invoking API calls.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemLookupItemsController.Get(System.String)">
+            <summary>
+            Establishes a new tenant in the FuturisticServices.ServiceDesk --> Tenants container.
+            </summary>
+            <param name="groupName">The 'systemGroup' value related to a group of items.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemTenantController.Tenant(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="moniker"></param>
+            <returns>HttpStatus 200 ~ Success</returns>
+            <returns>HttpStatus 400 ~ Bad request</returns>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Controllers.TokenController">
+            <summary>
+            Performs methods for the Service Desk setup process.
+            </summary>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TokenController.#ctor(FuturisticServices.ServiceDesk.API.Services.System.ISystemTenantsService)">
+            <summary>
+            Service Desk constructor.
+            </summary>
+            <param name="systemTenantsService"></param>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TokenController.Validate(System.String,System.String)">
+            <summary>
+            Determines if a setup token (GUID) is authentic and associated to the proper tenant.
+            </summary>
+            <param name="moniker">Unique ID assigned to each tenant used making API requests.</param>
+            <param name="token">The token (GUID) to validate.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TokenController.New(System.String,System.String)">
+            <summary>
+            Validates the moniker and pocEmailAddress is associated to the proper tenant.
+            If valid, generates a new setup token. Token is emailed to the provided PoC email address.
+            Otherwise, HTTP-BadRequest.
+            </summary>
+            <param name="moniker"></param>
+            <param name="pocEmailAddress"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.UserController.authenticate(System.String)">
+            <summary>
+            Authenicates a username/password. If successful, returns a JWT token. Otherwise, login failed.
+            </summary>
+            <param name="moniker">Unique tenant ID used in URL routing.</param>
+            <returns></returns>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.Address">
+            <summary>
+            Physical mailing address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Address.Type">
+            <summary>
+            Purpose/usage of the address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Address.Line1">
+            <summary>
+            Line 1 associated to the address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Address.Line2">
+            <summary>
+            (optional) Line 2 associated to the address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Address.City">
+            <summary>
+            City associated to the address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Address.State">
+            <summary>
+            State associated to the address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Address.PostalCode">
+            <summary>
+            Post/zip code associated to the address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Address.Country">
+            <summary>
+            Country origina associated to the address.
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.BillingInformation">
+            <summary>
+            Contains information how the tenant will pay for registration and
+            subscription renewals.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.BillingInformation.NameOnCard">
+            <summary>
+            Full name as it appears on the credit card.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.BillingInformation.CardNumber">
+            <summary>
+            Full credit card number.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.BillingInformation.CardSecurityValue">
+            <summary>
+            The credit card security value (CSV).
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.BillingInformation.ExpirationMonth">
+            <summary>
+            The two (2) digit credit card expiration month.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.BillingInformation.ExpirationYear">
+            <summary>
+            The two (2) digit credit card expiration year.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.BillingInformation.Address">
+            <summary>
+            The billing address of the credit card.
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.Company">
+            <summary>
+            Information related to the legal entity of a tenant.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Company.Name">
+            <summary>
+            Legal entity name of the tenant.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Company.Address">
+            <summary>
+            Primary address of the tenant.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Company.PhoneNumber">
+            <summary>
+            Primary phone number of the tenant.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Company.Website">
+            <summary>
+            Company public website URL.
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.DatabaseConnection">
+            <summary>
+            Physical email address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.DatabaseConnection.DatabasePlatform">
+            <summary>
+            Database platform.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.DatabaseConnection.DatabaseName">
+            <summary>
+            Database name.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.DatabaseConnection.Uri">
+            <summary>
+            Database name.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.DatabaseConnection.PrimaryKey">
+            <summary>
+            Database name.
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.EmailAddress">
+            <summary>
+            Physical email address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.EmailAddress.Type">
+            <summary>
+            Purpose/usage of the email address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.EmailAddress.Address">
+            <summary>
+            Physical email address.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.EntityBase.Id">
+            <summary>
+            Unique identifier (GUID) of the entity.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Group.ParentGroupId">
+            <summary>
+            The parent group ID this group belongs to (null ~ top level group).
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Group.Name">
+            <summary>
+            Group(s) the user is associated with.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Group.Description">
+            <summary>
+            A descriptoon/purpose of the group.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Group.ProfileImageUrl">
+            <summary>
+            URL of the user's profile image.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Group.ManagerUserId">
+            <summary>
+            The manager {User} of the group.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Group.Users">
+            <summary>
+            The manager {User} of the group.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Group.ObjectHistory">
+            <summary>
+            Create/update history of this object.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.Group">
+            <summary>
+            Container parition key. *** CANNOT CHANGE VALUE (used by Cosmos DB)!!!!
+            Group this setting is associated with.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.LookupName">
+            <summary>
+            System value. *** SHOULD NOT CHANGE!!!!
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.Label">
+            <summary>
+            Friendly value to use for display.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.Items">
+            <summary>
+            List of values.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupItem.LookupName">
+            <summary>
+            System value. *** SHOULD NOT CHANGE!!!!
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupItem.Name">
+            <summary>
+            Value of the item.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupItem.Abbreviation">
+            <summary>
+            Value of the item.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupItem.Items">
+            <summary>
+            List of values.
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.ObjectHistory">
+            <summary>
+            A record/history of all actions performed to/on an object.
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.ObjectModification">
+            <summary>
+            A specific 
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.PhoneNumber">
+            <summary>
+            Physical phone number.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.PhoneNumber.Type">
+            <summary>
+            Purpose/usage of the phone number.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.PhoneNumber.Number">
+            <summary>
+            The physical phone number.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.PointOfContact.PhoneNumber">
+            <summary>
+            The primary phone number associated to the PoC.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.PointOfContact.EmailAddress">
+            <summary>
+            The primary email addresses associated to PoC.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Setup.Container.Name">
+            <summary>
+            Container name.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Setup.Container.PartitionKey">
+            <summary>
+            Container name.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Subscription.Name">
+            <summary>
+            Name of the subscription.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Subscription.Description">
+            <summary>
+            Name of the subscription.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Subscription.Price">
+            <summary>
+            Name of the subscription.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Subscription.PromotionCode">
+            <summary>
+            Name of the subscription.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Subscription.RenewalOccurrence">
+            <summary>
+            Name of the subscription.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Subscription.RenewalTimeframe">
+            <summary>
+            Name of the subscription.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Subscription.Highlights">
+            <summary>
+            Name of the subscription.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Tenant.Moniker">
+            <summary>
+            Tenant unique identifiers used when invoking APIs.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Tenant.SetupToken">
+            <summary>
+            Tenant unique GUID used to invoke the service desk setup process.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Tenant.Company">
+            <summary>
+            Legal name of the tenant.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Tenant.PointOfContact">
+            <summary>
+            Tenant point of contact.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Tenant.BillingInformation">
+            <summary>
+            Tenant payment information for registration and subscription renewals.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Tenant.CurrentSubscription">
+            <summary>
+            Tenant active subscription currently in use.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Tenant.Subscriptions">
+             <summary>
+             All tenant subscriptions including active and expired.
+             </summary>
+            
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.TenantSubscription">
+            <summary>
+            A subscription is the offering a tenant signs up for.
+            A subscription can determine the funcationality of the system.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.TenantSubscription.Subscription">
+            <summary>
+            Name of the subscription.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.TenantSubscription.StartDatetime">
+            <summary>
+            The date when the subscrition is set to expire.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.TenantSubscription.EndDatetime">
+            <summary>
+            The date when the subscrition is set to expire.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.TenantSubscription.RenewalDate">
+            <summary>
+            The date when the subscription is set to automatically renew
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:FuturisticServices.ServiceDesk.API.Entities.TenantSubscription.BillingAndPaymentTermsAgreementDate" -->
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.TenantSubscription.ServiceTermsAgreementDate">
+            <summary>
+            Datetime of tenant agreeing to the 'Service Terms' legal agreement
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.EmployeeID">
+            <summary>
+            Suffix of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.NamePrefix">
+            <summary>
+            Suffix of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.NameFirst">
+            <summary>
+            First name of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.NameLast">
+            <summary>
+            Last name of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.NameSuffix">
+            <summary>
+            Suffix of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.Username">
+            <summary>
+            Unique user identifier used for authentication.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.Password">
+            <summary>
+            Hashed password used for authentication.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.DisplayName">
+            <summary>
+            Unique identifier used when displaying the 'user' within the interface.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.ProfileImageUrl">
+            <summary>
+            URL of the user's profile image.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.MustChangePasswordAtNextLogin">
+            <summary>
+            Admin setting used to force the user to change their password.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.PasswordExpirationDateTime">
+            <summary>
+            Admin setting used to force the user to change their password.
+            If value is null, the password does NOT expire.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.Enabled">
+            <summary>
+            Controls whether this user can attempt to login.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.EmailAddresses">
+            <summary>
+            Email addresses associated to the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.PhoneNumbers">
+            <summary>
+            Phone numbers associated to the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.User.Groups">
+            <summary>
+            Group(s) the user is associated with.
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Entities.Website">
+            <summary>
+            A website accessible from a modern web browser.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Website.Type">
+            <summary>
+            Purpose/usage of the website.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Website.Url">
+            <summary>
+            The website URL.
+            </summary>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Extensions.Helpers.ConvertToObjectWithoutPropertiesWithNullValues``1(``0)">
+            <returns>A dynamic object with only the filled properties of an object</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:FuturisticServices.ServiceDesk.API.Extensions.Helpers.ReadAsList(Microsoft.AspNetCore.Http.IFormFile)" -->
+        <!-- Badly formed XML comment ignored for member "M:FuturisticServices.ServiceDesk.API.Extensions.Helpers.ReadAsStringAsync(Microsoft.AspNetCore.Http.IFormFile)" -->
+        <member name="M:FuturisticServices.ServiceDesk.API.Extensions.Helpers.ReadFromFileAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            https://stackoverflow.com/questions/40045147/how-to-read-into-memory-the-lines-of-a-text-file-from-an-iformfile-in-asp-net-co
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Models.RegistrationModel">
+            <summary>
+            Model to register a tenant.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationModel.Moniker">
+            <summary>
+            A unique abbreviation that identifies the tenant in the system.
+            Included in each and every API request to identify which
+            database the system will interact with.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationModel.SetupToken">
+            <summary>
+            A GUID provided to the tenant upon a successful registration.
+            If tenant does not immediately setup its service desk,
+            this SetupToken will be used to authenticate the tenant
+            when the service desk setup is eventually invoked.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationModel.SubscriptionId">
+            <summary>
+            The selected subscription ID.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationModel.Company">
+            <summary>
+            Contains information related to the tenant's legal business entity.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationModel.PointOfContact">
+            <summary>
+            Contains information related to tenant's primary contact.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationModel.BillingInformation">
+            <summary>
+            Contains information to charge the tenant for subscription feees.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationMetaDataModel.States">
+            <summary>
+            List of states.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationMetaDataModel.Countries">
+            <summary>
+            List of countries.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationMetaDataModel.Subscriptions">
+            <summary>
+            List of subscriptions.
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Models.TenantRegistration">
+            <summary>
+            Contains information required to create/setup a tenant in the
+            FuturisticServices-->Tenant container.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.Company">
+            <summary>
+            Contains information related to the tenant's legal business entity.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.PointOfContact">
+            <summary>
+            Contains information related to tenant's primary contact.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.SubscriptionId">
+            <summary>
+            The selected subscription ID.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.BillingInformation">
+            <summary>
+            Contains information to charge the tenant for subscription feees.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.Moniker">
+            <summary>
+            A unique abbreviation that identifies the tenant in the system.
+            Included in each and every API request to identify which
+            database the system will interact with.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.EmployeeId">
+            <summary>
+            Unique ID associated to a user by the tenant.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.NamePrefix">
+            <summary>
+            User's name prefix.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.NameFirst">
+            <summary>
+            User's first name.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.NameLast">
+            <summary>
+            User's last name.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.NameSuffix">
+            <summary>
+            User's name suffix.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.Username">
+            <summary>
+            User's login user ID.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.Password">
+            <summary>
+            User's login password.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.DisplayName">
+            <summary>
+            User's display name as it appears in the user interfaces.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.ProfileImageUrl">
+            <summary>
+            URL of user's image displayed in the user interfaces.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.MustChangePasswordAtNextLogin">
+            <summary>
+            Determines if user is forced to change their password upon the next successful login.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.PasswordExpirationDateTime">
+            <summary>
+            The date when the user is forced to the change their password upon the 1st successful login.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.Enabled">
+            <summary>
+            Controls if the user's account is active or disabled.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.EmailAddresses">
+            <summary>
+            List of user email addresses.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.PhoneNumbers">
+            <summary>
+            List of user phone numbers.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.Groups">
+            <summary>
+            List if groups the user is assigned/associated to/with.
+            </summary>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.CosmosDb.CosmosDbService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Constructor with DI.
+            </summary>
+            <param name="configuration"></param>
+            <param name="webHostEnvironment"></param>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.CosmosDb.CosmosDbService.CreateDatabase(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
+            <summary>
+            Persists a new tenant object to the container.
+            </summary>
+            <param name="tenant">Tenant entity</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.System.SystemTenantsService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Constructor with DI.
+            </summary>
+            <param name="configuration"></param>
+            <param name="webHostEnvironment"></param>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.System.SystemTenantsService.CreateItemAsync(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
+            <summary>
+            Persists a new tenant object to the container.
+            </summary>
+            <param name="tenant">Tenant entity</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.System.SystemTenantsService.ValidateToken(System.String,System.String)">
+            <summary>
+            Authenticates a setup token is associated to an existing tenant.
+            </summary>
+            <param name="moniker">Unique tenant ID used to invoke APIs.</param>
+            <param name="setupToken">GUID representing the setup token.</param>
+            <returns>True if the token is authentic. False otherwise.</returns>
+        </member>
+    </members>
+</doc>
