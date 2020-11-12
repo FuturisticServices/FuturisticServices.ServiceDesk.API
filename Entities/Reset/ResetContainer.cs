@@ -1,15 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
-namespace FuturisticServices.ServiceDesk.API.Entities.Setup
+namespace FuturisticServices.ServiceDesk.API.Entities
 {
-    public class Container
+    public class ResetContainer
     {
-        public Container() { }
+        public ResetContainer() { }
 
-        public Container(string name, string partitionKey)
+        public ResetContainer(string name, string partitionKey)
         {
             Name = name;
             PartitionKey = partitionKey;
@@ -28,5 +29,13 @@ namespace FuturisticServices.ServiceDesk.API.Entities.Setup
         [JsonProperty(PropertyName = "partitionKey", Required = Required.Always)]
         [Required, DisplayName("Partition key")]
         public string PartitionKey { get; set; }
+
+        [JsonProperty(PropertyName = "items", Required = Required.Default)]
+        [DisplayName("Items")]
+        public List<LookupGroup> Items { get; set; }
+
+        [JsonProperty(PropertyName = "subscriptions", Required = Required.Default)]
+        [DisplayName("Subscriptions")]
+        public List<Subscription> Subscriptions { get; set; }
     }
 }

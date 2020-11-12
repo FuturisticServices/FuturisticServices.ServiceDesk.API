@@ -12,7 +12,7 @@ namespace FuturisticServices.ServiceDesk.API.Common
         [Description("Lookup groups")]
         public enum LookupGroups
         {
-            [Description("Suscripton renewal timeframes")]
+            [Description("Subscription renewal timeframes")]
             SubscriptionRenewalTimeframes,
 
             [Description("States")]

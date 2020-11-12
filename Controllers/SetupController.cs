@@ -75,16 +75,16 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
                 if (databaseResponse.StatusCode == HttpStatusCode.Created || databaseResponse.StatusCode == HttpStatusCode.OK)
                 {
                     //  Create containers.
-                    var containersToCreate = _configuration.GetSection("Tenant.Setup:ContainersToCreate").Get<List<Entities.Setup.Container>>();
+                    var containersToCreate = _configuration.GetSection("Tenant.Setup:Containers.Create").Get<List<SetupContainer>>();
 
-                    foreach (Entities.Setup.Container container in containersToCreate)
+                    foreach (SetupContainer container in containersToCreate)
                     {
                         ContainerResponse containerResponseLookupGroups = await _cosmosDbService.CreateContainer(databaseResponse.Database, container.Name, container.PartitionKey);
                         response.Add("container" + container.Name.ToPascalCase(), new { statusCode = containerResponseLookupGroups.StatusCode, value = containerResponseLookupGroups.StatusCode == HttpStatusCode.Created ? string.Format("Container '{0}' created.", container.Name) : string.Format("Container '{0}' already exists.", container.Name) });
                     }
                 
                     //  Get list of lookup groups to ommit.
-                    var lookupGroupsToOmit = _configuration.GetSection("Tenant.Setup:LookupGroupsToOmit").GetChildren().Select(x => x.Value).ToList();
+                    var lookupGroupsToOmit = _configuration.GetSection("Tenant.Setup:LookupGroups.Omit").GetChildren().Select(x => x.Value).ToList();
 
                     // Populate lookup items from system database.
                     List<LookupGroup> lookupGroups = (await _systemLookupItemsService.GetItemsAsync()).ToList();

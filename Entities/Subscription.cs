@@ -13,6 +13,10 @@ namespace FuturisticServices.ServiceDesk.API.Entities
 {
     public class Subscription: EntityBase
     {
+        [JsonProperty(PropertyName = "partitionKey", Required = Required.Always)]
+        [Required, MaxLength(50), DisplayName("Partition Key")]
+        public string PartitionKey { get; set; }
+
         /// <summary>
         /// Name of the subscription.
         /// </summary>
@@ -34,6 +38,10 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         [Required, DisplayName("Price")]
         public decimal Price { get; set; }
 
+        [JsonProperty(PropertyName = "isExpired", Required = Required.Always)]
+        [Required, DisplayName("Is Expired")]
+        public bool IsExpired { get; set; }
+
         /// <summary>
         /// Name of the subscription.
         /// </summary>
@@ -47,6 +55,13 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         [JsonProperty(PropertyName = "renewalOccurence", Required = Required.Always)]
         [Required, DisplayName("Renewal occurence")]
         public int RenewalOccurrence { get; set; }
+
+        ///// <summary>
+        ///// Name of the subscription.
+        ///// </summary>
+        //[JsonProperty(PropertyName = "renewalTimeframeId", Required = Required.Default)]
+        //[DisplayName("Renewal timeframe ID")]
+        //public string RenewalTimeframeId { get; set; }
 
         /// <summary>
         /// Name of the subscription.

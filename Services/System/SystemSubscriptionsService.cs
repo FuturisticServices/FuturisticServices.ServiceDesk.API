@@ -22,14 +22,15 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
         Task<IEnumerable<Subscription>> GetItemsAsync();
         Task<IEnumerable<Subscription>> GetItemsAsync(bool includeThoseWithPromotionCode = false);
         Task<Subscription> GetItemByPromotionCodeAsync(string promotionCode);
+        Task<Subscription> CreateItemAsync(Subscription subscription);
     }
 
-    public class SubscriptionsService : SystemBaseService, ISystemSubscriptionsService
+    public class SystemSubscriptionsService : SystemBaseService, ISystemSubscriptionsService
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public SubscriptionsService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", configuration, webHostEnvironment)
+        public SystemSubscriptionsService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -94,6 +95,12 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
 
             Subscription results = subscriptions.FirstOrDefault();
 
+            return results;
+        }
+
+        public async Task<Subscription> CreateItemAsync(Subscription subscription)
+        {
+            var results = await _container.CreateItemAsync<Subscription>(subscription, new PartitionKey(subscription.PartitionKey));
             return results;
         }
     }

@@ -24,7 +24,7 @@ namespace FuturisticServices.ServiceDesk.API.Services.Tenants
         public string _moniker;
         public string _databaseName;
         public CosmosClient _dbClient;
-        public Container _container;
+        public Microsoft.Azure.Cosmos.Container _container;
 
         public TenantBaseService(string containerName, ISystemTenantsService systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {

@@ -8,8 +8,6 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 
-using FuturisticServices.ServiceDesk.API.Entities;
-
 namespace FuturisticServices.ServiceDesk.API.Services.CosmosDb
 {
     public class CosmosDbBaseService
