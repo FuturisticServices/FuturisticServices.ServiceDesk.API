@@ -14,9 +14,11 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
 {
     public interface ISystemLookupItemsService
     {
-        Task<LookupGroup> GetItemAsync(string lookupName);
-        Task<LookupItem> GetItemAsync(string lookupName, string name);
+        Task<LookupItem> GetItemAsync(string lookupName, Guid id);
+        Task<LookupGroup> GetItemAsync(string groupName);
+        Task<LookupItem> GetItemAsync(string groupName, string name);
         Task<IEnumerable<LookupGroup>> GetItemsAsync();
+        Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup);
     }
 
     public class SystemLookupItemsService : SystemBaseService, ISystemLookupItemsService
@@ -30,17 +32,25 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
             _webHostEnvironment = webHostEnvironment;
         }
 
+        public async Task<LookupItem> GetItemAsync(string lookupName, Guid id)
+        {
+            LookupGroup lookupGroup = await GetItemAsync(lookupName);
+            var result = lookupGroup.Items.SingleOrDefault(x => x.Id == id.ToString());
+            
+            return result;
+        }
+
         public async Task<LookupGroup> GetItemAsync(string groupName)
         {
             Enums.LookupGroups lookupGroup;
 
-            groupName = groupName.ToCamelCase();
+            groupName = groupName.ToPascalCase();
             if (Enum.TryParse<Enums.LookupGroups>(groupName, true, out lookupGroup))
             {
-                groupName = lookupGroup.GetDescription().ToCamelCase();
+                var lookupName = lookupGroup.GetDescription().ToCamelCase();
 
-                QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.lookupName = @groupName")
-                .WithParameter("@groupName", groupName);
+                QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.lookupName = @lookupName")
+                .WithParameter("@lookupName", lookupName);
 
                 LookupGroup result = new LookupGroup();
                 using (FeedIterator<LookupGroup> feedIterator = _container.GetItemQueryIterator<LookupGroup>(query))
@@ -88,6 +98,12 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
             }
 
             return result;
+        }
+
+        public async Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup)
+        {
+            var results = await _container.CreateItemAsync<LookupGroup>(lookupGroup, new PartitionKey(lookupGroup.Group));
+            return results;
         }
     }
 }

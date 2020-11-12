@@ -36,9 +36,16 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// <summary>
         /// List of values.
         /// </summary>
-        [JsonProperty(PropertyName = "items")]
+        [JsonProperty(PropertyName = "items", Required = Required.Default)]
         [DisplayName("Items")]
         public IEnumerable<LookupItem> Items { get; set; }
+
+        /// <summary>
+        /// List of values.
+        /// </summary>
+        [JsonProperty(PropertyName = "subscriptions", Required = Required.Default)]
+        [DisplayName("Subscriptions")]
+        public IEnumerable<Subscription> Subscriptions { get; set; }
     }
 
     public class LookupItem : EntityBase
@@ -67,7 +74,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// <summary>
         /// List of values.
         /// </summary>
-        [JsonProperty(PropertyName = "items")]
+        [JsonProperty(PropertyName = "items", Required = Required.Default)]
         [DisplayName("Items")]
         public IEnumerable<LookupItem> Items { get; set; }
     }

@@ -53,6 +53,12 @@
             <param name="moniker">Unique tenant ID used when invoking API calls.</param>
             <returns></returns>
         </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemController.Reset">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemLookupItemsController.Get(System.String)">
             <summary>
             Establishes a new tenant in the FuturisticServices.ServiceDesk --> Tenants container.
@@ -306,6 +312,11 @@
             List of values.
             </summary>
         </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.Subscriptions">
+            <summary>
+            List of values.
+            </summary>
+        </member>
         <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupItem.LookupName">
             <summary>
             System value. *** SHOULD NOT CHANGE!!!!
@@ -361,12 +372,22 @@
             The primary email addresses associated to PoC.
             </summary>
         </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Setup.Container.Name">
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.ResetContainer.Name">
             <summary>
             Container name.
             </summary>
         </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Entities.Setup.Container.PartitionKey">
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.ResetContainer.PartitionKey">
+            <summary>
+            Container name.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SetupContainer.Name">
+            <summary>
+            Container name.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SetupContainer.PartitionKey">
             <summary>
             Container name.
             </summary>
