@@ -19,12 +19,16 @@
 
   <ItemGroup>
     <Compile Remove="Entities\z\**" />
+    <Compile Remove="FuturisticServices.Service.API\**" />
     <Compile Remove="Models\z\**" />
     <Content Remove="Entities\z\**" />
+    <Content Remove="FuturisticServices.Service.API\**" />
     <Content Remove="Models\z\**" />
     <EmbeddedResource Remove="Entities\z\**" />
+    <EmbeddedResource Remove="FuturisticServices.Service.API\**" />
     <EmbeddedResource Remove="Models\z\**" />
     <None Remove="Entities\z\**" />
+    <None Remove="FuturisticServices.Service.API\**" />
     <None Remove="Models\z\**" />
   </ItemGroup>
 
