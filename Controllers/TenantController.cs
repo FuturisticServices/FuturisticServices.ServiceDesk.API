@@ -24,8 +24,6 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         [AllowAnonymous]
         public IActionResult Tenant(string moniker)
         {
-            
-
             return BadRequest("Not Authorized.");
         }
     }
