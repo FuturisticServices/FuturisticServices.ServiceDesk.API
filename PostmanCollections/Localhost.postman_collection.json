@@ -6,6 +6,55 @@
 	},
 	"item": [
 		{
+			"name": "System",
+			"item": [
+				{
+					"name": "Reset",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51340/api/system/reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51340",
+							"path": [
+								"api",
+								"system",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lookup Items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:51340/api/system/lookupitems/departments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "51340",
+							"path": [
+								"api",
+								"system",
+								"lookupitems",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Registration",
 			"item": [
 				{
@@ -329,34 +378,6 @@
 								"api",
 								"customers",
 								"nau"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "System",
-			"item": [
-				{
-					"name": "Lookup Items",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:51340/api/system/lookupitems/departments",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"system",
-								"lookupitems",
-								"departments"
 							]
 						}
 					},

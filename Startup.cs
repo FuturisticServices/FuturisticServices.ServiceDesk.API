@@ -161,6 +161,7 @@ namespace FuturisticServices.ServiceDesk.API
             services.AddSingleton<ICosmosDbService, CosmosDbService>();
 
             services.AddSingleton<ISystemService, SystemService>();
+            services.AddSingleton<ISystemLookupGroupsService, SystemLookupGroupsService>();
             services.AddSingleton<ISystemLookupItemsService, SystemLookupItemsService>();
             services.AddSingleton<ISystemSubscriptionsService, SystemSubscriptionsService>();
             services.AddSingleton<ISystemTenantsService, SystemTenantsService>();

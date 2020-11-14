@@ -4,13 +4,15 @@ using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
-{
-    public class ResetContainer
-    {
-        public ResetContainer() { }
+using FuturisticServices.ServiceDesk.API.Entities;
 
-        public ResetContainer(string name, string partitionKey)
+namespace FuturisticServices.ServiceDesk.API.Models
+{
+    public class ResetContainerModel
+    {
+        public ResetContainerModel() { }
+
+        public ResetContainerModel(string name, string partitionKey)
         {
             Name = name;
             PartitionKey = partitionKey;

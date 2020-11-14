@@ -9,16 +9,18 @@ using Microsoft.Extensions.Configuration;
 
 using FuturisticServices.ServiceDesk.API.Common;
 using FuturisticServices.ServiceDesk.API.Entities;
+using Microsoft.Azure.Cosmos.Linq;
+using FuturisticServices.ServiceDesk.API.Extensions;
 
 namespace FuturisticServices.ServiceDesk.API.Services.System
 {
     public interface ISystemLookupItemsService
     {
-        Task<LookupItem> GetItemAsync(string lookupName, Guid id);
+        Task<LookupItem> GetItemAsync(string groupName, Guid id);
         Task<LookupGroup> GetItemAsync(string groupName);
         Task<LookupItem> GetItemAsync(string groupName, string name);
         Task<IEnumerable<LookupGroup>> GetItemsAsync();
-        Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup);
+        Task<LookupItem> CreateItemAsync(LookupItem lookupItem);
     }
 
     public class SystemLookupItemsService : SystemBaseService, ISystemLookupItemsService
@@ -32,77 +34,64 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<LookupItem> GetItemAsync(string lookupName, Guid id)
-        {
-            LookupGroup lookupGroup = await GetItemAsync(lookupName);
-            var result = lookupGroup.Items.SingleOrDefault(x => x.Id == id.ToString());
-            
-            return result;
-        }
-
         public async Task<LookupGroup> GetItemAsync(string groupName)
         {
-            Enums.LookupGroups lookupGroup;
+            groupName = groupName.ToTitleCase();
 
-            groupName = groupName.ToPascalCase();
-            if (Enum.TryParse<Enums.LookupGroups>(groupName, true, out lookupGroup))
-            {
-                var lookupName = lookupGroup.GetDescription().ToCamelCase();
+            var query = _container.GetItemLinqQueryable<LookupGroup>();
+            var iterator = query.Where(x => x.Name == groupName).ToFeedIterator();
+            var result = await iterator.ReadNextAsync();
+            return result.FirstOrDefault();
+        }
 
-                QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.lookupName = @lookupName")
-                .WithParameter("@lookupName", lookupName);
+        public async Task<LookupItem> GetItemAsync(string groupName, Guid id)
+        {
+            var lookupGroup = await GetItemAsync(groupName);
+            var result = lookupGroup.Items.SingleOrDefault(x => x.Id == id.ToString());
 
-                LookupGroup result = new LookupGroup();
-                using (FeedIterator<LookupGroup> feedIterator = _container.GetItemQueryIterator<LookupGroup>(query))
-                {
-                    while (feedIterator.HasMoreResults)
-                    {
-                        FeedResponse<LookupGroup> response = await feedIterator.ReadNextAsync();
-                        foreach (var item in response)
-                        {
-                            result = item;
-                        }
-                    }
-                }
-
-                return result;
-            }
-
-            return null;
+            return result;
         }
 
         public async Task<LookupItem> GetItemAsync(string groupName, string itemName)
         {
-            var query = _container.GetItemLinqQueryable<LookupGroup>(true);
-            LookupGroup lookupItems = query.Where<LookupGroup>(x => x.LookupName == groupName).AsEnumerable().FirstOrDefault();
-            LookupItem lookupItem = lookupItems.Items.SingleOrDefault(x => x.LookupName == itemName);
-
-            return lookupItem;
-        }
-
-        public async Task<IEnumerable<LookupGroup>> GetItemsAsync()
-        {
-            QueryDefinition query = new QueryDefinition("SELECT * FROM c");
-
-            List<LookupGroup> result = new List<LookupGroup>();
-            using (FeedIterator<LookupGroup> feedIterator = _container.GetItemQueryIterator<LookupGroup>(query))
-            {
-                while (feedIterator.HasMoreResults)
-                {
-                    FeedResponse<LookupGroup> response = await feedIterator.ReadNextAsync();
-                    foreach (var item in response)
-                    {
-                        result.Add(item);
-                    }
-                }
-            }
+            var lookupGroup = await GetItemAsync(groupName);
+            var result = lookupGroup.Items.SingleOrDefault(x => x.Name == itemName);
 
             return result;
         }
 
-        public async Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup)
+        public async Task<IEnumerable<LookupGroup>> GetItemsAsync()
         {
-            var results = await _container.CreateItemAsync<LookupGroup>(lookupGroup, new PartitionKey(lookupGroup.Group));
+            List<LookupGroup> result = new List<LookupGroup>();
+
+            var query = _container.GetItemLinqQueryable<LookupGroup>();
+            var iterator = query.ToFeedIterator();
+            FeedResponse<LookupGroup> response = await iterator.ReadNextAsync();
+            foreach (var item in response) result.Add(item);
+            return result;
+
+            //  SQL async call.
+            //QueryDefinition query = new QueryDefinition("SELECT * FROM c");
+
+            //List<LookupGroup> result = new List<LookupGroup>();
+            //using (FeedIterator<LookupGroup> feedIterator = _container.GetItemQueryIterator<LookupGroup>(query))
+            //{
+            //    while (feedIterator.HasMoreResults)
+            //    {
+            //        FeedResponse<LookupGroup> response = await feedIterator.ReadNextAsync();
+            //        foreach (var item in response)
+            //        {
+            //            result.Add(item);
+            //        }
+            //    }
+            //}
+
+            //return result;
+        }
+
+        public async Task<LookupItem> CreateItemAsync(LookupItem lookupItem)
+        {
+            var results = await _container.CreateItemAsync<LookupItem>(lookupItem);
             return results;
         }
     }

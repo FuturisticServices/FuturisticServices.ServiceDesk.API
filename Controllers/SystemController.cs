@@ -15,10 +15,10 @@ using Microsoft.Extensions.Configuration;
 using AutoMapper;
 
 using FuturisticServices.ServiceDesk.API.Entities;
+using FuturisticServices.ServiceDesk.API.Models;
 using FuturisticServices.ServiceDesk.API.Services.System;
-using FuturisticServices.ServiceDesk.API.Services.Tenants;
-using FuturisticServices.ServiceDesk.API.Services.CosmosDb;
 using FuturisticServices.ServiceDesk.API.Common;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FuturisticServices.ServiceDesk.API.Controllers
 {
@@ -28,18 +28,21 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
     public class SystemController : ControllerBase
     {
         private readonly ISystemService _systemService;
+        private readonly ISystemLookupGroupsService _systemLookupGroupsService;
         private readonly ISystemLookupItemsService _systemLookupItemsService;
         private readonly ISystemSubscriptionsService _systemSubscriptionsService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public SystemController(ISystemService systemService,
+                                ISystemLookupGroupsService systemLookupGroupsService,
                                 ISystemLookupItemsService systemLookupItemsService,
                                 ISystemSubscriptionsService systemSubscriptionsService,
                                 IConfiguration configuration,
                                 IWebHostEnvironment webHostEnvironment)
         {
             _systemService = systemService;
+            _systemLookupGroupsService = systemLookupGroupsService;
             _systemLookupItemsService = systemLookupItemsService;
             _systemSubscriptionsService = systemSubscriptionsService;
             _configuration = configuration;
@@ -58,7 +61,6 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         {
             try
             {
-                //dynamic response = new ExpandoObject();
                 var response = new ExpandoObject() as IDictionary<string, Object>;
 
                 DatabaseResponse databaseResponse = await _systemService.CreateDatabase();
@@ -67,38 +69,39 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
                 if (databaseResponse.StatusCode == HttpStatusCode.Created || databaseResponse.StatusCode == HttpStatusCode.OK)
                 {
                     //  Create containers.
-                    var containersToCreate = _configuration.GetSection("Reset:Containers.Create").Get<List<ResetContainer>>();
+                    var containers = _configuration.GetSection("Reset:Containers.Create").Get<List<ResetContainerModel>>();
 
-                    foreach (ResetContainer container in containersToCreate)
+                    foreach (ResetContainerModel container in containers)
                     {
-                        ContainerResponse containerResponseLookupGroups = await _systemService.CreateContainer(databaseResponse.Database, container.Name, container.PartitionKey);
-                        response.Add("container" + container.Name.ToPascalCase(), new { statusCode = containerResponseLookupGroups.StatusCode, value = containerResponseLookupGroups.StatusCode == HttpStatusCode.Created ? string.Format("Container '{0}' created.", container.Name) : string.Format("Container '{0}' already exists.", container.Name) });
+                        ContainerResponse containerResponse = await _systemService.CreateContainer(databaseResponse.Database, container.Name, container.PartitionKey);
+                        response.Add(string.Format("container: {0}", container.Name.ToPascalCase()), new { statusCode = containerResponse.StatusCode, value = containerResponse.StatusCode == HttpStatusCode.Created ? string.Format("Container '{0}' created.", container.Name) : string.Format("Container '{0}' already exists.", container.Name) });
 
                         // Persist lookup items.
-                        if (container.Items != null)
+                        if (container.Groups != null)
                         {
-                            foreach (LookupGroup lookupGroupSource in container.Items)
+                            foreach (LookupGroup group in container.Groups)
                             {
-                                //  Map source lookupGroup to target lookupGroup with a new ID (GUID).
-                                LookupGroup lookupGroupTarget = new LookupGroup { Id = lookupGroupSource.Id, Group = lookupGroupSource.Group, LookupName = lookupGroupSource.LookupName, Label = lookupGroupSource.Label, Items = lookupGroupSource.Items };
-
                                 //  Persist item.
-                                lookupGroupTarget = await _systemLookupItemsService.CreateItemAsync(lookupGroupTarget);
+                                await _systemLookupGroupsService.CreateItemAsync(group);
+
+                                //  Add status to response.
+                                response.Add(string.Format("lookup group: {0}", group.Name), new { statusCode = "created", value = string.Format("Group '{0}' created.", group.Name), items = group.Items.ToArray() });
                             }
                         }
 
                         // Persist subscriptions.
                         if (container.Subscriptions != null)
                         {
-                            foreach (Subscription subscriptionSource in container.Subscriptions)
+                            foreach (Subscription subscription in container.Subscriptions)
                             {
-                                LookupItem renewalTimeframe = subscriptionSource.RenewalTimeframe == null ? null : await _systemLookupItemsService.GetItemAsync("Subscription Renewal Timeframes", Guid.Parse(subscriptionSource.RenewalTimeframe.Id));
-
-                                //  Map source subscription to target subscription.
-                                Subscription subscriptionTarget = new Subscription { Id = subscriptionSource.Id, PartitionKey = subscriptionSource.PartitionKey, Name = subscriptionSource.Name, Description = subscriptionSource.Description, Price = subscriptionSource.Price, PromotionCode = subscriptionSource.PromotionCode, IsExpired = subscriptionSource.IsExpired, RenewalOccurrence = subscriptionSource.RenewalOccurrence, RenewalTimeframe = renewalTimeframe, Highlights = subscriptionSource.Highlights };
-
+                                //  If a renewal timeframe exists, retrieve it. Otherwise, make it null.
+                                subscription.RenewalTimeframe = subscription.RenewalTimeframe == null ? null : await _systemLookupItemsService.GetItemAsync("Subscription Renewal Timeframes", Guid.Parse(subscription.RenewalTimeframe.Id));
+                                
                                 //  Persist item.
-                                subscriptionTarget = await _systemSubscriptionsService.CreateItemAsync(subscriptionTarget);
+                                await _systemSubscriptionsService.CreateItemAsync(subscription);
+
+                                //  Add status to response.
+                                response.Add(string.Format("subscription: {0}", subscription.PartitionKey), new { statusCode = "created", value = string.Format("Subscription '{0}' created.", subscription.PartitionKey) });
                             }
                         }
                     }

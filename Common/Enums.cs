@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,16 @@ namespace FuturisticServices.ServiceDesk.API.Common
 
             [Description("Database platforms")]
             DatabasePlatforms,
+        }
+
+        [Description("Subscription Renewal Timeframes")]
+        public enum SubscriptionRenewalTimeframes
+        {
+            [Description("Monthly Recurring")]
+            MonthlyRecurring,
+
+            [Description("Yearly Recurring")]
+            YearlyRecurring
         }
 
         [Description("Database platforms")]
@@ -120,16 +131,12 @@ namespace FuturisticServices.ServiceDesk.API.Common
         public static string ToPascalCase(this string the_string, bool removeUnderscores = true)
         {
             // If there are 0 or 1 characters, just return the string.
-            if (the_string == null || the_string.Length < 2)
-                return the_string;
+            if (the_string == null || the_string.Length < 2) return the_string;
 
-            if (removeUnderscores)
-                the_string = the_string.Replace("_", " ");
+            if (removeUnderscores) the_string = the_string.Replace("_", " ");
 
             // Split the string into words.
-            string[] words = the_string.Split(
-                new char[] { },
-                StringSplitOptions.RemoveEmptyEntries);
+            string[] words = the_string.Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
 
             // Combine the words.
             StringBuilder result = new StringBuilder(string.Empty);
@@ -139,6 +146,20 @@ namespace FuturisticServices.ServiceDesk.API.Common
             }
 
             return result.ToString();
+        }
+
+        // Convert string to title case.
+        public static string ToTitleCase(this string the_string, bool removeUnderscores = true)
+        {
+            // If there are 0 or 1 characters, just return the string.
+            if (the_string == null || the_string.Length < 2) return the_string;
+
+            if (removeUnderscores) the_string = the_string.Replace("_", " ");
+
+            // Split the string into words.
+            string[] words = the_string.Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(the_string.ToLower());
         }
     }
 }
