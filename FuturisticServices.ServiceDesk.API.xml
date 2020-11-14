@@ -291,15 +291,10 @@
             Create/update history of this object.
             </summary>
         </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.Group">
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.Name">
             <summary>
             Container parition key. *** CANNOT CHANGE VALUE (used by Cosmos DB)!!!!
             Group this setting is associated with.
-            </summary>
-        </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.LookupName">
-            <summary>
-            System value. *** SHOULD NOT CHANGE!!!!
             </summary>
         </member>
         <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.Label">
@@ -312,19 +307,9 @@
             List of values.
             </summary>
         </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupGroup.Subscriptions">
-            <summary>
-            List of values.
-            </summary>
-        </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupItem.LookupName">
-            <summary>
-            System value. *** SHOULD NOT CHANGE!!!!
-            </summary>
-        </member>
         <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupItem.Name">
             <summary>
-            Value of the item.
+            System value. *** SHOULD NOT CHANGE!!!!
             </summary>
         </member>
         <member name="P:FuturisticServices.ServiceDesk.API.Entities.LookupItem.Abbreviation">
@@ -651,6 +636,16 @@
         <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationMetaDataModel.Subscriptions">
             <summary>
             List of subscriptions.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.ResetContainerModel.Name">
+            <summary>
+            Container name.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.ResetContainerModel.PartitionKey">
+            <summary>
+            Container name.
             </summary>
         </member>
         <member name="T:FuturisticServices.ServiceDesk.API.Models.TenantRegistration">

@@ -91,13 +91,13 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
                     foreach (LookupGroup lookupGroupSource in lookupGroups)
                     {
                         //  Skip over groups to ommit.
-                        if (lookupGroupsToOmit.Contains(lookupGroupSource.Group)) continue;
+                        if (lookupGroupsToOmit.Contains(lookupGroupSource.Name)) continue;
 
                         //  Overwrite existing ID with new GUID.
                         lookupGroupSource.Items.ToList().ForEach(x => x.Id = Guid.NewGuid().ToString());
 
                         //  Map source lookupGroup to target lookupGroup with a new ID (GUID).
-                        LookupGroup lookupGroupTarget = new LookupGroup { Id = Guid.NewGuid().ToString(), Group = lookupGroupSource.Group, LookupName = lookupGroupSource.LookupName, Label = lookupGroupSource.Label, Items = lookupGroupSource.Items };
+                        LookupGroup lookupGroupTarget = new LookupGroup { Id = Guid.NewGuid().ToString(), Name = lookupGroupSource.Name, Label = lookupGroupSource.Label, Items = lookupGroupSource.Items };
                         
                         //  Persist item.
                         lookupGroupTarget = await _tenantLookupItemsService.CreateItemAsync(lookupGroupTarget);
