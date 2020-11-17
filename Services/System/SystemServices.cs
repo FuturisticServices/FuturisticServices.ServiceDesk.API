@@ -60,7 +60,8 @@ namespace FuturisticServices.ServiceDesk.API.Services
             //  Setup _response.
             _response.database = new ExpandoObject();
             _response.database.name = databaseResponse.Resource.Id;
-            _response.database.statusCode = databaseResponse.StatusCode;
+            _response.database.statusCode = (int)databaseResponse.StatusCode;
+            _response.database.status = databaseResponse.StatusCode;
 
             if (databaseResponse.StatusCode == HttpStatusCode.Created)
             {
@@ -73,20 +74,20 @@ namespace FuturisticServices.ServiceDesk.API.Services
                     _responseContainers.Add(_responseContainer);
 
                     await createContainer(databaseResponse.Database, container);
-
-                    await createLookupGroups(container);
-
-                    await createSubscriptions(container);
-
-                    await createUsers(container);
+                    await createContainerLookupGroups(container);
+                    await createContainerSubscriptions(container);
+                    await createContainerUsers(container);
                 }
+
+                Tenant tenant = await ResetTenant();
 
                 _response.database.containers = _responseContainers;
 
                 return _response;
             }
 
-            _response.statusCode = HttpStatusCode.BadRequest;
+            _response.statusCode = (int)HttpStatusCode.BadRequest;
+            _response.status = HttpStatusCode.BadRequest;
             _response.value = "System reset not sucessfull.";
             return _response;
         }
@@ -96,12 +97,13 @@ namespace FuturisticServices.ServiceDesk.API.Services
             ContainerResponse containerResponse = await _systemManager.CreateContainer(database, container.Name, container.PartitionKey);
 
             _responseContainer.name = containerResponse.Resource.Id;
-            _responseContainer.statusCode = containerResponse.StatusCode;
+            _responseContainer.statusCode = (int)containerResponse.StatusCode;
+            _responseContainer.status = containerResponse.StatusCode;
 
             return containerResponse;
         }
 
-        private async Task createLookupGroups(ResetContainerModel container)
+        private async Task createContainerLookupGroups(ResetContainerModel container)
         {
             if (container.Groups != null)
             {
@@ -117,7 +119,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
             }
         }
 
-        private async Task createSubscriptions(ResetContainerModel container)
+        private async Task createContainerSubscriptions(ResetContainerModel container)
         {
             if (container.Subscriptions != null)
             {
@@ -135,7 +137,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
             }
         }
 
-        private async Task createUsers(ResetContainerModel container)
+        private async Task createContainerUsers(ResetContainerModel container)
         {
             if (container.Users != null)
             {
@@ -170,9 +172,9 @@ namespace FuturisticServices.ServiceDesk.API.Services
             }
         }
 
-        public async Task<IDictionary<string, Object>> ResetTenant()
+        public async Task<Tenant> ResetTenant()
         {
-            var _response = new ExpandoObject() as IDictionary<string, Object>;
+            _response.tenants = new ExpandoObject();
 
             RegistrationModel model = _configuration.GetSection("Reset:Tenant").Get<RegistrationModel>();
 
@@ -187,8 +189,11 @@ namespace FuturisticServices.ServiceDesk.API.Services
 
             tenant = await _systemTenantsManager.CreateItemAsync(tenant);
 
-            //_response.Add("status (tenant)", new { statusCode = StatusCodes.Status200OK, value = "System tenant created successfully." });
-            return _response;
+            _response.tenants.name = tenant.Company.Name;
+            _response.tenants.statusCode = (int)HttpStatusCode.Created;
+            _response.tenants.status = HttpStatusCode.Created;
+
+            return tenant;
         }
     }
 }
