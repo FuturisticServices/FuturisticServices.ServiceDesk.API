@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 
 using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Services;
-using System.Runtime.CompilerServices;
 
-namespace FuturisticServices.ServiceDesk.API.Services.CosmosDb
+namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ICosmosDbService
+    public interface ICosmosDbManager
     {
+        Task<DatabaseResponse> DeleteDatabase(Tenant tenant);
         Task<DatabaseResponse> CreateDatabase(Tenant tenant);
         Task<ContainerResponse> CreateContainer(Database database, string containerName, string partitionKeyName);
     }
 
-    public class CosmosDbService : CosmosDbBaseService, ICosmosDbService
+    public class CosmosDbManager : CosmosDbBaseManager, ICosmosDbManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
@@ -32,10 +26,22 @@ namespace FuturisticServices.ServiceDesk.API.Services.CosmosDb
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="webHostEnvironment"></param>
-        public CosmosDbService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Tenants", configuration, webHostEnvironment)
+        public CosmosDbManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Tenants", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<DatabaseResponse> DeleteDatabase(Tenant tenant)
+        {
+            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], tenant.Moniker.ToUpper());
+
+            CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
+            CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
+            Database database = client.GetDatabase(_databaseName);
+            DatabaseResponse response = await database.DeleteAsync();
+
+            return response;
         }
 
         /// <summary>
@@ -45,7 +51,7 @@ namespace FuturisticServices.ServiceDesk.API.Services.CosmosDb
         /// <returns></returns>
         public async Task<DatabaseResponse> CreateDatabase(Tenant tenant)
         {
-            _databaseName = string.Format("Futuristic.{0}.ServiceDesk", tenant.Moniker.ToUpper());
+            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], tenant.Moniker.ToUpper());
 
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
             CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();

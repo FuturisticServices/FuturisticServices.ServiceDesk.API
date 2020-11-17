@@ -4,7 +4,7 @@
         <name>FuturisticServices.ServiceDesk.API</name>
     </assembly>
     <members>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.#ctor(FuturisticServices.ServiceDesk.API.Services.System.ISystemTenantsService,FuturisticServices.ServiceDesk.API.Services.System.ISystemLookupItemsService,FuturisticServices.ServiceDesk.API.Services.System.ISystemSubscriptionsService,AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.#ctor(FuturisticServices.ServiceDesk.API.Managers.ISystemTenantsManager,FuturisticServices.ServiceDesk.API.Managers.ISystemLookupItemsManager,FuturisticServices.ServiceDesk.API.Managers.ISystemSubscriptionsManager,AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Manages all endpoints for the registration process.
             </summary>
@@ -46,13 +46,6 @@
             <param name="moniker">3-10 alphanumeric characters.</param>
             <returns></returns>
         </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SetupController.Tenant(System.String)">
-            <summary>
-            Create tenant database and containers.
-            </summary>
-            <param name="moniker">Unique tenant ID used when invoking API calls.</param>
-            <returns></returns>
-        </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemController.Reset">
             <summary>
             
@@ -74,12 +67,19 @@
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantSetupController.Tenant(System.String)">
+            <summary>
+            Create tenant database and containers.
+            </summary>
+            <param name="moniker">Unique tenant ID used when invoking API calls.</param>
+            <returns></returns>
+        </member>
         <member name="T:FuturisticServices.ServiceDesk.API.Controllers.TokenController">
             <summary>
             Performs methods for the Service Desk setup process.
             </summary>
         </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TokenController.#ctor(FuturisticServices.ServiceDesk.API.Services.System.ISystemTenantsService)">
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TokenController.#ctor(FuturisticServices.ServiceDesk.API.Managers.ISystemTenantsManager)">
             <summary>
             Service Desk constructor.
             </summary>
@@ -583,6 +583,42 @@
             <param name="file"></param>
             <returns></returns>
         </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Managers.CosmosDbManager.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Constructor with DI.
+            </summary>
+            <param name="configuration"></param>
+            <param name="webHostEnvironment"></param>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Managers.CosmosDbManager.CreateDatabase(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
+            <summary>
+            Persists a new tenant object to the container.
+            </summary>
+            <param name="tenant">Tenant entity</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Managers.SystemTenantsManager.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Constructor with DI.
+            </summary>
+            <param name="configuration"></param>
+            <param name="webHostEnvironment"></param>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Managers.SystemTenantsManager.CreateItemAsync(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
+            <summary>
+            Persists a new tenant object to the container.
+            </summary>
+            <param name="tenant">Tenant entity</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Managers.SystemTenantsManager.ValidateToken(System.String,System.String)">
+            <summary>
+            Authenticates a setup token is associated to an existing tenant.
+            </summary>
+            <param name="moniker">Unique tenant ID used to invoke APIs.</param>
+            <param name="setupToken">GUID representing the setup token.</param>
+            <returns>True if the token is authentic. False otherwise.</returns>
+        </member>
         <member name="T:FuturisticServices.ServiceDesk.API.Models.RegistrationModel">
             <summary>
             Model to register a tenant.
@@ -755,42 +791,6 @@
             <summary>
             List if groups the user is assigned/associated to/with.
             </summary>
-        </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Services.CosmosDb.CosmosDbService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
-            <summary>
-            Constructor with DI.
-            </summary>
-            <param name="configuration"></param>
-            <param name="webHostEnvironment"></param>
-        </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Services.CosmosDb.CosmosDbService.CreateDatabase(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
-            <summary>
-            Persists a new tenant object to the container.
-            </summary>
-            <param name="tenant">Tenant entity</param>
-            <returns></returns>
-        </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Services.System.SystemTenantsService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
-            <summary>
-            Constructor with DI.
-            </summary>
-            <param name="configuration"></param>
-            <param name="webHostEnvironment"></param>
-        </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Services.System.SystemTenantsService.CreateItemAsync(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
-            <summary>
-            Persists a new tenant object to the container.
-            </summary>
-            <param name="tenant">Tenant entity</param>
-            <returns></returns>
-        </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Services.System.SystemTenantsService.ValidateToken(System.String,System.String)">
-            <summary>
-            Authenticates a setup token is associated to an existing tenant.
-            </summary>
-            <param name="moniker">Unique tenant ID used to invoke APIs.</param>
-            <param name="setupToken">GUID representing the setup token.</param>
-            <returns>True if the token is authentic. False otherwise.</returns>
         </member>
     </members>
 </doc>

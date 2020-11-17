@@ -14,9 +14,9 @@ using Microsoft.Extensions.Configuration;
 using FuturisticServices.ServiceDesk.API.Common;
 using FuturisticServices.ServiceDesk.API.Entities;
 
-namespace FuturisticServices.ServiceDesk.API.Services.System
+namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ISystemSubscriptionsService
+    public interface ISystemSubscriptionsManager
     {
         Task<Subscription> GetItemAsync(string id);
         Task<IEnumerable<Subscription>> GetItemsAsync();
@@ -25,12 +25,12 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
         Task<Subscription> CreateItemAsync(Subscription subscription);
     }
 
-    public class SystemSubscriptionsService : SystemBaseService, ISystemSubscriptionsService
+    public class SystemSubscriptionsManager : SystemBaseManager, ISystemSubscriptionsManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public SystemSubscriptionsService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", configuration, webHostEnvironment)
+        public SystemSubscriptionsManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;

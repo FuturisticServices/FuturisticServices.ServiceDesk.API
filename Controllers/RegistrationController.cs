@@ -14,7 +14,7 @@ using AutoMapper;
 
 using FuturisticServices.ServiceDesk.API.Common;
 using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Services.System;
+using FuturisticServices.ServiceDesk.API.Managers;
 using FuturisticServices.ServiceDesk.API.Models;
 using System.Dynamic;
 
@@ -25,9 +25,9 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
     [ApiController]
     public class RegistrationController : ControllerBase
     {
-        private readonly ISystemTenantsService _systemTenantsService;
-        private readonly ISystemLookupItemsService _systemLookupItemsService;
-        private readonly ISystemSubscriptionsService _systemSubscriptionsService;
+        private readonly ISystemTenantsManager _systemTenantsService;
+        private readonly ISystemLookupItemsManager _systemLookupItemsService;
+        private readonly ISystemSubscriptionsManager _systemSubscriptionsService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -41,9 +41,9 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         /// <param name="mapper"></param>
         /// <param name="configuration"></param>
         /// <param name="webHostEnvironment"></param>
-        public RegistrationController(ISystemTenantsService systemTenantsService,
-                                        ISystemLookupItemsService systemLookupItemsService, 
-                                        ISystemSubscriptionsService systemSubscriptionsService, 
+        public RegistrationController(ISystemTenantsManager systemTenantsService,
+                                        ISystemLookupItemsManager systemLookupItemsService, 
+                                        ISystemSubscriptionsManager systemSubscriptionsService, 
                                         IMapper mapper, 
                                         IConfiguration configuration, 
                                         IWebHostEnvironment webHostEnvironment)

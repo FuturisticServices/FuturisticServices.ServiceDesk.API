@@ -8,19 +8,18 @@ using Microsoft.Extensions.Configuration;
 
 using AutoMapper;
 
-using FuturisticServices.ServiceDesk.API.Services.Tenants;
-using FuturisticServices.ServiceDesk.API.Services.System;
+using FuturisticServices.ServiceDesk.API.Managers;
 
 namespace FuturisticServices.ServiceDesk.API.Controllers
 {
     [Route("api/system/{moniker}")]
     public class SystemTenantController : Controller
     {
-        private readonly ISystemTenantsService _systemTenantService;
+        private readonly ISystemTenantsManager _systemTenantService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
-        public SystemTenantController(ISystemTenantsService systemTenantService, IMapper mapper, IConfiguration configuration)
+        public SystemTenantController(ISystemTenantsManager systemTenantService, IMapper mapper, IConfiguration configuration)
         {
             _systemTenantService = systemTenantService;
             _mapper = mapper;

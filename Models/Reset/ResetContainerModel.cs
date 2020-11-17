@@ -39,5 +39,9 @@ namespace FuturisticServices.ServiceDesk.API.Models
         [JsonProperty(PropertyName = "subscriptions", Required = Required.Default)]
         [DisplayName("Subscriptions")]
         public List<Subscription> Subscriptions { get; set; }
+
+        [JsonProperty(PropertyName = "users", Required = Required.Default)]
+        [DisplayName("Users")]
+        public List<Entities.User> Users { get; set; }
     }
 }

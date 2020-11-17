@@ -16,6 +16,8 @@ namespace FuturisticServices.ServiceDesk.API.Entities
 {
     public class User : EntityBase
     {
+        public User() { }
+
         /// <summary>
         /// Suffix of the user.
         /// </summary>
@@ -26,7 +28,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// <summary>
         /// Suffix of the user.
         /// </summary>
-        [JsonProperty(PropertyName = "namePrefix", Required = Required.AllowNull)]
+        [JsonProperty(PropertyName = "namePrefix", Required = Required.Default)]
         [MinLength(1), MaxLength(10), DisplayName("Prefix")]
         public string NamePrefix { get; set; }
 
@@ -47,7 +49,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// <summary>
         /// Suffix of the user.
         /// </summary>
-        [JsonProperty(PropertyName = "nameSuffix", Required = Required.AllowNull)]
+        [JsonProperty(PropertyName = "nameSuffix", Required = Required.Default)]
         [MinLength(1), MaxLength(10), DisplayName("Suffix")]
         public string NameSuffix { get; set; }
 
@@ -68,14 +70,14 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// <summary>
         /// Unique identifier used when displaying the 'user' within the interface.
         /// </summary>
-        [JsonProperty(PropertyName = "displayName", Required = Required.Always)]
-        [Required, MinLength(3), MaxLength(25), DisplayName("DisplayName")]
+        [JsonProperty(PropertyName = "displayName", Required = Required.Default)]
+        [MinLength(3), MaxLength(25), DisplayName("DisplayName")]
         public string DisplayName { get; set; }
 
         /// <summary>
         /// URL of the user's profile image.
         /// </summary>
-        [JsonProperty(PropertyName = "profileImageUrl", Required = Required.AllowNull)]
+        [JsonProperty(PropertyName = "profileImageUrl", Required = Required.Default)]
         [MinLength(3), MaxLength(25), DisplayName("Profile image URL")]
         public string ProfileImageUrl { get; set; }
 
@@ -90,8 +92,8 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// Admin setting used to force the user to change their password.
         /// If value is null, the password does NOT expire.
         /// </summary>
-        [JsonProperty(PropertyName = "passwordExpirationDateTime", Required = Required.AllowNull)]
-        [Required, DisplayName("Password expiration date and time")]
+        [JsonProperty(PropertyName = "passwordExpirationDateTime", Required = Required.Default)]
+        [DisplayName("Password expiration date and time")]
         public DateTime? PasswordExpirationDateTime { get; set; }
 
         /// <summary>
@@ -104,22 +106,22 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// <summary>
         /// Email addresses associated to the user.
         /// </summary>
-        [JsonProperty(PropertyName = "emailAddresses", Required = Required.Always)]
-        [Required, DisplayName("Email Addresses")]
+        [JsonProperty(PropertyName = "emailAddresses", Required = Required.Default)]
+        [DisplayName("Email Addresses")]
         public List<EmailAddress> EmailAddresses { get; set; }
 
         /// <summary>
         /// Phone numbers associated to the user.
         /// </summary>
-        [JsonProperty(PropertyName = "phoneNumbers", Required = Required.Always)]
-        [Required, DisplayName("Phone numbers")]
+        [JsonProperty(PropertyName = "phoneNumbers", Required = Required.Default)]
+        [DisplayName("Phone numbers")]
         public List<PhoneNumber> PhoneNumbers { get; set; }
 
         /// <summary>
         /// Group(s) the user is associated with.
         /// </summary>
-        [JsonProperty(PropertyName = "groups", Required = Required.Always)]
-        [Required, DisplayName("Groups")]
+        [JsonProperty(PropertyName = "groups", Required = Required.Default)]
+        [DisplayName("Groups")]
         public List<Group> Groups { get; set; }
     }
 }

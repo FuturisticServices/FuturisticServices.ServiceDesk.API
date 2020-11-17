@@ -10,11 +10,11 @@ using Microsoft.Extensions.Configuration;
 
 using FuturisticServices.ServiceDesk.API.Common;
 using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Services.System;
+using FuturisticServices.ServiceDesk.API.Managers;
 
-namespace FuturisticServices.ServiceDesk.API.Services.Tenants
+namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ITenantLookupItemsService
+    public interface ITenantLookupItemsManager
     {
         Task<LookupGroup> GetItemAsync(string lookupName);
         Task<LookupItem> GetItemAsync(string lookupName, string name);
@@ -23,14 +23,14 @@ namespace FuturisticServices.ServiceDesk.API.Services.Tenants
 
 }
 
-public class TenantLookupItemsService : TenantBaseService, ITenantLookupItemsService
+public class TenantLookupItemsManager : TenantBaseManager, ITenantLookupItemsManager
     {
-        internal ISystemTenantsService _systemCustomerService;
+        internal ISystemTenantsManager _systemCustomerService;
         internal IHttpContextAccessor _httpContextAccessor;
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public TenantLookupItemsService(ISystemTenantsService systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", systemTenantsService, httpContextAccessor, configuration, webHostEnvironment)
+        public TenantLookupItemsManager(ISystemTenantsManager systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", systemTenantsService, httpContextAccessor, configuration, webHostEnvironment)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;

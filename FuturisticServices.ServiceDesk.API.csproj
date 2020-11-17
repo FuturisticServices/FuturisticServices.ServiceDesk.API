@@ -41,15 +41,15 @@
     <Compile Remove="Entities\CustomerLookupItem.cs" />
     <Compile Remove="Entities\CustomerLookupItems.cs" />
     <Compile Remove="Entities\SystemLookupGroups.cs" />
-    <Compile Remove="Services\CustomerService.cs" />
-    <Compile Remove="Services\DepartmentService.cs" />
-    <Compile Remove="Services\ITicketsService.cs" />
-    <Compile Remove="Services\RegistrationService.cs" />
-    <Compile Remove="Services\SystemService.cs" />
-    <Compile Remove="Services\System\SystemTokensService.cs" />
-    <Compile Remove="Services\Tenants\z_TenantService.cs" />
-    <Compile Remove="Services\zTenantUserService.cs" />
-    <Compile Remove="Services\zTicketsService.cs" />
+    <Compile Remove="Managers\CustomerService.cs" />
+    <Compile Remove="Managers\DepartmentService.cs" />
+    <Compile Remove="Managers\ITicketsService.cs" />
+    <Compile Remove="Managers\RegistrationService.cs" />
+    <Compile Remove="Managers\SystemService.cs" />
+    <Compile Remove="Managers\System\SystemTokensService.cs" />
+    <Compile Remove="Managers\Tenant\z_TenantService.cs" />
+    <Compile Remove="Managers\zTenantUserService.cs" />
+    <Compile Remove="Managers\zTicketsService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,6 +72,8 @@
   <ItemGroup>
     <Folder Include="PostmanCollections\" />
     <Folder Include="Resources\" />
+    <Folder Include="Services\CosmosDb\" />
+    <Folder Include="Services\Tenant\" />
   </ItemGroup>
 
 </Project>

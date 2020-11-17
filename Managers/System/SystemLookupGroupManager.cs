@@ -10,9 +10,9 @@ using Microsoft.Extensions.Configuration;
 using FuturisticServices.ServiceDesk.API.Common;
 using FuturisticServices.ServiceDesk.API.Entities;
 
-namespace FuturisticServices.ServiceDesk.API.Services.System
+namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ISystemLookupGroupsService
+    public interface ISystemLookupGroupsManager
     {
         Task<LookupItem> GetItemAsync(string lookupName, Guid id);
         Task<LookupGroup> GetItemAsync(string groupName);
@@ -21,7 +21,7 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
         Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup);
     }
 
-    public class SystemLookupGroupsService : SystemBaseService, ISystemLookupGroupsService
+    public class SystemLookupGroupsService : SystemBaseManager, ISystemLookupGroupsManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;

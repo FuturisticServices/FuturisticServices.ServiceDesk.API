@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
 
 using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Services.System;
+using FuturisticServices.ServiceDesk.API.Managers;
 using Microsoft.AspNetCore.Http;
 
 namespace FuturisticServices.ServiceDesk.API.Controllers
@@ -20,12 +20,12 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
     [Route("api/{moniker}/[controller]")]
     public class UserController : Controller
     {
-        private readonly ISystemTenantsService _systemTenantsService;
+        private readonly ISystemTenantsManager _systemTenantsService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private Tenant _systemTenant;
 
-        public UserController(ISystemTenantsService customerService, IMapper mapper, IConfiguration configuration)
+        public UserController(ISystemTenantsManager customerService, IMapper mapper, IConfiguration configuration)
         {
             _systemTenantsService = customerService;
             _mapper = mapper;

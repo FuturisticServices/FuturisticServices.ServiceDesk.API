@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,10 +18,8 @@ using Microsoft.OpenApi.Models;
 
 using AutoMapper;
 
-using FuturisticServices.ServiceDesk.API.Services.CosmosDb;
-using FuturisticServices.ServiceDesk.API.Services.System;
-using FuturisticServices.ServiceDesk.API.Services.Tenants;
-using System.Text;
+using FuturisticServices.ServiceDesk.API.Managers;
+using FuturisticServices.ServiceDesk.API.Services;
 
 namespace FuturisticServices.ServiceDesk.API
 {
@@ -158,15 +157,17 @@ namespace FuturisticServices.ServiceDesk.API
 
             services.AddHttpContextAccessor();
 
-            services.AddSingleton<ICosmosDbService, CosmosDbService>();
+            services.AddSingleton<ISystemService, SystemServices>();
 
-            services.AddSingleton<ISystemService, SystemService>();
-            services.AddSingleton<ISystemLookupGroupsService, SystemLookupGroupsService>();
-            services.AddSingleton<ISystemLookupItemsService, SystemLookupItemsService>();
-            services.AddSingleton<ISystemSubscriptionsService, SystemSubscriptionsService>();
-            services.AddSingleton<ISystemTenantsService, SystemTenantsService>();
+            services.AddSingleton<ICosmosDbManager, CosmosDbManager>();
+            services.AddSingleton<ISystemManager, SystemManager>();
+            services.AddSingleton<ISystemLookupGroupsManager, SystemLookupGroupsService>();
+            services.AddSingleton<ISystemLookupItemsManager, SystemLookupItemsManager>();
+            services.AddSingleton<ISystemSubscriptionsManager, SystemSubscriptionsManager>();
+            services.AddSingleton<ISystemUsersManager, SystemUsersManager>();
+            services.AddSingleton<ISystemTenantsManager, SystemTenantsManager>();
 
-            services.AddSingleton<ITenantLookupItemsService, TenantLookupItemsService>();
+            services.AddSingleton<ITenantLookupItemsManager, TenantLookupItemsManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

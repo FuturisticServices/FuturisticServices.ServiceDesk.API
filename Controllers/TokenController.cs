@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Services.System;
+using FuturisticServices.ServiceDesk.API.Managers;
 
 namespace FuturisticServices.ServiceDesk.API.Controllers
 {
@@ -19,13 +19,13 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
-        private readonly ISystemTenantsService _systemTenantsService;
+        private readonly ISystemTenantsManager _systemTenantsService;
 
         /// <summary>
         /// Service Desk constructor.
         /// </summary>
         /// <param name="systemTenantsService"></param>
-        public TokenController(ISystemTenantsService systemTenantsService)
+        public TokenController(ISystemTenantsManager systemTenantsService)
         {
             _systemTenantsService = systemTenantsService;
         }
