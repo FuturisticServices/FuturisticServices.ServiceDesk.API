@@ -34,7 +34,8 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Deletes and creates the [futuristic.services] system database. 
+        /// ** USE WITH CAUTION **
         /// </summary>
         /// <returns></returns>
         [HttpGet("reset")]

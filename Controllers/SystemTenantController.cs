@@ -27,13 +27,17 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Sets up a tenant in the [futuristic.services] database Tenant container.
+        /// Tenant details come from the 'tenants.json' config file with matching moniker.
         /// </summary>
         /// <param name="moniker"></param>
         /// <returns>HttpStatus 200 ~ Success</returns>
         /// <returns>HttpStatus 400 ~ Bad request</returns>
         [HttpGet]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Tenant(string moniker)
         {
             dynamic response = new ExpandoObject();

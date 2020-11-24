@@ -67,12 +67,16 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
 
         #region GET methods
         /// <summary>
-        /// 
+        /// Retrieves all data required to populate controls on the Tenant registration form (ie. states, countries, address types, etc).
         /// </summary>
+        /// <returns>HttpStatus 401 ~ Unauthorized</returns>
         /// <returns>HttpStatus 200 ~ Success</returns>
         /// <returns>HttpStatus 400 ~ Bad request</returns>
         [HttpGet("metadata")]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> MetaData()
         {
             dynamic response = new ExpandoObject();
@@ -106,11 +110,12 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Validates the provided code against existing subscriptions.
+        /// Validates the provided code against existing subscriptions in the [FuturisticServices.ServiceDesk] database Subscriptions container.
         /// Success ~ Returns associated subscription if subscription is valid.
         /// Failure ~ No subscription found associated to promotion code.
         /// </summary>
         /// <param name="promotionCode">10 alphanumeric characters.</param>
+        /// <returns>HttpStatus 401 ~ Unauthorized</returns>
         /// <returns>HttpStatus 200 ~ Success</returns>
         /// <returns>HttpStatus 400 ~ Bad request</returns>
         [HttpGet("promotioncode/{promotionCode}")]
@@ -145,10 +150,12 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves information required to populate the registration wizard.
+        /// Determines if the provided moniker is available for use.
         /// </summary>
         /// <param name="moniker">3-10 alphanumeric characters.</param>
-        /// <returns></returns>
+        /// <returns>HttpStatus 401 ~ Unauthorized</returns>
+        /// <returns>HttpStatus 200 ~ Success</returns>
+        /// <returns>HttpStatus 400 ~ Bad Request</returns>
         [HttpGet("moniker/{moniker}")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -178,9 +185,10 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
 
         #region POST methods
         /// <summary>
-        /// Creates a new tenant within the FuturisticServices.ServiceDesk-->Tenant container.
+        /// Creates a new tenant within the [FuturisticServices.ServiceDesk] database Tenant container.
         /// </summary>
         /// <param name="model">RegistrationModel view model.</param>
+        /// <returns>HttpStatus 401 ~ Unauthorized</returns>
         /// <returns>HttpStatus 200 ~ Success</returns>
         /// <returns>HttpStatus 400 ~ Bad Request</returns>
         [HttpPost]
