@@ -19,15 +19,15 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
-        private readonly ISystemTenantsManager _systemTenantsService;
+        private readonly ISystemTenantManager _systemTenantsService;
 
         /// <summary>
         /// Service Desk constructor.
         /// </summary>
-        /// <param name="systemTenantsService"></param>
-        public TokenController(ISystemTenantsManager systemTenantsService)
+        /// <param name="systemTenantService"></param>
+        public TokenController(ISystemTenantManager systemTenantService)
         {
-            _systemTenantsService = systemTenantsService;
+            _systemTenantsService = systemTenantService;
         }
 
         /// <summary>

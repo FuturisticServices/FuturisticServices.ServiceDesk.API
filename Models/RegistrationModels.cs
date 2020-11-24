@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc.Abstractions;
+
+using Newtonsoft.Json;
 
 using FuturisticServices.ServiceDesk.API.Entities;
 
@@ -13,41 +13,53 @@ namespace FuturisticServices.ServiceDesk.API.Models
     /// <summary>
     /// Model to register a tenant.
     /// </summary>
-    public class RegistrationModel
+    public class RegistrationModel : BaseModel
     {
         /// <summary>
         /// A unique abbreviation that identifies the tenant in the system.
         /// Included in each and every API request to identify which
         /// database the system will interact with.
         /// </summary>
+        [JsonProperty(PropertyName = "moniker", Required = Required.Always)]
+        [Required, DisplayName("Moniker")]
         public string Moniker { get; set; }
 
-        /// <summary>
-        /// A GUID provided to the tenant upon a successful registration.
-        /// If tenant does not immediately setup its service desk,
-        /// this SetupToken will be used to authenticate the tenant
-        /// when the service desk setup is eventually invoked.
-        /// </summary>
-        public string SetupToken { get; set; }
+        ///// <summary>
+        ///// A GUID provided to the tenant upon a successful registration.
+        ///// If tenant does not immediately setup its service desk,
+        ///// this SetupToken will be used to authenticate the tenant
+        ///// when the service desk setup is eventually invoked.
+        ///// </summary>
+        //[JsonProperty(PropertyName = "setupToken", Required = Required.Always)]
+        //[Required, DisplayName("Setup token")]
+        //public string SetupToken { get; set; }
 
         /// <summary>
         /// The selected subscription ID.
         /// </summary>
+        [JsonProperty(PropertyName = "subscriptionId", Required = Required.Always)]
+        [Required, DisplayName("Subscription ID")]
         public string SubscriptionId { get; set; }
 
         /// <summary>
         /// Contains information related to the tenant's legal business entity.
         /// </summary>
+        [JsonProperty(PropertyName = "company", Required = Required.Always)]
+        [Required, DisplayName("Company")]
         public CompanyModel Company { get; set; }
 
         /// <summary>
         /// Contains information related to tenant's primary contact.
         /// </summary>
+        [JsonProperty(PropertyName = "pointOfContact", Required = Required.Always)]
+        [Required, DisplayName("Point of Contact")]
         public PointOfContactModel PointOfContact { get; set; }
 
         /// <summary>
         /// Contains information to charge the tenant for subscription feees.
         /// </summary>
+        [JsonProperty(PropertyName = "billingInformation", Required = Required.Always)]
+        [Required, DisplayName("Billing information")]
         public BillingInformationModel BillingInformation { get; set; }
     }
 

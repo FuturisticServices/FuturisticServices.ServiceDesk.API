@@ -26,10 +26,10 @@ namespace FuturisticServices.ServiceDesk.API.Managers
         public CosmosClient _dbClient;
         public Microsoft.Azure.Cosmos.Container _container;
 
-        public TenantBaseManager(string containerName, ISystemTenantsManager systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public TenantBaseManager(string containerName, ISystemTenantManager systemTenantManager, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _moniker = httpContextAccessor.HttpContext.Request.RouteValues["moniker"] != null ? httpContextAccessor.HttpContext.Request.RouteValues["moniker"].ToString() : string.Empty;
-            _tenant = systemTenantsService.GetItem(_moniker);
+            _tenant = systemTenantManager.GetItem(_moniker);
 
             if (_tenant == null) return;  //  No tenant, no entry!
 

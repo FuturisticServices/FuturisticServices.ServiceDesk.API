@@ -12,11 +12,11 @@ using FuturisticServices.ServiceDesk.API.Common;
 
 namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ISystemTenantsManager
+    public interface ISystemTenantManager
     {
         Task<Tenant> CreateItemAsync(Tenant tenant);
         Task<Tenant> DeleteItemAsync(Tenant tenant);
-        Task<Tenant[]> GetItemsAsync();
+        Task<IEnumerable<Tenant>> GetItemsAsync();
         Tenant GetItem(string moniker);
         Task<Tenant> GetItemAsync(string moniker);
         Task<Tenant> ReplaceItemAsync(Tenant tenant);
@@ -24,7 +24,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
         Task<string> NewToken(string moniker, string pocEmailAddress);
     }
 
-    public class SystemTenantsManager : SystemBaseManager, ISystemTenantsManager
+    public class SystemTenantManager : SystemBaseManager, ISystemTenantManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
@@ -34,7 +34,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="webHostEnvironment"></param>
-        public SystemTenantsManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Tenants", configuration, webHostEnvironment)
+        public SystemTenantManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Tenants", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -57,7 +57,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
             return results;
         }
 
-        public async Task<Tenant[]> GetItemsAsync()
+        public async Task<IEnumerable<Tenant>> GetItemsAsync()
         {
             var query = _container.GetItemQueryIterator<Tenant>(new QueryDefinition("SELECT * FROM c"));
 
@@ -68,7 +68,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
                 results.AddRange(response.ToList());
             }
 
-            return results.ToArray();
+            return results.AsEnumerable();
         }
 
         public Tenant GetItem(string moniker)

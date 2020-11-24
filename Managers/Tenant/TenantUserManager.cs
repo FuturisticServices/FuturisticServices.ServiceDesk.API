@@ -14,7 +14,7 @@ using FuturisticServices.ServiceDesk.API.Managers;
 
 namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ITenantUsersManager
+    public interface ITenantUserManager
     {
         //Task<LookupGroup> GetItemAsync(string lookupName);
         //Task<LookupItem> GetItemAsync(string lookupName, string name);
@@ -23,14 +23,14 @@ namespace FuturisticServices.ServiceDesk.API.Managers
 
 }
 
-public class TenantUsersManager : TenantBaseManager, ITenantUsersManager
+public class TenantUserManager : TenantBaseManager, ITenantUserManager
     {
-        internal ISystemTenantsManager _systemCustomerService;
+        internal ISystemTenantManager _systemCustomerService;
         internal IHttpContextAccessor _httpContextAccessor;
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public TenantUsersManager(ISystemTenantsManager systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", systemTenantsService, httpContextAccessor, configuration, webHostEnvironment)
+        public TenantUserManager(ISystemTenantManager systemTenantService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", systemTenantService, httpContextAccessor, configuration, webHostEnvironment)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
@@ -99,7 +99,7 @@ public class TenantUsersManager : TenantBaseManager, ITenantUsersManager
 
         public async Task<Entities.User> CreateItemAsync(Entities.User user)
         {
-            var results = await _container.CreateItemAsync<Entities.User>(user, new PartitionKey(user.NameLast));
+            var results = await _container.CreateItemAsync<Entities.User>(user, new PartitionKey(user.EmployeeID));
             return results;
         }
     }

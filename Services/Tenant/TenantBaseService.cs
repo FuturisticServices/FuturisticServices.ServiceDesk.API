@@ -10,11 +10,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace FuturisticServices.ServiceDesk.API.Services
 {
-    public class SystemBaseService
+    public class TenantBaseService
     {
-        public SystemBaseService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
-        {
 
+        public TenantBaseService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        {
+            
         }
     }
 }

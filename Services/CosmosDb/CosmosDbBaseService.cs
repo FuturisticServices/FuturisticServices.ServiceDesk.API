@@ -10,11 +10,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace FuturisticServices.ServiceDesk.API.Services
 {
-    public class SystemBaseService
+    public class CosmosDbBaseService
     {
-        public SystemBaseService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
-        {
 
+        public CosmosDbBaseService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        {
+            
         }
     }
 }

@@ -15,11 +15,11 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
     [Route("api/system/{moniker}")]
     public class SystemTenantController : Controller
     {
-        private readonly ISystemTenantsManager _systemTenantService;
+        private readonly ISystemTenantManager _systemTenantService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
-        public SystemTenantController(ISystemTenantsManager systemTenantService, IMapper mapper, IConfiguration configuration)
+        public SystemTenantController(ISystemTenantManager systemTenantService, IMapper mapper, IConfiguration configuration)
         {
             _systemTenantService = systemTenantService;
             _mapper = mapper;

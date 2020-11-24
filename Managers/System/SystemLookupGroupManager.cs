@@ -12,7 +12,7 @@ using FuturisticServices.ServiceDesk.API.Entities;
 
 namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ISystemLookupGroupsManager
+    public interface ISystemLookupGroupManager
     {
         Task<LookupItem> GetItemAsync(string lookupName, Guid id);
         Task<LookupGroup> GetItemAsync(string groupName);
@@ -21,12 +21,12 @@ namespace FuturisticServices.ServiceDesk.API.Managers
         Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup);
     }
 
-    public class SystemLookupGroupsService : SystemBaseManager, ISystemLookupGroupsManager
+    public class SystemLookupGroupManager : SystemBaseManager, ISystemLookupGroupManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupGroupsService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", configuration, webHostEnvironment)
+        public SystemLookupGroupManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;

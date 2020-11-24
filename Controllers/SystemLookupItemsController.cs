@@ -19,12 +19,12 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
     [ApiController]
     public class SystemLookupItemsController : ControllerBase
     {
-        private readonly ISystemLookupItemsManager _systemService;
+        private readonly ISystemLookupItemManager _systemService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupItemsController(ISystemLookupItemsManager systemService, IMapper mapper, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public SystemLookupItemsController(ISystemLookupItemManager systemService, IMapper mapper, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _systemService = systemService;
             _mapper = mapper;

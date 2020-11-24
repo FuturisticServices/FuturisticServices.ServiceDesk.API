@@ -43,5 +43,9 @@ namespace FuturisticServices.ServiceDesk.API.Models
         [JsonProperty(PropertyName = "users", Required = Required.Default)]
         [DisplayName("Users")]
         public List<Entities.User> Users { get; set; }
+
+        [JsonProperty(PropertyName = "tenants", Required = Required.Default)]
+        [DisplayName("Tenants")]
+        public List<Tenant> Tenants { get; set; }
     }
 }

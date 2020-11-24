@@ -16,6 +16,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
         public string _primaryKey;
 
         public string _databaseName;
+        public Database _database;
         public CosmosClient _dbClient;
         public Container _container;
 
@@ -29,7 +30,14 @@ namespace FuturisticServices.ServiceDesk.API.Managers
                 CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
                 _dbClient = clientBuilder.WithConnectionModeDirect().Build();
                 _container = _dbClient.GetContainer(_databaseName, containerName);
+                _database = _container.Database;
             }
+        }
+
+        public async Task SetDatabaseAsync(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        {
+            SetConnectionParameters(configuration, webHostEnvironment);
+            _database = _dbClient.GetDatabase(_databaseName);
         }
 
         public void SetConnectionParameters(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)

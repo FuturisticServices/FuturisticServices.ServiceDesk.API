@@ -14,7 +14,7 @@ using FuturisticServices.ServiceDesk.API.Managers;
 
 namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ISystemUsersManager
+    public interface ISystemUserManager
     {
         //Task<LookupGroup> GetItemAsync(string lookupName);
         //Task<LookupItem> GetItemAsync(string lookupName, string name);
@@ -23,12 +23,12 @@ namespace FuturisticServices.ServiceDesk.API.Managers
 
 }
 
-public class SystemUsersManager : SystemBaseManager, ISystemUsersManager
+public class SystemUserManager : SystemBaseManager, ISystemUserManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public SystemUsersManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", configuration, webHostEnvironment)
+        public SystemUserManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;

@@ -20,12 +20,12 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
     [Route("api/{moniker}/[controller]")]
     public class UserController : Controller
     {
-        private readonly ISystemTenantsManager _systemTenantsService;
+        private readonly ISystemTenantManager _systemTenantsService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private Tenant _systemTenant;
 
-        public UserController(ISystemTenantsManager customerService, IMapper mapper, IConfiguration configuration)
+        public UserController(ISystemTenantManager customerService, IMapper mapper, IConfiguration configuration)
         {
             _systemTenantsService = customerService;
             _mapper = mapper;

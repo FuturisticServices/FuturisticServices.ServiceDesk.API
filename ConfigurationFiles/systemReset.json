@@ -1,30 +1,12 @@
 {
-  "AllowedHosts": "*",
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft": "Warning",
-      "Microsoft.Hosting.Lifetime": "Information"
-    }
-  },
-  "keys": {
-    "jwtSecretKey": "mcJnzdCD4+6-&y$$kwY=K$Trms#Ns%+ENYXW9&r93?P&pbx5-7zw4!hs6#KcwS_?e-gXKjSTyXkXAFw$zR786wTX-Tp?WUAqXs7?Kt444vQz*n@-N?j@ZsbU$wL&#h+!d&C%sBNsmPh*&V^7$c-kvdNbN4ewL&%nHGy?Ppk*3TzJdpQcBTD4sr=&sGsgrum6G7qLkbBMgkLeVTkXeAb&$c8WNbnG8TdcfW@UbZ!8_4VtE*FPzDZ+W+SR!VWzht7B"
-  },
-  "cosmosDb.Localhost": {
-    "URI": "https://localhost:8081",
-    "PrimaryKey": "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
-    "SystemDatabaseName": "FuturisticServices.ServiceDesk",
-    "TenantDatabaseName": "FuturisticServices.{0}.ServiceDesk"
-  },
-  "cosmosDb.Production": {
-    "URI": "https://futuristicservicedeskcosmosdb.documents.azure.com:443",
-    "PrimaryKey": "gqL3hehz9MxMyssKxwnD43VJgs8Cv91PxJ8kMQg9tngABiUK0p6tSHaH7XNJgpTeDGT3BJzf0Qc7l3VuojpymQ==",
-    "SystemDatabaseName": "FuturisticServices.ServiceDesk",
-    "TenantDatabaseName": "FuturisticServices.{0}.ServiceDesk"
-  },
-  "Reset": {
-    "System": {
-      "Containers": [
+  "reset-system": {
+    "systemContainersToClone": ["LookupItems", "Subscriptions"],
+    "systemLookupGroupsToOmit": [
+      "Database Platforms",
+      "Subscription Renewal Timeframes"
+    ],
+    "containers": {
+      "create": [
         {
           "name": "LookupItems",
           "partitionKey": "name",
@@ -679,71 +661,6 @@
         {
           "name": "Tenants",
           "partitionKey": "company/name"
-        }
-      ]
-    },
-    "Tenant": {
-      "id": "ec67a2c5-6cc1-4d23-b32a-ae450dd802c4",
-      "moniker": "NAU",
-      "subscriptionId": "a3077fd5-8b87-4bc7-9f88-575092549963",
-      "company": {
-        "name": "Northern Arizona University",
-        "address": {
-          "line1": "1899 S San Francisco Street",
-          "city": "Flagstaff",
-          "stateId": "441968c5-cce6-4121-ab3e-49b72ce823e9",
-          "postalCode": "86011",
-          "countryId": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
-        },
-        "phoneNumber": {
-          "number": "9285239011"
-        },
-        "website": {
-          "url": "nau.edu"
-        }
-      },
-      "pointOfContact": {
-        "firstName": "Steven",
-        "lastName": "Burrell",
-        "Title": "Chief Technology Officer",
-        "address": {
-          "line1": "1301 S. Knoles Drive",
-          "line2": "Building 54",
-          "city": "Flagstaff",
-          "stateId": "441968c5-cce6-4121-ab3e-49b72ce823e9",
-          "postalCode": "86011",
-          "countryId": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
-        },
-        "phoneNumber": {
-          "number": "9285233335"
-        },
-        "emailAddress": {
-          "address": "ITS@nau.edu"
-        }
-      },
-      "billingInformation": {
-        "nameOnCard": "Steven Burrell",
-        "cardNumber": "1111222233334444",
-        "cardSecurityValue": "123",
-        "expirationMonth": 4,
-        "expirationYear": 2020,
-        "address": {
-          "line1": "1301 S. Knoles Drive",
-          "line2": "Building 54",
-          "city": "Flagstaff",
-          "stateId": "441968c5-cce6-4121-ab3e-49b72ce823e9",
-          "postalCode": "86011",
-          "countryId": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
-        }
-      },
-      "Containers": [
-        {
-          "name": "LookupItems",
-          "partitionKey": "name"
-        },
-        {
-          "name": "Users",
-          "partitionKey": "employeeId"
         }
       ]
     }

@@ -4,48 +4,6 @@
         <name>FuturisticServices.ServiceDesk.API</name>
     </assembly>
     <members>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.#ctor(FuturisticServices.ServiceDesk.API.Managers.ISystemTenantsManager,FuturisticServices.ServiceDesk.API.Managers.ISystemLookupItemsManager,FuturisticServices.ServiceDesk.API.Managers.ISystemSubscriptionsManager,AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
-            <summary>
-            Manages all endpoints for the registration process.
-            </summary>
-            <param name="systemTenantsService"></param>
-            <param name="systemLookupItemsService"></param>
-            <param name="systemSubscriptionsService"></param>
-            <param name="mapper"></param>
-            <param name="configuration"></param>
-            <param name="webHostEnvironment"></param>
-        </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.MetaData">
-            <summary>
-            Retrieves all necessary data required to populate the registration input elements upon rendering.
-            </summary>
-            <returns>HttpStatus 200 ~ Success</returns>
-            <returns>HttpStatus 400 ~ Bad request</returns>
-        </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.Tenant(FuturisticServices.ServiceDesk.API.Models.RegistrationModel)">
-            <summary>
-            Creates a new tenant within the FuturisticServices.ServiceDesk-->Tenant container.
-            </summary>
-            <param name="model">RegistrationModel view model.</param>
-            <returns>HttpStatus 200 ~ Success</returns>
-            <returns>HttpStatus 400 ~ Bad Request</returns>
-        </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.PromotionCode(System.String)">
-            <summary>
-            Validates the provided code against existing subscriptions.
-            Success ~ Returns associated subscription if subscription is valid.
-            Failure ~ No subscription found associated to promotion code.
-            </summary>
-            <param name="promotionCode">10 alphanumeric characters.</param>
-            <returns></returns>
-        </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.RegistrationController.Moniker(System.String)">
-            <summary>
-            Retrieves information required to populate the registration wizard.
-            </summary>
-            <param name="moniker">3-10 alphanumeric characters.</param>
-            <returns></returns>
-        </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemController.Reset">
             <summary>
             
@@ -67,7 +25,59 @@
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantSetupController.Tenant(System.String)">
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.#ctor(FuturisticServices.ServiceDesk.API.Services.ISystemTenantService,FuturisticServices.ServiceDesk.API.Services.ISystemTenantRegistrationService,FuturisticServices.ServiceDesk.API.Services.ISystemLookupItemService,FuturisticServices.ServiceDesk.API.Services.ISystemSubscriptionService,AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Manages all endpoints for the registration process.
+            </summary>
+            <param name="systemTenantService"></param>
+            <param name="systemTenantRegistrationService"></param>
+            <param name="systemLookupItemService"></param>
+            <param name="systemSubscriptionService"></param>
+            <param name="mapper"></param>
+            <param name="configuration"></param>
+            <param name="webHostEnvironment"></param>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.MetaData">
+            <summary>
+            
+            </summary>
+            <returns>HttpStatus 200 ~ Success</returns>
+            <returns>HttpStatus 400 ~ Bad request</returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.PromotionCode(System.String)">
+            <summary>
+            Validates the provided code against existing subscriptions.
+            Success ~ Returns associated subscription if subscription is valid.
+            Failure ~ No subscription found associated to promotion code.
+            </summary>
+            <param name="promotionCode">10 alphanumeric characters.</param>
+            <returns>HttpStatus 200 ~ Success</returns>
+            <returns>HttpStatus 400 ~ Bad request</returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.Moniker(System.String)">
+            <summary>
+            Retrieves information required to populate the registration wizard.
+            </summary>
+            <param name="moniker">3-10 alphanumeric characters.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.Tenant(FuturisticServices.ServiceDesk.API.Models.RegistrationModel)">
+            <summary>
+            Creates a new tenant within the FuturisticServices.ServiceDesk-->Tenant container.
+            </summary>
+            <param name="model">RegistrationModel view model.</param>
+            <returns>HttpStatus 200 ~ Success</returns>
+            <returns>HttpStatus 400 ~ Bad Request</returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.Tenant(System.String)">
+            <summary>
+            Registers a tenant with the matching moniker from the tenants.json file.
+            </summary>
+            <param name="moniker"></param>
+            <returns>HTTPStatus 200 OK ~ success</returns>
+            <returns>HTTPStatus 400 BadRequest ~ failure</returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantSetupController.Setup(System.String)">
             <summary>
             Create tenant database and containers.
             </summary>
@@ -79,11 +89,11 @@
             Performs methods for the Service Desk setup process.
             </summary>
         </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TokenController.#ctor(FuturisticServices.ServiceDesk.API.Managers.ISystemTenantsManager)">
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TokenController.#ctor(FuturisticServices.ServiceDesk.API.Managers.ISystemTenantManager)">
             <summary>
             Service Desk constructor.
             </summary>
-            <param name="systemTenantsService"></param>
+            <param name="systemTenantService"></param>
         </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TokenController.Validate(System.String,System.String)">
             <summary>
@@ -377,6 +387,11 @@
             Container name.
             </summary>
         </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SetupContainer.CloneItems">
+            <summary>
+            Whether to clone items from the system container.
+            </summary>
+        </member>
         <member name="P:FuturisticServices.ServiceDesk.API.Entities.Subscription.Name">
             <summary>
             Name of the subscription.
@@ -590,28 +605,28 @@
             <param name="configuration"></param>
             <param name="webHostEnvironment"></param>
         </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Managers.CosmosDbManager.CreateDatabase(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
+        <member name="M:FuturisticServices.ServiceDesk.API.Managers.CosmosDbManager.CreateDatabaseAsync(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
             <summary>
             Persists a new tenant object to the container.
             </summary>
             <param name="tenant">Tenant entity</param>
             <returns></returns>
         </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Managers.SystemTenantsManager.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:FuturisticServices.ServiceDesk.API.Managers.SystemTenantManager.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Constructor with DI.
             </summary>
             <param name="configuration"></param>
             <param name="webHostEnvironment"></param>
         </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Managers.SystemTenantsManager.CreateItemAsync(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
+        <member name="M:FuturisticServices.ServiceDesk.API.Managers.SystemTenantManager.CreateItemAsync(FuturisticServices.ServiceDesk.API.Entities.Tenant)">
             <summary>
             Persists a new tenant object to the container.
             </summary>
             <param name="tenant">Tenant entity</param>
             <returns></returns>
         </member>
-        <member name="M:FuturisticServices.ServiceDesk.API.Managers.SystemTenantsManager.ValidateToken(System.String,System.String)">
+        <member name="M:FuturisticServices.ServiceDesk.API.Managers.SystemTenantManager.ValidateToken(System.String,System.String)">
             <summary>
             Authenticates a setup token is associated to an existing tenant.
             </summary>
@@ -629,14 +644,6 @@
             A unique abbreviation that identifies the tenant in the system.
             Included in each and every API request to identify which
             database the system will interact with.
-            </summary>
-        </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationModel.SetupToken">
-            <summary>
-            A GUID provided to the tenant upon a successful registration.
-            If tenant does not immediately setup its service desk,
-            this SetupToken will be used to authenticate the tenant
-            when the service desk setup is eventually invoked.
             </summary>
         </member>
         <member name="P:FuturisticServices.ServiceDesk.API.Models.RegistrationModel.SubscriptionId">
@@ -684,37 +691,37 @@
             Container name.
             </summary>
         </member>
-        <member name="T:FuturisticServices.ServiceDesk.API.Models.TenantRegistration">
+        <member name="T:FuturisticServices.ServiceDesk.API.Models.TenantRegistrationModel">
             <summary>
             Contains information required to create/setup a tenant in the
             FuturisticServices-->Tenant container.
             </summary>
         </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.Company">
-            <summary>
-            Contains information related to the tenant's legal business entity.
-            </summary>
-        </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.PointOfContact">
-            <summary>
-            Contains information related to tenant's primary contact.
-            </summary>
-        </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.SubscriptionId">
-            <summary>
-            The selected subscription ID.
-            </summary>
-        </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.BillingInformation">
-            <summary>
-            Contains information to charge the tenant for subscription feees.
-            </summary>
-        </member>
-        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistration.Moniker">
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistrationModel.Moniker">
             <summary>
             A unique abbreviation that identifies the tenant in the system.
             Included in each and every API request to identify which
             database the system will interact with.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistrationModel.SubscriptionId">
+            <summary>
+            The selected subscription ID.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistrationModel.Company">
+            <summary>
+            Contains information related to the tenant's legal business entity.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistrationModel.PointOfContact">
+            <summary>
+            Contains information related to tenant's primary contact.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Models.TenantRegistrationModel.BillingInformation">
+            <summary>
+            Contains information to charge the tenant for subscription feees.
             </summary>
         </member>
         <member name="P:FuturisticServices.ServiceDesk.API.Models.UserModel.EmployeeId">

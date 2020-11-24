@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,48 +17,57 @@ using FuturisticServices.ServiceDesk.API.Common;
 using FuturisticServices.ServiceDesk.API.Entities;
 using FuturisticServices.ServiceDesk.API.Managers;
 using FuturisticServices.ServiceDesk.API.Models;
-using System.Dynamic;
+using FuturisticServices.ServiceDesk.API.Services;
 
 namespace FuturisticServices.ServiceDesk.API.Controllers
 {
-    [Route("api/registration")]
+    [Route("api/tenant/registration")]
     [ApiVersion("1.0")]
     [ApiController]
-    public class RegistrationController : ControllerBase
+    public class TenantRegistrationController : ControllerBase
     {
-        private readonly ISystemTenantsManager _systemTenantsService;
-        private readonly ISystemLookupItemsManager _systemLookupItemsService;
-        private readonly ISystemSubscriptionsManager _systemSubscriptionsService;
+        #region Members
+        private readonly ISystemTenantService _systemTenantService;
+        private readonly ISystemTenantRegistrationService _systemTenantRegistrationService;
+        private readonly ISystemLookupItemService _systemLookupItemService;
+        private readonly ISystemSubscriptionService _systemSubscriptionService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        #endregion Members
 
+        #region Constructors
         /// <summary>
         /// Manages all endpoints for the registration process.
         /// </summary>
-        /// <param name="systemTenantsService"></param>
-        /// <param name="systemLookupItemsService"></param>
-        /// <param name="systemSubscriptionsService"></param>
+        /// <param name="systemTenantService"></param>
+        /// <param name="systemTenantRegistrationService"></param>
+        /// <param name="systemLookupItemService"></param>
+        /// <param name="systemSubscriptionService"></param>
         /// <param name="mapper"></param>
         /// <param name="configuration"></param>
         /// <param name="webHostEnvironment"></param>
-        public RegistrationController(ISystemTenantsManager systemTenantsService,
-                                        ISystemLookupItemsManager systemLookupItemsService, 
-                                        ISystemSubscriptionsManager systemSubscriptionsService, 
+        public TenantRegistrationController(ISystemTenantService systemTenantService, 
+                                        ISystemTenantRegistrationService systemTenantRegistrationService,
+                                        ISystemLookupItemService systemLookupItemService, 
+                                        ISystemSubscriptionService systemSubscriptionService, 
                                         IMapper mapper, 
                                         IConfiguration configuration, 
                                         IWebHostEnvironment webHostEnvironment)
         {
-            _systemTenantsService = systemTenantsService;
-            _systemLookupItemsService = systemLookupItemsService;
-            _systemSubscriptionsService = systemSubscriptionsService;
+            _systemTenantService = systemTenantService;
+            _systemTenantRegistrationService = systemTenantRegistrationService;
+            _systemLookupItemService = systemLookupItemService;
+            _systemSubscriptionService = systemSubscriptionService;
             _mapper = mapper;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
+        #endregion Constructors
 
+        #region GET methods
         /// <summary>
-        /// Retrieves all necessary data required to populate the registration input elements upon rendering.
+        /// 
         /// </summary>
         /// <returns>HttpStatus 200 ~ Success</returns>
         /// <returns>HttpStatus 400 ~ Bad request</returns>
@@ -70,7 +80,7 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
             try
             {
                 //  Get all lookup items.
-                List<LookupGroup> systemLookupItems = (await _systemLookupItemsService.GetItemsAsync()).ToList();
+                List<LookupGroup> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
                 List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
                 List<LookupItem> phoneNumberTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
                 List<LookupItem> emailAddressTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.EmailAddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
@@ -81,7 +91,7 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
                 RegistrationMetaDataModel model = new RegistrationMetaDataModel();
                 model.States = states;
                 model.Countries = countries;
-                model.Subscriptions = (await _systemSubscriptionsService.GetItemsAsync(false)).ToList();
+                model.Subscriptions = (await _systemSubscriptionService.GetItems(false)).ToList();
 
                 response.status = this.StatusCode(StatusCodes.Status200OK, "Registration meta-data retrieved successfully.");
                 response.metaData = model;
@@ -96,51 +106,13 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new tenant within the FuturisticServices.ServiceDesk-->Tenant container.
-        /// </summary>
-        /// <param name="model">RegistrationModel view model.</param>
-        /// <returns>HttpStatus 200 ~ Success</returns>
-        /// <returns>HttpStatus 400 ~ Bad Request</returns>
-        [HttpPost("tenant")]
-        [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Tenant([FromBody] RegistrationModel model)
-        {
-            dynamic response = new ExpandoObject();
-
-            try
-            {
-                //  Get all lookup items.
-                List<LookupGroup> systemLookupItems = (await _systemLookupItemsService.GetItemsAsync()).ToList();
-
-                //  Get current subscription.
-                Subscription currentSubscription = await _systemSubscriptionsService.GetItemAsync(model.SubscriptionId);
-
-                //  Create and populate tenant object.
-                Tenant tenant = new Tenant(model, currentSubscription, systemLookupItems);
-
-                tenant = await _systemTenantsService.CreateItemAsync(tenant);
-
-                response.status = this.StatusCode(StatusCodes.Status200OK, "Tenant registered successfully.");
-                response.tenant = tenant;
-                return Ok(new { response });
-            }
-            catch (Exception ex)
-            {
-                response.status = this.StatusCode(StatusCodes.Status400BadRequest, "Error registering tenant. Error: " + ex.Message);
-                response.items = null;
-                return BadRequest(new { response });
-            }
-        }
-
-        /// <summary>
         /// Validates the provided code against existing subscriptions.
         /// Success ~ Returns associated subscription if subscription is valid.
         /// Failure ~ No subscription found associated to promotion code.
         /// </summary>
         /// <param name="promotionCode">10 alphanumeric characters.</param>
-        /// <returns></returns>
+        /// <returns>HttpStatus 200 ~ Success</returns>
+        /// <returns>HttpStatus 400 ~ Bad request</returns>
         [HttpGet("promotioncode/{promotionCode}")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -151,7 +123,7 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
 
             try
             {
-                Subscription subscription = await _systemSubscriptionsService.GetItemByPromotionCodeAsync(promotionCode);
+                Subscription subscription = await _systemSubscriptionService.GetItemByPromotionCode(promotionCode);
 
                 if (subscription != null)
                 {
@@ -187,7 +159,7 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
 
             try
             {
-                Tenant tenant = await _systemTenantsService.GetItemAsync(moniker);
+                Tenant tenant = await _systemTenantService.GetItem(moniker);
                 bool monikerIsUnique = tenant == null ? true : false;
 
                 response.statusCode = StatusCode(StatusCodes.Status200OK, monikerIsUnique ? "Moniker is unique." : "Moniker is NOT unique.");
@@ -202,5 +174,78 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
                 return BadRequest(new { response });
             }
         }
+        #endregion GET methods
+
+        #region POST methods
+        /// <summary>
+        /// Creates a new tenant within the FuturisticServices.ServiceDesk-->Tenant container.
+        /// </summary>
+        /// <param name="model">RegistrationModel view model.</param>
+        /// <returns>HttpStatus 200 ~ Success</returns>
+        /// <returns>HttpStatus 400 ~ Bad Request</returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> Tenant([FromBody] RegistrationModel model)
+        {
+            dynamic response = new ExpandoObject();
+
+            try
+            {
+                Tenant tenant = await _systemTenantRegistrationService.Register(model);
+
+                if (tenant != null)
+                {
+                    response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("Tenant '{0}' registered successfully.", model.Moniker.ToUpper()));
+                    response.tenant = tenant;
+                    return Ok(new { response });
+                }
+
+                response.status = this.StatusCode(StatusCodes.Status400BadRequest, "Error registering tenant.");
+                return BadRequest(new { response });
+            }
+            catch (Exception ex)
+            {
+                response.status = this.StatusCode(StatusCodes.Status400BadRequest, "Error registering tenant. Error: " + ex.Message);
+                return BadRequest(new { response });
+            }
+        }
+
+        /// <summary>
+        /// Registers a tenant with the matching moniker from the tenants.json file.
+        /// </summary>
+        /// <param name="moniker"></param>
+        /// <returns>HTTPStatus 200 OK ~ success</returns>
+        /// <returns>HTTPStatus 400 BadRequest ~ failure</returns>
+        [HttpPost("{moniker}")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Tenant(string moniker)
+        {
+            dynamic response = new ExpandoObject();
+
+            try
+            {
+                Tenant tenant = (await _systemTenantRegistrationService.Register(moniker));
+
+                if (tenant != null)
+                {
+                    response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("Tenant '{0}' registered successfully.", moniker.ToUpper()));
+                    response.tenant = tenant;
+                    return Ok(new { response });
+                }
+
+                response.status = this.StatusCode(StatusCodes.Status400BadRequest, "Error registering tenant.");
+                return BadRequest(new { response });
+            }
+            catch (Exception ex)
+            {
+                response.status = this.StatusCode(StatusCodes.Status400BadRequest, "Error registering tenant. Error: " + ex.Message);
+                return BadRequest(new { response });
+            }
+        }
+        #endregion POST methods
     }
 }

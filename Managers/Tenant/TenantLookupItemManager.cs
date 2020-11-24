@@ -14,7 +14,7 @@ using FuturisticServices.ServiceDesk.API.Managers;
 
 namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ITenantLookupItemsManager
+    public interface ITenantLookupItemManager
     {
         Task<LookupGroup> GetItemAsync(string lookupName);
         Task<LookupItem> GetItemAsync(string lookupName, string name);
@@ -23,14 +23,14 @@ namespace FuturisticServices.ServiceDesk.API.Managers
 
 }
 
-public class TenantLookupItemsManager : TenantBaseManager, ITenantLookupItemsManager
+public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManager
     {
-        internal ISystemTenantsManager _systemCustomerService;
+        internal ISystemTenantManager _systemCustomerService;
         internal IHttpContextAccessor _httpContextAccessor;
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public TenantLookupItemsManager(ISystemTenantsManager systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", systemTenantsService, httpContextAccessor, configuration, webHostEnvironment)
+        public TenantLookupItemManager(ISystemTenantManager systemTenantService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", systemTenantService, httpContextAccessor, configuration, webHostEnvironment)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;

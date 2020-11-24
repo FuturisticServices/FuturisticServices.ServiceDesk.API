@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +13,7 @@ using FuturisticServices.ServiceDesk.API.Entities;
 
 namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ISystemManager
+    public interface ITenantSubscriptionsManager
     {
         Task<DatabaseResponse> DeleteDatabase();
         Task<DatabaseResponse> CreateDatabase();
@@ -20,20 +21,24 @@ namespace FuturisticServices.ServiceDesk.API.Managers
         Task<List<string>> GetContainers(List<string> containersToOmit);
     }
 
-    public class SystemManager : SystemBaseManager, ISystemManager
+    public class TenantSubscriptionsManager : TenantBaseManager, ITenantSubscriptionsManager
     {
+        private readonly ISystemTenantManager _systemTenantManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public SystemManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", configuration, webHostEnvironment)
+        public TenantSubscriptionsManager(ISystemTenantManager systemTenantManager, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", systemTenantManager, httpContextAccessor, configuration, webHostEnvironment)
         {
+            _systemTenantManager = systemTenantManager;
+            _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<DatabaseResponse> DeleteDatabase()
         {
-            _databaseName = _webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:SystemDatabaseName"] : _configuration["cosmosDb.Localhost:SystemDatabaseName"];
+            _databaseName = _webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"];
 
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
             CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
@@ -45,7 +50,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
 
         public async Task<DatabaseResponse> CreateDatabase()
         {
-            _databaseName = _webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:SystemDatabaseName"] : _configuration["cosmosDb.Localhost:SystemDatabaseName"];
+            _databaseName = _webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"];
 
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
             CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
@@ -84,11 +89,11 @@ namespace FuturisticServices.ServiceDesk.API.Managers
 
             Database database = _dbClient.GetDatabase(_databaseName);
             FeedIterator<ContainerProperties> iterator = database.GetContainerQueryIterator<ContainerProperties>();
-            FeedResponse<ContainerProperties> systemContainers = await iterator.ReadNextAsync().ConfigureAwait(false);
+            FeedResponse<ContainerProperties> tenantContainers = await iterator.ReadNextAsync().ConfigureAwait(false);
 
-            foreach (var systemContainer in systemContainers) {
-                if (lookupGroupsToClone.Contains(systemContainer.Id)) {
-                    containers.Add(systemContainer.Id);
+            foreach (var tenantContainer in tenantContainers) {
+                if (lookupGroupsToClone.Contains(tenantContainer.Id)) {
+                    containers.Add(tenantContainer.Id);
                 }
             }
 
