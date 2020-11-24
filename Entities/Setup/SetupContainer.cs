@@ -9,10 +9,11 @@ namespace FuturisticServices.ServiceDesk.API.Entities
     {
         public SetupContainer() { }
 
-        public SetupContainer(string name, string partitionKey)
+        public SetupContainer(string name, string partitionKey, bool cloneItems)
         {
             Name = name;
             PartitionKey = partitionKey;
+            CloneItems = cloneItems;
         }
 
         /// <summary>
@@ -28,5 +29,12 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         [JsonProperty(PropertyName = "partitionKey", Required = Required.Always)]
         [Required, DisplayName("Partition key")]
         public string PartitionKey { get; set; }
+
+        /// <summary>
+        /// Whether to clone items from the system container.
+        /// </summary>
+        [JsonProperty(PropertyName = "cloneItems", Required = Required.Always)]
+        [Required, DisplayName("Clone items")]
+        public bool CloneItems { get; set; }
     }
 }

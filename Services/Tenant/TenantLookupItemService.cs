@@ -16,20 +16,28 @@ using FuturisticServices.ServiceDesk.API.Models;
 
 namespace FuturisticServices.ServiceDesk.API.Services
 {
-    public interface ISystemLookupGroupService
+    public interface ITenantLookupItemService
     {
-        
+        Task<LookupGroup> CreateItem(LookupGroup lookupGroup);
     }
 
-    public class SystemLookupGroupService : SystemBaseService, ISystemLookupGroupService
+    public class TenantLookupItemService : TenantBaseService, ITenantLookupItemService
     {
+        private readonly ITenantLookupItemManager _tenantLookupItemManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupGroupService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public TenantLookupItemService(ITenantLookupItemManager tenantLookupItemManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
+            _tenantLookupItemManager = tenantLookupItemManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<LookupGroup> CreateItem(LookupGroup lookupGroup)
+        {
+            var results = await _tenantLookupItemManager.CreateItemAsync(lookupGroup);
+            return results;
         }
     }
 }

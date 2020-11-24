@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,10 +18,8 @@ using Microsoft.OpenApi.Models;
 
 using AutoMapper;
 
-using FuturisticServices.ServiceDesk.API.Services.CosmosDb;
-using FuturisticServices.ServiceDesk.API.Services.System;
-using FuturisticServices.ServiceDesk.API.Services.Tenants;
-using System.Text;
+using FuturisticServices.ServiceDesk.API.Managers;
+using FuturisticServices.ServiceDesk.API.Services;
 
 namespace FuturisticServices.ServiceDesk.API
 {
@@ -31,7 +30,16 @@ namespace FuturisticServices.ServiceDesk.API
 
         public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            Configuration = configuration;
+            var configurationBuilder = new ConfigurationBuilder()
+            .SetBasePath(webHostEnvironment.ContentRootPath + @"\ConfigurationFiles")
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("reset-system.json", optional: true)
+            .AddJsonFile("tenants.json", optional: true)
+            .AddEnvironmentVariables();
+
+            Configuration = configurationBuilder.Build();
+            //Configuration = configuration;
+
             WebHostEnvironment = webHostEnvironment;
         }
 
@@ -158,15 +166,42 @@ namespace FuturisticServices.ServiceDesk.API
 
             services.AddHttpContextAccessor();
 
+            //  Cosmos DB services.
             services.AddSingleton<ICosmosDbService, CosmosDbService>();
 
-            services.AddSingleton<ISystemService, SystemService>();
-            services.AddSingleton<ISystemLookupGroupsService, SystemLookupGroupsService>();
-            services.AddSingleton<ISystemLookupItemsService, SystemLookupItemsService>();
-            services.AddSingleton<ISystemSubscriptionsService, SystemSubscriptionsService>();
-            services.AddSingleton<ISystemTenantsService, SystemTenantsService>();
+            //  Cosmos DB managers.
+            services.AddSingleton<ICosmosDbManager, CosmosDbManager>();
 
-            services.AddSingleton<ITenantLookupItemsService, TenantLookupItemsService>();
+            //  System services.
+            services.AddSingleton<ISystemService, SystemService>();
+            services.AddSingleton<ISystemTenantService, SystemTenantService>();
+            services.AddSingleton<ISystemTenantRegistrationService, SystemTenantRegistrationService>();
+            services.AddSingleton<ISystemLookupGroupService, SystemLookupGroupService>();
+            services.AddSingleton<ISystemLookupItemService, SystemLookupItemService>();
+            services.AddSingleton<ISystemSubscriptionService, SystemSubscriptionService>();
+            services.AddSingleton<ISystemUserService, SystemUserService>();
+
+            //  System managers.
+            services.AddSingleton<ISystemManager, SystemManager>();
+            services.AddSingleton<ISystemLookupGroupManager, SystemLookupGroupManager>();
+            services.AddSingleton<ISystemLookupItemManager, SystemLookupItemManager>();
+            services.AddSingleton<ISystemSubscriptionManager, SystemSubscriptionManager>();
+            services.AddSingleton<ISystemUserManager, SystemUserManager>();
+            services.AddSingleton<ISystemTenantManager, SystemTenantManager>();
+
+            //  Tenant services.
+            services.AddSingleton<ITenantService, TenantService>();
+            services.AddSingleton<ITenantSetupService, TenantSetupService>();
+            services.AddSingleton<ITenantLookupGroupService, TenantLookupGroupService>();
+            services.AddSingleton<ITenantLookupItemService, TenantLookupItemService>();
+            services.AddSingleton<ITenantSubscriptionService, TenantSubscriptionService>();
+            services.AddSingleton<ITenantUserService, TenantUserService>();
+
+            //  Tenant managers.
+            services.AddSingleton<ITenantManager, TenantManager>();
+            services.AddSingleton<ITenantLookupItemManager, TenantLookupItemManager>();
+            services.AddSingleton<ITenantSubscriptionsManager, TenantSubscriptionsManager>();
+            services.AddSingleton<ITenantUserManager, TenantUserManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,9 +12,9 @@ using FuturisticServices.ServiceDesk.API.Entities;
 using Microsoft.Azure.Cosmos.Linq;
 using FuturisticServices.ServiceDesk.API.Extensions;
 
-namespace FuturisticServices.ServiceDesk.API.Services.System
+namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ISystemLookupItemsService
+    public interface ISystemLookupItemManager
     {
         Task<LookupItem> GetItemAsync(string groupName, Guid id);
         Task<LookupGroup> GetItemAsync(string groupName);
@@ -23,12 +23,12 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
         Task<LookupItem> CreateItemAsync(LookupItem lookupItem);
     }
 
-    public class SystemLookupItemsService : SystemBaseService, ISystemLookupItemsService
+    public class SystemLookupItemManager : SystemBaseManager, ISystemLookupItemManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupItemsService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", configuration, webHostEnvironment)
+        public SystemLookupItemManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;

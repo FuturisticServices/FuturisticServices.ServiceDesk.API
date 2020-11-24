@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 using AutoMapper;
 
-using FuturisticServices.ServiceDesk.API.Services.Tenants;
+using FuturisticServices.ServiceDesk.API.Managers;
 
 namespace FuturisticServices.ServiceDesk.API.Controllers
 {

@@ -14,7 +14,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// <summary>
         /// Unique identifier (GUID) of the entity.
         /// </summary>
-        [JsonProperty(PropertyName = "id", Required = Required.DisallowNull)]
+        [JsonProperty(PropertyName = "id", Required = Required.AllowNull)]
         public string Id { get; set; }
 
         ///// <summary>

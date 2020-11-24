@@ -16,17 +16,17 @@ using FuturisticServices.ServiceDesk.API.Models;
 
 namespace FuturisticServices.ServiceDesk.API.Services
 {
-    public interface ISystemLookupGroupService
+    public interface ITenantSubscriptionService
     {
-        
+
     }
 
-    public class SystemLookupGroupService : SystemBaseService, ISystemLookupGroupService
+    public class TenantSubscriptionService : TenantBaseService, ITenantSubscriptionService
     {
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupGroupService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public TenantSubscriptionService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;

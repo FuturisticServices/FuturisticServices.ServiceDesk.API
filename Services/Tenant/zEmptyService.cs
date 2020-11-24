@@ -13,20 +13,21 @@ using FuturisticServices.ServiceDesk.API.Common;
 using FuturisticServices.ServiceDesk.API.Entities;
 using FuturisticServices.ServiceDesk.API.Managers;
 using FuturisticServices.ServiceDesk.API.Models;
+using FuturisticServices.ServiceDesk.API.Services;
 
 namespace FuturisticServices.ServiceDesk.API.Services
 {
-    public interface ISystemLookupGroupService
+    public interface IzEmptyService
     {
-        
+
     }
 
-    public class SystemLookupGroupService : SystemBaseService, ISystemLookupGroupService
+    public class zEmptyService : TenantBaseService, IzEmptyService
     {
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupGroupService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public zEmptyService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;

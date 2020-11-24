@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 using AutoMapper;
 
-using FuturisticServices.ServiceDesk.API.Services.System;
+using FuturisticServices.ServiceDesk.API.Managers;
 
 namespace FuturisticServices.ServiceDesk.API.Controllers
 {
@@ -19,12 +19,12 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
     [ApiController]
     public class SystemLookupItemsController : ControllerBase
     {
-        private readonly ISystemLookupItemsService _systemService;
+        private readonly ISystemLookupItemManager _systemService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupItemsController(ISystemLookupItemsService systemService, IMapper mapper, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public SystemLookupItemsController(ISystemLookupItemManager systemService, IMapper mapper, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _systemService = systemService;
             _mapper = mapper;

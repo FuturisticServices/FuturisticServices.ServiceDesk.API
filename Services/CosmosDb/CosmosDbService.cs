@@ -1,75 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Cosmos;
-using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
+using FuturisticServices.ServiceDesk.API.Common;
 using FuturisticServices.ServiceDesk.API.Entities;
+using FuturisticServices.ServiceDesk.API.Managers;
+using FuturisticServices.ServiceDesk.API.Models;
 using FuturisticServices.ServiceDesk.API.Services;
-using System.Runtime.CompilerServices;
 
-namespace FuturisticServices.ServiceDesk.API.Services.CosmosDb
+namespace FuturisticServices.ServiceDesk.API.Services
 {
-    public interface ICosmosDbService
-    {
+    public interface ICosmosDbService {
         Task<DatabaseResponse> CreateDatabase(Tenant tenant);
         Task<ContainerResponse> CreateContainer(Database database, string containerName, string partitionKeyName);
+        Container GetContainer(Database database, string containerName);
     }
 
     public class CosmosDbService : CosmosDbBaseService, ICosmosDbService
     {
-        internal IConfiguration _configuration;
-        internal IWebHostEnvironment _webHostEnvironment;
+        #region Members
+        private readonly ICosmosDbManager _cosmosDbManager;
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        #endregion Members
 
-        /// <summary>
-        /// Constructor with DI.
-        /// </summary>
-        /// <param name="configuration"></param>
-        /// <param name="webHostEnvironment"></param>
-        public CosmosDbService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Tenants", configuration, webHostEnvironment)
+        #region Constructors
+        public CosmosDbService(ICosmosDbManager cosmosDbManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
+            _cosmosDbManager = cosmosDbManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
+        #endregion Constructors
 
-        /// <summary>
-        /// Persists a new tenant object to the container.
-        /// </summary>
-        /// <param name="tenant">Tenant entity</param>
-        /// <returns></returns>
+        #region Public methods
         public async Task<DatabaseResponse> CreateDatabase(Tenant tenant)
         {
-            _databaseName = string.Format("Futuristic.{0}.ServiceDesk", tenant.Moniker.ToUpper());
-
-            CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
-            CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
-            DatabaseResponse response = await client.CreateDatabaseIfNotExistsAsync(_databaseName);
-
+            DatabaseResponse response = await _cosmosDbManager.CreateDatabaseAsync(tenant);
             return response;
         }
 
         public async Task<ContainerResponse> CreateContainer(Database database, string containerName, string partitionKeyName)
         {
-            ContainerProperties containerProperties = new ContainerProperties()
-            {
-                Id = containerName,
-                PartitionKeyPath = string.Format("/{0}", partitionKeyName),
-                IndexingPolicy = new IndexingPolicy()
-                {
-                    Automatic = false,
-                    IndexingMode = IndexingMode.Lazy,
-                }
-            };
-
-            ContainerResponse response = await database.CreateContainerIfNotExistsAsync(containerProperties);
-
+            ContainerResponse response = await _cosmosDbManager.CreateContainerAsync(database, containerName, partitionKeyName);
             return response;
         }
+
+        public Container GetContainer(Database database, string containerName)
+        {
+            Container response = _cosmosDbManager.GetContainer(database, containerName);
+            return response;
+        }
+        #endregion Public methods
     }
 }

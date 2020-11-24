@@ -10,12 +10,13 @@ using Microsoft.Extensions.Configuration;
 using FuturisticServices.ServiceDesk.API.Entities;
 using FuturisticServices.ServiceDesk.API.Common;
 
-namespace FuturisticServices.ServiceDesk.API.Services.System
+namespace FuturisticServices.ServiceDesk.API.Managers
 {
-    public interface ISystemTenantsService
+    public interface ISystemTenantManager
     {
         Task<Tenant> CreateItemAsync(Tenant tenant);
-        Task<Tenant[]> GetItemsAsync();
+        Task<Tenant> DeleteItemAsync(Tenant tenant);
+        Task<IEnumerable<Tenant>> GetItemsAsync();
         Tenant GetItem(string moniker);
         Task<Tenant> GetItemAsync(string moniker);
         Task<Tenant> ReplaceItemAsync(Tenant tenant);
@@ -23,7 +24,7 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
         Task<string> NewToken(string moniker, string pocEmailAddress);
     }
 
-    public class SystemTenantsService : SystemBaseService, ISystemTenantsService
+    public class SystemTenantManager : SystemBaseManager, ISystemTenantManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
@@ -33,7 +34,7 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
         /// </summary>
         /// <param name="configuration"></param>
         /// <param name="webHostEnvironment"></param>
-        public SystemTenantsService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Tenants", configuration, webHostEnvironment)
+        public SystemTenantManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Tenants", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -50,7 +51,13 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
             return results;
         }
 
-        public async Task<Tenant[]> GetItemsAsync()
+        public async Task<Tenant> DeleteItemAsync(Tenant tenant)
+        {
+            var results = await _container.DeleteItemAsync<Tenant>(tenant.Id, new PartitionKey(tenant.Company.Name));
+            return results;
+        }
+
+        public async Task<IEnumerable<Tenant>> GetItemsAsync()
         {
             var query = _container.GetItemQueryIterator<Tenant>(new QueryDefinition("SELECT * FROM c"));
 
@@ -61,7 +68,7 @@ namespace FuturisticServices.ServiceDesk.API.Services.System
                 results.AddRange(response.ToList());
             }
 
-            return results.ToArray();
+            return results.AsEnumerable();
         }
 
         public Tenant GetItem(string moniker)

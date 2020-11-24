@@ -10,10 +10,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace FuturisticServices.ServiceDesk.API.Services
 {
-    public class CosmosDbBaseService
+    public class TenantBaseService
     {
 
-        public CosmosDbBaseService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public TenantBaseService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             
         }
