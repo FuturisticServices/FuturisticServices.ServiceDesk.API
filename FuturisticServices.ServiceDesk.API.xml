@@ -6,20 +6,24 @@
     <members>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemController.Reset">
             <summary>
-            
+            Deletes and creates the [futuristic.services] system database. 
+            ** USE WITH CAUTION **
             </summary>
             <returns></returns>
         </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemLookupItemsController.Get(System.String)">
             <summary>
-            Establishes a new tenant in the FuturisticServices.ServiceDesk --> Tenants container.
+            Retrieves all items associated to the specified group from the [FuturisticServices.ServiceDesk] database 'LookupItems' container.
             </summary>
-            <param name="groupName">The 'systemGroup' value related to a group of items.</param>
-            <returns></returns>
+            <param name="groupName">The name of group to retrieve.</param>
+            <returns>401 ~ Not authorized or invalid JWT token.</returns>
+            <returns>200 ~ OK</returns>
+            <returns>400 ~ Bad request</returns>
         </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemTenantController.Tenant(System.String)">
             <summary>
-            
+            Sets up a tenant in the [futuristic.services] database Tenant container.
+            Tenant details come from the 'tenants.json' config file with matching moniker.
             </summary>
             <param name="moniker"></param>
             <returns>HttpStatus 200 ~ Success</returns>
@@ -39,33 +43,38 @@
         </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.MetaData">
             <summary>
-            
+            Retrieves all data required to populate controls on the Tenant registration form (ie. states, countries, address types, etc).
             </summary>
+            <returns>HttpStatus 401 ~ Unauthorized</returns>
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.PromotionCode(System.String)">
             <summary>
-            Validates the provided code against existing subscriptions.
+            Validates the provided code against existing subscriptions in the [FuturisticServices.ServiceDesk] database Subscriptions container.
             Success ~ Returns associated subscription if subscription is valid.
             Failure ~ No subscription found associated to promotion code.
             </summary>
             <param name="promotionCode">10 alphanumeric characters.</param>
+            <returns>HttpStatus 401 ~ Unauthorized</returns>
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.Moniker(System.String)">
             <summary>
-            Retrieves information required to populate the registration wizard.
+            Determines if the provided moniker is available for use.
             </summary>
             <param name="moniker">3-10 alphanumeric characters.</param>
-            <returns></returns>
+            <returns>HttpStatus 401 ~ Unauthorized</returns>
+            <returns>HttpStatus 200 ~ Success</returns>
+            <returns>HttpStatus 400 ~ Bad Request</returns>
         </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.Tenant(FuturisticServices.ServiceDesk.API.Models.RegistrationModel)">
             <summary>
-            Creates a new tenant within the FuturisticServices.ServiceDesk-->Tenant container.
+            Creates a new tenant within the [FuturisticServices.ServiceDesk] database Tenant container.
             </summary>
             <param name="model">RegistrationModel view model.</param>
+            <returns>HttpStatus 401 ~ Unauthorized</returns>
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad Request</returns>
         </member>
@@ -79,10 +88,14 @@
         </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantSetupController.Setup(System.String)">
             <summary>
-            Create tenant database and containers.
+            Creates a [FuturisticServices.{moniker}.ServiceDesk] database.
+            Inside the database, creates a 'LookupItems', 'Subscriptions' and 'Users' containers.
+            Populates each container with appropriate items.
             </summary>
-            <param name="moniker">Unique tenant ID used when invoking API calls.</param>
-            <returns></returns>
+            <param name="moniker">ID unique to each Tenant used in all API requests.</param>
+            <returns>HttpStatus 401 ~ Unauthorized</returns>
+            <returns>HttpStatus 200 ~ Success</returns>
+            <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
         <member name="T:FuturisticServices.ServiceDesk.API.Controllers.TokenController">
             <summary>

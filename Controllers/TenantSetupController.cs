@@ -48,10 +48,14 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
 
         #region Public methods
         /// <summary>
-        /// Create tenant database and containers.
+        /// Creates a [FuturisticServices.{moniker}.ServiceDesk] database.
+        /// Inside the database, creates a 'LookupItems', 'Subscriptions' and 'Users' containers.
+        /// Populates each container with appropriate items.
         /// </summary>
-        /// <param name="moniker">Unique tenant ID used when invoking API calls.</param>
-        /// <returns></returns>
+        /// <param name="moniker">ID unique to each Tenant used in all API requests.</param>
+        /// <returns>HttpStatus 401 ~ Unauthorized</returns>
+        /// <returns>HttpStatus 200 ~ Success</returns>
+        /// <returns>HttpStatus 400 ~ Bad request</returns>
         [HttpPost("servicedesk/{moniker}")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]

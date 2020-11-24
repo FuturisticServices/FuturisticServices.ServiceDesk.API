@@ -33,14 +33,16 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Establishes a new tenant in the FuturisticServices.ServiceDesk --> Tenants container.
+        /// Retrieves all items associated to the specified group from the [FuturisticServices.ServiceDesk] database 'LookupItems' container.
         /// </summary>
-        /// <param name="groupName">The 'systemGroup' value related to a group of items.</param>
-        /// <returns></returns>
+        /// <param name="groupName">The name of group to retrieve.</param>
+        /// <returns>401 ~ Not authorized or invalid JWT token.</returns>
+        /// <returns>200 ~ OK</returns>
+        /// <returns>400 ~ Bad request</returns>
         [HttpGet]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(string groupName)
         {
