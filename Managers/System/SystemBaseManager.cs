@@ -20,6 +20,18 @@ namespace FuturisticServices.ServiceDesk.API.Managers
         public CosmosClient _dbClient;
         public Container _container;
 
+        public SystemBaseManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        {
+            SetConnectionParameters(configuration, webHostEnvironment);
+
+            if (!string.IsNullOrEmpty(_uri) && !string.IsNullOrEmpty(_primaryKey))
+            {
+
+                CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
+                _dbClient = clientBuilder.WithConnectionModeDirect().Build();
+            }
+        }
+
         public SystemBaseManager(string containerName, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             SetConnectionParameters(configuration, webHostEnvironment);

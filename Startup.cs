@@ -33,7 +33,7 @@ namespace FuturisticServices.ServiceDesk.API
             var configurationBuilder = new ConfigurationBuilder()
             .SetBasePath(webHostEnvironment.ContentRootPath + @"\ConfigurationFiles")
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile("reset-system.json", optional: true)
+            .AddJsonFile("system.json", optional: true)
             .AddJsonFile("tenants.json", optional: true)
             .AddEnvironmentVariables();
 
@@ -171,6 +171,9 @@ namespace FuturisticServices.ServiceDesk.API
 
             //  Cosmos DB managers.
             services.AddSingleton<ICosmosDbManager, CosmosDbManager>();
+
+            //  Security services.
+            services.AddSingleton<IHashingService, HashingService>();
 
             //  System services.
             services.AddSingleton<ISystemService, SystemService>();
