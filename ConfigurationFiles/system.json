@@ -1,0 +1,665 @@
+{
+  "system": {
+    "reset": {
+      "containers": {
+        "create": [
+          {
+            "name": "LookupItems",
+            "partitionKey": "name",
+            "groups": [
+              {
+                "id": "7b8c8afe-e071-41b4-a12b-d538f2d8b31f",
+                "name": "Address Types",
+                "label": "Address types",
+                "items": [
+                  {
+                    "id": "5d807feb-8a68-416d-94c2-f7489cba8121",
+                    "name": "Corporate"
+                  },
+                  {
+                    "id": "fffbd205-2158-42f6-9ea9-273b5bd31483",
+                    "name": "Work"
+                  },
+                  {
+                    "id": "d43c599b-9ccb-454b-9d37-13d6eafb2fbc",
+                    "name": "Home"
+                  },
+                  {
+                    "id": "8208da3a-8e62-4365-8b19-06a51e174402",
+                    "name": "Billing"
+                  }
+                ]
+              },
+              {
+                "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
+                "name": "Phone Number Types",
+                "label": "Phone number types",
+                "items": [
+                  {
+                    "id": "9eb023b0-f9c2-4ea5-9d2b-46d9e75494d1",
+                    "name": "Corporate"
+                  },
+                  {
+                    "id": "651a3423-b544-4bf7-b134-f02337fba463",
+                    "name": "Personal"
+                  },
+                  {
+                    "id": "706ec856-1a32-4ec3-970b-ad67c6485d68",
+                    "name": "Work"
+                  },
+                  {
+                    "id": "dcccd5ea-151c-4c49-9b6b-cb10958bb400",
+                    "name": "Home"
+                  }
+                ]
+              },
+              {
+                "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
+                "name": "Countries",
+                "label": "Countries",
+                "items": [
+                  {
+                    "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e",
+                    "name": "United States of America",
+                    "abbreviation": "USA"
+                  },
+                  {
+                    "id": "b596e7a7-ebb0-4339-bf64-d2dc1c6efaa9",
+                    "name": "Canada",
+                    "abbreviation": "CA"
+                  },
+                  {
+                    "id": "ddd0652a-8a6c-4993-b212-b05d5068303c",
+                    "name": "Mexico",
+                    "abbreviation": "MX"
+                  }
+                ]
+              },
+              {
+                "id": "fb3369c9-3e67-46ea-823b-2b73d07dcf52",
+                "name": "Email Address Types",
+                "label": "Website types",
+                "items": [
+                  {
+                    "id": "f013121f-5daa-48b8-8e3d-eabd7166b82c",
+                    "name": "Corporate"
+                  },
+                  {
+                    "id": "0ac86685-2074-4294-8659-a3766e40b79b",
+                    "name": "Personal"
+                  },
+                  {
+                    "id": "36e8cc77-805b-4214-a53d-fdb4be9aa75c",
+                    "name": "Work"
+                  },
+                  {
+                    "id": "432468f0-2776-45cb-a7f6-75464f150509",
+                    "name": "Home"
+                  }
+                ]
+              },
+              {
+                "id": "7b630eb4-7cbb-417b-8749-96667eb3aa7c",
+                "name": "Website Types",
+                "label": "Website types",
+                "items": [
+                  {
+                    "id": "f2cfdb8c-05b5-42d0-bb45-041086f85570",
+                    "name": "Corporate"
+                  },
+                  {
+                    "id": "c5471e8a-5abf-405c-baea-cb7a2dac9ead",
+                    "name": "Personal"
+                  },
+                  {
+                    "id": "3e2491b2-0cf1-4702-92a6-d383c17b3407",
+                    "name": "Work"
+                  },
+                  {
+                    "id": "c0a8db25-22b9-4404-a4bd-6f2610997b46",
+                    "name": "Home"
+                  }
+                ]
+              },
+              {
+                "id": "97106d33-68c4-48b0-b39c-21eaf84f29e6",
+                "name": "States",
+                "label": "States",
+                "items": [
+                  {
+                    "id": "5c891d37-339e-4011-ac3c-e81f2b15a0c6",
+                    "name": "Alabama",
+                    "abbreviation": "AL"
+                  },
+                  {
+                    "id": "c8d501fc-15fa-4864-acff-547f4f87a72e",
+                    "name": "Alaska",
+                    "abbreviation": "AK"
+                  },
+                  {
+                    "id": "c6ad7ec9-2ef7-40fc-81e7-867a4fed000c",
+                    "name": "American Samoa",
+                    "abbreviation": "AS"
+                  },
+                  {
+                    "id": "441968c5-cce6-4121-ab3e-49b72ce823e9",
+                    "name": "Arizona",
+                    "abbreviation": "AZ"
+                  },
+                  {
+                    "id": "d1d1c732-710e-4a3a-9996-3f18cb3af9bb",
+                    "name": "Arkansas",
+                    "abbreviation": "AR"
+                  },
+                  {
+                    "id": "549aad95-c5a8-4e8f-8c18-b8084656f270",
+                    "name": "California",
+                    "abbreviation": "CA"
+                  },
+                  {
+                    "id": "6ad7993c-3b96-48ea-8bea-a4a9a7923576",
+                    "name": "Colorado",
+                    "abbreviation": "CO"
+                  },
+                  {
+                    "id": "f59083b0-6ec4-4834-976f-43220cd0828a",
+                    "name": "Connecticut",
+                    "abbreviation": "CT"
+                  },
+                  {
+                    "id": "668037dd-f856-4f03-9038-16c1ef17ff69",
+                    "name": "Delaware",
+                    "abbreviation": "DE"
+                  },
+                  {
+                    "id": "ca50baf8-375f-46ae-bc60-2344dcd811ae",
+                    "name": "District Of Columbia",
+                    "abbreviation": "DC"
+                  },
+                  {
+                    "id": "ac4ba69a-7f08-40e9-a389-44080751ba2f",
+                    "name": "Federated States Of Micronesia",
+                    "abbreviation": "FM"
+                  },
+                  {
+                    "id": "3328a75c-9764-4c2b-aaac-d93b0a15bce0",
+                    "name": "Florida",
+                    "abbreviation": "FL"
+                  },
+                  {
+                    "id": "f39a7c98-97e8-4ba9-98f7-28c9e08b80c9",
+                    "name": "Georgia",
+                    "abbreviation": "GA"
+                  },
+                  {
+                    "id": "835c36f5-cc40-4ccf-b2ed-e3c170aa5a87",
+                    "name": "Guam",
+                    "abbreviation": "GU"
+                  },
+                  {
+                    "id": "e5c0a2e1-02ee-4fad-8c4b-36b9e5896ee3",
+                    "name": "Hawaii",
+                    "abbreviation": "HI"
+                  },
+                  {
+                    "id": "2d333a41-b91e-4533-8a96-a41cab7ecc52",
+                    "name": "Idaho",
+                    "abbreviation": "ID"
+                  },
+                  {
+                    "id": "dedc2864-625e-4ba4-a926-c207858ded05",
+                    "name": "Illinois",
+                    "abbreviation": "IL"
+                  },
+                  {
+                    "id": "af80d62d-3fd8-43e5-968e-509d97108f50",
+                    "name": "Indiana",
+                    "abbreviation": "IN"
+                  },
+                  {
+                    "id": "5b7841aa-ef3b-481f-ad92-3a6f18c162f2",
+                    "name": "Iowa",
+                    "abbreviation": "IA"
+                  },
+                  {
+                    "id": "3ae0579f-8eb8-41fa-bd72-150d1065c94d",
+                    "name": "Kansas",
+                    "abbreviation": "KS"
+                  },
+                  {
+                    "id": "2aca1123-f66d-44c0-a1ab-519bd6f472e1",
+                    "name": "Kentucky",
+                    "abbreviation": "KY"
+                  },
+                  {
+                    "id": "c1a91ef9-c044-4691-b056-e8381b743fa2",
+                    "name": "Louisiana",
+                    "abbreviation": "LA"
+                  },
+                  {
+                    "id": "ec1582ba-e8fa-439d-814a-f92fd22a227a",
+                    "name": "Maine",
+                    "abbreviation": "ME"
+                  },
+                  {
+                    "id": "3ba8f86e-2c76-4ee0-a08d-94988fa0905e",
+                    "name": "Marshall Islands",
+                    "abbreviation": "MH"
+                  },
+                  {
+                    "id": "c5119fbf-4e29-4c5b-b92b-a0836becf476",
+                    "name": "Maryland",
+                    "abbreviation": "MD"
+                  },
+                  {
+                    "id": "433316f7-0ca5-4f79-b967-7e11d7c534b9",
+                    "name": "Massachusetts",
+                    "abbreviation": "MA"
+                  },
+                  {
+                    "id": "c69fe8db-a4c3-49e0-8635-0b93751f430b",
+                    "name": "Michigan",
+                    "abbreviation": "MI"
+                  },
+                  {
+                    "id": "14b3e82b-d152-42fb-a422-6cb3e120df6b",
+                    "name": "Minnesota",
+                    "abbreviation": "MN"
+                  },
+                  {
+                    "id": "d7168560-4e5c-40bc-9444-4ecf0502340d",
+                    "name": "Mississippi",
+                    "abbreviation": "MS"
+                  },
+                  {
+                    "id": "99fe3e00-ddab-4674-8dea-aaaf6640aed8",
+                    "name": "Missouri",
+                    "abbreviation": "MO"
+                  },
+                  {
+                    "id": "11262e95-ed9a-4bcb-96bf-383cfb5674d1",
+                    "name": "Montana",
+                    "abbreviation": "MT"
+                  },
+                  {
+                    "id": "b1abf49f-d3d0-4a05-87cf-2fac270763e3",
+                    "name": "Nebraska",
+                    "abbreviation": "NE"
+                  },
+                  {
+                    "id": "329dedfa-1d68-486c-8ff3-72f08f407220",
+                    "name": "Nevada",
+                    "abbreviation": "NV"
+                  },
+                  {
+                    "id": "e4cd0eec-9909-467c-a0dd-96eae5ccb962",
+                    "name": "New Hampshire",
+                    "abbreviation": "NH"
+                  },
+                  {
+                    "id": "9739c674-f52a-4ed8-b869-315614a9f6d9",
+                    "name": "New Jersey",
+                    "abbreviation": "NJ"
+                  },
+                  {
+                    "id": "55776f26-a195-4f2a-9631-894b730fd635",
+                    "name": "New Mexico",
+                    "abbreviation": "NM"
+                  },
+                  {
+                    "id": "48723b86-bad4-4d02-a93f-048888c9137a",
+                    "name": "New York",
+                    "abbreviation": "NY"
+                  },
+                  {
+                    "id": "e95ae1a0-0726-4b63-92c2-e26b040a1215",
+                    "name": "North Carolina",
+                    "abbreviation": "NC"
+                  },
+                  {
+                    "id": "759e1ccb-a789-48c8-95f3-91afbfca9e12",
+                    "name": "North Dakota",
+                    "abbreviation": "ND"
+                  },
+                  {
+                    "id": "62dacdad-50f9-48cf-a981-715d63e54222",
+                    "name": "Northern Mariana Islands",
+                    "abbreviation": "MP"
+                  },
+                  {
+                    "id": "e15c6172-77de-41d3-b981-70fe3e521cf1",
+                    "name": "Ohio",
+                    "abbreviation": "OH"
+                  },
+                  {
+                    "id": "f2412397-f5f7-4a94-aa49-1f245470348f",
+                    "name": "Oklahoma",
+                    "abbreviation": "OK"
+                  },
+                  {
+                    "id": "4534bff7-6b26-46ac-b353-d024a1a4b854",
+                    "name": "Oregon",
+                    "abbreviation": "OR"
+                  },
+                  {
+                    "id": "e66c4bac-d8ef-4f18-bf26-b2f6fe678586",
+                    "name": "Palau",
+                    "abbreviation": "PW"
+                  },
+                  {
+                    "id": "d2b22c38-1919-44bf-9a79-3e3143400987",
+                    "name": "Pennsylvania",
+                    "abbreviation": "PA"
+                  },
+                  {
+                    "id": "c6dcf186-6f2f-4345-9d4e-572e526bf4e9",
+                    "name": "Puerto Rico",
+                    "abbreviation": "PR"
+                  },
+                  {
+                    "id": "1f2039ef-bd01-4413-b9cd-bc0d7f8b4dca",
+                    "name": "Rhode Island",
+                    "abbreviation": "RI"
+                  },
+                  {
+                    "id": "ab7b476e-fa90-40dc-9a24-477ec02a5609",
+                    "name": "South Carolina",
+                    "abbreviation": "SC"
+                  },
+                  {
+                    "id": "e3808a35-56b1-4b62-bb10-661325a1d5aa",
+                    "name": "South Dakota",
+                    "abbreviation": "SD"
+                  },
+                  {
+                    "id": "487a79fb-f3c8-4e2b-a07c-cb21b2ad6be9",
+                    "name": "Tennessee",
+                    "abbreviation": "TN"
+                  },
+                  {
+                    "id": "396b0d70-92ec-49a1-bc1a-3c6370fe8095",
+                    "name": "Texas",
+                    "abbreviation": "TX"
+                  },
+                  {
+                    "id": "7a05fb0f-4126-4e70-bdb4-12031eab3679",
+                    "name": "Utah",
+                    "abbreviation": "UT"
+                  },
+                  {
+                    "id": "efb4248e-ea43-40f6-8e1f-e13bd592795f",
+                    "name": "Vermont",
+                    "abbreviation": "VT"
+                  },
+                  {
+                    "id": "8953ac14-834e-44de-a764-a04235ca305a",
+                    "name": "Virgin Islands",
+                    "abbreviation": "VI"
+                  },
+                  {
+                    "id": "6301b9e8-8eb4-4521-9454-9e9db74f5642",
+                    "name": "Virginia",
+                    "abbreviation": "VA"
+                  },
+                  {
+                    "id": "74baf071-b562-4489-adc0-9c23bd0d32a6",
+                    "name": "Washington",
+                    "abbreviation": "WA"
+                  },
+                  {
+                    "id": "d2edc7be-b2f0-4dae-85a4-3701bbdb3e72",
+                    "name": "West Virginia",
+                    "abbreviation": "WV"
+                  },
+                  {
+                    "id": "bffdd063-b18a-4bfc-8280-6e287924c360",
+                    "name": "Wisconsin",
+                    "abbreviation": "WI"
+                  },
+                  {
+                    "id": "c358ccaa-ad23-429e-ae89-081863cfb1d6",
+                    "name": "Wyoming",
+                    "abbreviation": "WY"
+                  }
+                ]
+              },
+              {
+                "id": "2610f1bd-d698-4742-a748-eb0fc4a0b868",
+                "name": "Departments",
+                "label": "Departments",
+                "items": [
+                  {
+                    "id": "884e771d-327e-49a6-a567-ddadac1b8761",
+                    "name": "Accounting",
+                    "abbreviation": "ACCT",
+                    "items": [
+                      {
+                        "id": "545605e2-3510-411f-9322-d2c3d8e24bae",
+                        "name": "Accounts Receivable",
+                        "abbreviation": "ACCT-AR"
+                      },
+                      {
+                        "id": "faa49b4d-246f-4b26-beec-aead2912b1e9",
+                        "name": "Accounts Payable",
+                        "abbreviation": "ACCT-AP"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "cbc96690-3e1a-4c36-be7c-8c9656e7802a",
+                    "name": "Information Technology",
+                    "abbreviation": "IT",
+                    "items": [
+                      {
+                        "id": "eed5beea-5062-4f7a-9dbd-2e4572c6d110",
+                        "name": "Interface Development",
+                        "abbreviation": "IT-WD",
+                        "items": [
+                          {
+                            "id": "1d0d5ca5-73de-44e2-8d21-24485fd5688e",
+                            "name": "Mobile Device Development",
+                            "abbreviation": "IT-WD-MDD"
+                          },
+                          {
+                            "id": "0efa68dc-d4ea-494a-ab9c-55e80ef2473f",
+                            "name": "Web Browser Development",
+                            "abbreviation": "IT-WD-WBD"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "b18d945e-1588-44bd-8754-9de1f098ca3a",
+                        "name": "API Development",
+                        "abbreviation": "IT-API"
+                      },
+                      {
+                        "id": "9dcbde50-4d59-415c-88c9-c9cb1e3e4d24",
+                        "name": "Database Development",
+                        "abbreviation": "IT-DB"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "b29bf150-df46-4ded-86a6-2c51e0912d8f",
+                    "name": "Operations",
+                    "abbreviation": "OPS",
+                    "items": [
+                      {
+                        "id": "8e1861fc-c408-4802-9955-f191884b573f",
+                        "name": "Human Resources",
+                        "abbreviation": "OPS-HR"
+                      },
+                      {
+                        "id": "9c29b2ff-fa23-4b0c-9454-c704f9478d92",
+                        "name": "Janatorial",
+                        "abbreviation": "OPS-JAN"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "24f1c565-c184-4cdb-8698-6493bc2ea089",
+                "name": "Database Platforms",
+                "label": "Database platforms",
+                "items": [
+                  {
+                    "id": "c74b3920-f1ab-4c23-b2cd-808775b25d21",
+                    "name": "Azure Cosmos DB"
+                  },
+                  {
+                    "id": "78f9813d-8548-4482-959f-116a9900ba3d",
+                    "name": "AWS Dynamo DB"
+                  }
+                ]
+              },
+              {
+                "id": "9261271b-e63c-4ee7-97cf-fef2cf73dba4",
+                "name": "Subscription Renewal Timeframes",
+                "label": "Subscription renewal timeframes",
+                "items": [
+                  {
+                    "name": "Monthly",
+                    "abbreviation": null,
+                    "items": null,
+                    "id": "62e18556-c8a8-4483-b122-306adacb4f13"
+                  },
+                  {
+                    "name": "Yearly",
+                    "abbreviation": null,
+                    "items": null,
+                    "id": "74fe7a37-545b-401f-9b70-eb4e665f05ce"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Subscriptions",
+            "partitionKey": "partitionKey",
+            "subscriptions": [
+              {
+                "id": "06f6f8a2-3438-482b-b435-633bdeaff620",
+                "partitionKey": "Monthly Recurring",
+                "name": "Monthly",
+                "description": "Use for as long as you need it.",
+                "price": 10000,
+                "isExpired": false,
+                "renewalOccurence": 1,
+                "renewalTimeframe": {
+                  "id": "62e18556-c8a8-4483-b122-306adacb4f13"
+                },
+                "highlights": [
+                  "Easy setup",
+                  "Powerful automation",
+                  "Multi-channel support",
+                  "Extensive mobile capabilities",
+                  "Dedicated concierge",
+                  "24/7 support"
+                ]
+              },
+              {
+                "id": "cc3d07b6-51e7-4b02-bbc2-c26d8a8f6d18",
+                "partitionKey": "PC-5z9qqktstj",
+                "name": "PC-5z9qqktstj",
+                "description": "Our cheapest solution.",
+                "price": 10000,
+                "promotionCode": "5z9qqktstj",
+                "isExpired": false,
+                "renewalOccurence": 1,
+                "renewalTimeframe": {
+                  "id": "74fe7a37-545b-401f-9b70-eb4e665f05ce"
+                },
+                "highlights": [
+                  "Easy setup",
+                  "Powerful automation",
+                  "Multi-channel support",
+                  "Extensive mobile capabilities",
+                  "Dedicated concierge",
+                  "24/7 support"
+                ]
+              },
+              {
+                "id": "a3077fd5-8b87-4bc7-9f88-575092549963",
+                "partitionKey": "Free Trial (30 Days)",
+                "name": "Free Trial (30 Days)",
+                "description": "No credit card or payment required. No strings attached.",
+                "price": 0,
+                "isExpired": false,
+                "renewalOccurence": 0,
+                "renewalTimeframe": null,
+                "highlights": [
+                  "Easy setup",
+                  "Powerful automation",
+                  "Multi-channel support",
+                  "Extensive mobile capabilities",
+                  "Dedicated concierge",
+                  "24/7 support"
+                ]
+              },
+              {
+                "id": "600d25a3-5703-4cee-9a94-fdd6a1649c8a",
+                "partitionKey": "Yearly Recurring",
+                "name": "Yearly",
+                "description": "Our cheapest solution.",
+                "price": 10000,
+                "isExpired": false,
+                "renewalOccurence": 1,
+                "renewalTimeframe": {
+                  "id": "74fe7a37-545b-401f-9b70-eb4e665f05ce"
+                },
+                "highlights": [
+                  "Easy setup",
+                  "Powerful automation",
+                  "Multi-channel support",
+                  "Extensive mobile capabilities",
+                  "Dedicated concierge",
+                  "24/7 support"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Users",
+            "partitionKey": "nameLast",
+            "users": [
+              {
+                "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
+                "employeeId": "0",
+                "nameFirst": "System",
+                "nameLast": "Admin",
+                "username": "system.admin",
+                "password": "password",
+                "displayName": "System Admin",
+                "mustChangePasswordAtNextLogin": false,
+                "enabled": true,
+                "emailAddresses": [
+                  {
+                    "id": "ea768bca-7d22-4a21-9753-4770eea4f3e9",
+                    "type": {
+                      "name": "work"
+                    },
+                    "address": "system.admin@futuristic.services"
+                  }
+                ],
+                "phoneNumbers": [
+                  {
+                    "id": "eed6e23c-178c-4ea1-9866-b3b9e4f51537",
+                    "type": {
+                      "name": "work"
+                    },
+                    "number": "1112223333"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Tenants",
+            "partitionKey": "company/name"
+          }
+        ]
+      }
+    }
+  }
+}

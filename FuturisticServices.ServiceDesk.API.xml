@@ -29,6 +29,13 @@
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Controllers.SystemUserController.Reset(System.String)">
+            <summary>
+            Deletes and creates the [futuristic.services] system database. 
+            ** USE WITH CAUTION **
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:FuturisticServices.ServiceDesk.API.Controllers.TenantRegistrationController.#ctor(FuturisticServices.ServiceDesk.API.Services.ISystemTenantService,FuturisticServices.ServiceDesk.API.Services.ISystemTenantRegistrationService,FuturisticServices.ServiceDesk.API.Services.ISystemLookupItemService,FuturisticServices.ServiceDesk.API.Services.ISystemSubscriptionService,AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Manages all endpoints for the registration process.
@@ -440,6 +447,82 @@
             Name of the subscription.
             </summary>
         </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.EmployeeID">
+            <summary>
+            Suffix of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.NamePrefix">
+            <summary>
+            Suffix of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.NameFirst">
+            <summary>
+            First name of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.NameLast">
+            <summary>
+            Last name of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.NameSuffix">
+            <summary>
+            Suffix of the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.Username">
+            <summary>
+            Unique user identifier used for authentication.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.Password">
+            <summary>
+            Hashed password used for authentication.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.DisplayName">
+            <summary>
+            Unique identifier used when displaying the 'user' within the interface.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.ProfileImageUrl">
+            <summary>
+            URL of the user's profile image.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.MustChangePasswordAtNextLogin">
+            <summary>
+            Admin setting used to force the user to change their password.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.PasswordExpirationDateTime">
+            <summary>
+            Admin setting used to force the user to change their password.
+            If value is null, the password does NOT expire.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.Enabled">
+            <summary>
+            Controls whether this user can attempt to login.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.EmailAddresses">
+            <summary>
+            Email addresses associated to the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.PhoneNumbers">
+            <summary>
+            Phone numbers associated to the user.
+            </summary>
+        </member>
+        <member name="P:FuturisticServices.ServiceDesk.API.Entities.SystemUser.Groups">
+            <summary>
+            Group(s) the user is associated with.
+            </summary>
+        </member>
         <member name="P:FuturisticServices.ServiceDesk.API.Entities.Tenant.Moniker">
             <summary>
             Tenant unique identifiers used when invoking APIs.
@@ -811,6 +894,70 @@
             <summary>
             List if groups the user is assigned/associated to/with.
             </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Services.ISystemService">
+            <summary>
+            Endpoint interfaces to control/manage the [FuturisticServices.ServiceDesk] database.
+            </summary>
+        </member>
+        <member name="T:FuturisticServices.ServiceDesk.API.Services.SystemService">
+            <summary>
+            Endpoints to control/manage the [FuturisticServices.ServiceDesk] database.
+            </summary>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.SystemService.#ctor(FuturisticServices.ServiceDesk.API.Services.IHashingService,FuturisticServices.ServiceDesk.API.Managers.ICosmosDbManager,FuturisticServices.ServiceDesk.API.Managers.ISystemManager,FuturisticServices.ServiceDesk.API.Managers.ISystemLookupGroupManager,FuturisticServices.ServiceDesk.API.Managers.ISystemLookupItemManager,FuturisticServices.ServiceDesk.API.Managers.ISystemSubscriptionManager,FuturisticServices.ServiceDesk.API.Managers.ISystemUserManager,FuturisticServices.ServiceDesk.API.Managers.ISystemTenantManager,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Constructor w/ DI for SystemService endpoints.
+            </summary>
+            <param name="hashingService">Service for security encryption/decryption.</param>
+            <param name="cosmosDbManager">Manager to Cosmos DB.</param>
+            <param name="systemManager">Manager to [FuturisticServices.ServiceDesk] database.</param>
+            <param name="systemLookupGroupManager">Manager to [FuturustucServices.ServiceDesk].[LookupItems] container from a 'group' perspective.</param>
+            <param name="systemLookupItemManager">Manager to [FuturustucServices.ServiceDesk].[LookupItems] container from a 'item' perspective.</param>
+            <param name="systemSubscriptionManager">Manager to [FuturisticServices.ServiceDesk].[Subscriptions] container.</param>
+            <param name="systemUserManager">Manager to [FuturisticServices.ServiceDesk].[Users] container.</param>
+            <param name="systemTenantManager">Manager to [FuturisticServices.ServiceDesk].[Tenants] container.</param>
+            <param name="configuration">Manager to file-based, in-memory and environment variables.</param>
+            <param name="webHostEnvironment">Manager to the web hosting environment the application is running in.</param>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.SystemService.Reset">
+            <summary>
+            Resets the [FuturisticServices.ServiceDesk] database by -
+                1.  If it exists, deletes the [FuturisticServices.ServiceDesk] database
+                2.  Creates the [FuturisticServices.ServiceDesk] database
+                3.  Creates the required containers
+                4.  Persists the required data to the containers
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.SystemService.createContainer(Microsoft.Azure.Cosmos.Database,FuturisticServices.ServiceDesk.API.Models.ResetContainerModel)">
+            <summary>
+            Creates a container in the [FuturisticServices.ServiceDesk] database.
+            </summary>
+            <param name="database">The [FuturisticServices.ServiceDesk] database object.</param>
+            <param name="container">The container represented as a ResetContainerModel object.</param>
+            <returns>ContainerResponse object</returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.SystemService.createContainerLookupGroups(FuturisticServices.ServiceDesk.API.Models.ResetContainerModel)">
+            <summary>
+            Creates multiple items in the [FuturisticServices.ServiceDesk].[LookupItems] container.
+            </summary>
+            <param name="container">The container represented as a ResetContainerModel object.</param>
+            <returns>ContainerResponse object</returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.SystemService.createContainerSubscriptions(FuturisticServices.ServiceDesk.API.Models.ResetContainerModel)">
+            <summary>
+            Creates multiple subscriptions in the [FuturisticServices.ServiceDesk].[Subscriptions] container.
+            </summary>
+            <param name="container">The container represented as a ResetContainerModel object.</param>
+            <returns></returns>
+        </member>
+        <member name="M:FuturisticServices.ServiceDesk.API.Services.SystemService.createContainerUsers(FuturisticServices.ServiceDesk.API.Models.ResetContainerModel)">
+            <summary>
+            Creates multiple subscriptions in the [FuturisticServices.ServiceDesk].[Users] container.
+            </summary>
+            <param name="container">The container represented as a ResetContainerModel object.</param>
+            <returns></returns>
         </member>
     </members>
 </doc>

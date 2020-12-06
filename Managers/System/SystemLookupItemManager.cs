@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
 using FuturisticServices.ServiceDesk.API.Common;
 using FuturisticServices.ServiceDesk.API.Entities;
-using Microsoft.Azure.Cosmos.Linq;
 using FuturisticServices.ServiceDesk.API.Extensions;
 
 namespace FuturisticServices.ServiceDesk.API.Managers
