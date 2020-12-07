@@ -9,6 +9,90 @@
 			"name": "System",
 			"item": [
 				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "password",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "system.admin",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:51340/api/system/user/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"system",
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Lookup Items",
+					"item": [
+						{
+							"name": "Lookup Items",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:51340/api/system/lookupitems/departments",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"system",
+										"lookupitems",
+										"departments"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "Reset",
 					"request": {
 						"method": "GET",
@@ -24,221 +108,6 @@
 								"api",
 								"system",
 								"reset"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Lookup Items",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:51340/api/system/lookupitems/departments",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"system",
-								"lookupitems",
-								"departments"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "Registration",
-			"item": [
-				{
-					"name": "api/registration/metadata",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:51340/api/registration/metadata",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"registration",
-								"metadata"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "api/registration/moniker",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:51340/api/registration/moniker/nau",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"registration",
-								"moniker",
-								"nau"
-							],
-							"query": [
-								{
-									"key": "moniker",
-									"value": "nau",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "api/registration/promotioncode",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:51340/api/registration/promotioncode/5z9qqktstj",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"registration",
-								"promotioncode",
-								"5z9qqktstj"
-							],
-							"query": [
-								{
-									"key": "promotionCode",
-									"value": "5z9qqktstj",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "api/registration/tenant",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"id\": \"ec67a2c5-6cc1-4d23-b32a-ae450dd802c4\",\r\n  \"moniker\": \"NAU\",\r\n  \"subscriptionId\": \"a3077fd5-8b87-4bc7-9f88-575092549963\",\r\n  \"company\": {\r\n    \"name\": \"Northern Arizona University\",\r\n    \"address\": {\r\n      \"line1\": \"1899 S San Francisco Street\",\r\n      \"city\": \"Flagstaff\",\r\n      \"stateId\": \"441968c5-cce6-4121-ab3e-49b72ce823e9\",\r\n      \"postalCode\": \"86011\",\r\n      \"countryId\": \"295fc3ec-f02a-4606-a3db-3dc3b0575b9e\"\r\n    },\r\n    \"phoneNumber\": {\r\n      \"number\": \"9285239011\"\r\n    },\r\n    \"website\": {\r\n      \"url\": \"nau.edu\"\r\n    }\r\n  },\r\n  \"pointOfContact\": {\r\n    \"firstName\": \"Steven\",\r\n    \"lastName\": \"Burrell\",\r\n    \"Title\": \"Chief Technology Officer\",\r\n    \"address\": {\r\n      \"line1\": \"1301 S. Knoles Drive\",\r\n      \"line2\": \"Building 54\",\r\n      \"city\": \"Flagstaff\",\r\n      \"stateId\": \"441968c5-cce6-4121-ab3e-49b72ce823e9\",\r\n      \"postalCode\": \"86011\",\r\n      \"countryId\": \"295fc3ec-f02a-4606-a3db-3dc3b0575b9e\"\r\n    },\r\n    \"phoneNumber\": {\r\n      \"number\": \"9285233335\"\r\n    },\r\n    \"emailAddress\": {\r\n      \"address\": \"ITS@nau.edu\"\r\n    }\r\n  },\r\n  \"billingInformation\": {\r\n    \"nameOnCard\": \"Steven Burrell\",\r\n    \"cardNumber\": \"1111222233334444\",\r\n    \"cardSecurityValue\": \"123\",\r\n    \"expirationMonth\": 4,\r\n    \"expirationYear\": 2020,\r\n    \"address\": {\r\n      \"line1\": \"1301 S. Knoles Drive\",\r\n      \"line2\": \"Building 54\",\r\n      \"city\": \"Flagstaff\",\r\n      \"stateId\": \"441968c5-cce6-4121-ab3e-49b72ce823e9\",\r\n      \"postalCode\": \"86011\",\r\n      \"countryId\": \"295fc3ec-f02a-4606-a3db-3dc3b0575b9e\"\r\n    }\r\n  }\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:51340/api/registration/tenant",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"registration",
-								"tenant"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "Setup",
-			"item": [
-				{
-					"name": "Tenant",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:51340/api/nau/setup/tenant",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"nau",
-								"setup",
-								"tenant"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "User",
-			"item": [
-				{
-					"name": "Authentication",
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "password",
-									"value": "password",
-									"type": "string"
-								},
-								{
-									"key": "username",
-									"value": "system.admin",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "http://localhost:51340/api/nau/user/authenticate",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"nau",
-								"user",
-								"authenticate"
 							]
 						}
 					},
@@ -340,48 +209,228 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Customer",
+			"name": "Tenant",
 			"item": [
 				{
-					"name": "All Customers",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:51340/api/customers",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"customers"
-							]
+					"name": "Setup",
+					"item": [
+						{
+							"name": "Tenant",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:51340/api/nau/setup/tenant",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"nau",
+										"setup",
+										"tenant"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				},
 				{
-					"name": "Customer",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:51340/api/customers/nau",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "51340",
-							"path": [
-								"api",
-								"customers",
-								"nau"
-							]
+					"name": "Registration",
+					"item": [
+						{
+							"name": "api/tenant/registration/metadata",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:51340/api/tenant/registration/metadata",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"tenant",
+										"registration",
+										"metadata"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/tenant/registration/moniker",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:51340/api/tenant/registration/moniker/nau",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"tenant",
+										"registration",
+										"moniker",
+										"nau"
+									],
+									"query": [
+										{
+											"key": "moniker",
+											"value": "nau",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/tenant/registration/promotioncode",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:51340/api/tenant/registration/promotioncode/5z9qqktstj",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"tenant",
+										"registration",
+										"promotioncode",
+										"5z9qqktstj"
+									],
+									"query": [
+										{
+											"key": "promotionCode",
+											"value": "5z9qqktstj",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/tenant/registration/{moniker}",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:51340/api/tenant/registration/nau",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"tenant",
+										"registration",
+										"nau"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/tenant/registration",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": \"ec67a2c5-6cc1-4d23-b32a-ae450dd802c4\",\r\n  \"moniker\": \"NAU\",\r\n  \"subscriptionId\": \"a3077fd5-8b87-4bc7-9f88-575092549963\",\r\n  \"company\": {\r\n    \"name\": \"Northern Arizona University\",\r\n    \"address\": {\r\n      \"line1\": \"1899 S San Francisco Street\",\r\n      \"city\": \"Flagstaff\",\r\n      \"stateId\": \"441968c5-cce6-4121-ab3e-49b72ce823e9\",\r\n      \"postalCode\": \"86011\",\r\n      \"countryId\": \"295fc3ec-f02a-4606-a3db-3dc3b0575b9e\"\r\n    },\r\n    \"phoneNumber\": {\r\n      \"number\": \"9285239011\"\r\n    },\r\n    \"website\": {\r\n      \"url\": \"nau.edu\"\r\n    }\r\n  },\r\n  \"pointOfContact\": {\r\n    \"firstName\": \"Steven\",\r\n    \"lastName\": \"Burrell\",\r\n    \"Title\": \"Chief Technology Officer\",\r\n    \"address\": {\r\n      \"line1\": \"1301 S. Knoles Drive\",\r\n      \"line2\": \"Building 54\",\r\n      \"city\": \"Flagstaff\",\r\n      \"stateId\": \"441968c5-cce6-4121-ab3e-49b72ce823e9\",\r\n      \"postalCode\": \"86011\",\r\n      \"countryId\": \"295fc3ec-f02a-4606-a3db-3dc3b0575b9e\"\r\n    },\r\n    \"phoneNumber\": {\r\n      \"number\": \"9285233335\"\r\n    },\r\n    \"emailAddress\": {\r\n      \"address\": \"ITS@nau.edu\"\r\n    }\r\n  },\r\n  \"billingInformation\": {\r\n    \"nameOnCard\": \"Steven Burrell\",\r\n    \"cardNumber\": \"1111222233334444\",\r\n    \"cardSecurityValue\": \"123\",\r\n    \"expirationMonth\": 4,\r\n    \"expirationYear\": 2020,\r\n    \"address\": {\r\n      \"line1\": \"1301 S. Knoles Drive\",\r\n      \"line2\": \"Building 54\",\r\n      \"city\": \"Flagstaff\",\r\n      \"stateId\": \"441968c5-cce6-4121-ab3e-49b72ce823e9\",\r\n      \"postalCode\": \"86011\",\r\n      \"countryId\": \"295fc3ec-f02a-4606-a3db-3dc3b0575b9e\"\r\n    }\r\n  }\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:51340/api/tenant/registration",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"tenant",
+										"registration"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Authenticate",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "password",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "system.admin",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:51340/api/nau/user/authenticate",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"nau",
+										"user",
+										"authenticate"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
