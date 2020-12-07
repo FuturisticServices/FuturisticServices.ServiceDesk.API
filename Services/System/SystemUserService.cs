@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
+using FuturisticServices.ServiceDesk.API.Entities;
 using FuturisticServices.ServiceDesk.API.Managers;
 
 namespace FuturisticServices.ServiceDesk.API.Services
@@ -18,8 +21,8 @@ namespace FuturisticServices.ServiceDesk.API.Services
     {
         Task<string> GetUsernameAsync(string basicAuthHeader);
         Task<string> GetPasswordAsync(string basicAuthHeader);
-        Task<bool> AuthenticateAsync(string basicAuthHeader);
-        Task<string> GenerateJwtToken(string username);
+        Task<SystemUser> AuthenticateAsync(string basicAuthHeader);
+        Task<string> GenerateJwtToken(SystemUser user);
     }
 
     public class SystemUserService : SystemBaseService, ISystemUserService
@@ -62,40 +65,51 @@ namespace FuturisticServices.ServiceDesk.API.Services
             return string.Empty;
         }
 
-        public async Task<bool> AuthenticateAsync(string basicAuthHeader)
+        public async Task<SystemUser> AuthenticateAsync(string basicAuthHeader)
         {
             if (basicAuthHeader.ToString().StartsWith("Basic"))
             {
-                var username = await GetUsernameAsync(basicAuthHeader);
-                var password = await GetPasswordAsync(basicAuthHeader);
+                var loginUsername = await GetUsernameAsync(basicAuthHeader);
+                var loginPassword = await GetPasswordAsync(basicAuthHeader);
 
-                if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+                if (!string.IsNullOrEmpty(loginUsername) && !string.IsNullOrEmpty(loginPassword))
                 {
-                    var user = await _systemUserManager.GetItemAsync(username);
+                    var user = await _systemUserManager.GetItemAsync(loginUsername);
                     if (user != null)
                     {
-                        return password == _hashingService.DecryptString(user.Password);
+                        var password = _hashingService.DecryptString(user.Password);
+                        if (loginPassword == password) return user;
                     }
                 }
             }
 
-            return false;
+            return null;
         }
         #endregion Public methods
 
         #region Private methods
-        public async Task<string> GenerateJwtToken(string username)
+        public async Task<string> GenerateJwtToken(SystemUser user)
         {
             string jwtSecretKey = _configuration.GetSection("keys:jwtSecretKey").Value;
 
-            var claimsData = new[] { new Claim(ClaimTypes.Name, username) };
+            var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                };
+
+            foreach (string role in user.Roles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
+            
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
             var jwtSecurityToken = new JwtSecurityToken(
-                issuer: "futuristic.service",
-                audience: "futuristic.service",
+                issuer: "futuristic.services",
+                audience: "futuristic.services",
                 expires: DateTime.Now.AddDays(365),
-                claims: claimsData,
+                claims: authClaims,
                 signingCredentials: credentials
             );
             var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);

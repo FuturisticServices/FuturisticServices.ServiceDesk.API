@@ -118,6 +118,13 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         public List<PhoneNumber> PhoneNumbers { get; set; }
 
         /// <summary>
+        /// Role(s) the user is authorized to perform.
+        /// </summary>
+        [JsonProperty(PropertyName = "roles", Required = Required.Default)]
+        [DisplayName("Roles")]
+        public List<string> Roles { get; set; }
+
+        /// <summary>
         /// Group(s) the user is associated with.
         /// </summary>
         [JsonProperty(PropertyName = "groups", Required = Required.Default)]

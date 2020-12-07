@@ -43,25 +43,23 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         /// ** USE WITH CAUTION **
         /// </summary>
         /// <returns></returns>
-        [HttpPost("authenticate")]
+        [HttpPost("login")]
         [AllowAnonymous]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Reset([FromHeader(Name = "Authorization")] string basicAuthHeader)
+        public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] string basicAuthHeader)
         {
             dynamic response = new ExpandoObject();
 
             try
             {
-                var authenticated = await _systemUserService.AuthenticateAsync(basicAuthHeader);
+                var user = await _systemUserService.AuthenticateAsync(basicAuthHeader);
 
-                if (authenticated)
+                if (user != null)
                 {
-                    var username = await _systemUserService.GetUsernameAsync(basicAuthHeader);
-
-                    response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("User '{0}' authenticated successfully.", username));
-                    response.token = await _systemUserService.GenerateJwtToken(username);
+                    response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("User '{0}' authenticated successfully.", user.Username));
+                    response.token = await _systemUserService.GenerateJwtToken(user);
                     return Ok(new { response });
                 }
 

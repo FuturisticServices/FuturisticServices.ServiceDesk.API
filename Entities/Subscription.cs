@@ -13,10 +13,6 @@ namespace FuturisticServices.ServiceDesk.API.Entities
 {
     public class Subscription: EntityBase
     {
-        [JsonProperty(PropertyName = "partitionKey", Required = Required.Always)]
-        [Required, MaxLength(50), DisplayName("Partition Key")]
-        public string PartitionKey { get; set; }
-
         /// <summary>
         /// Name of the subscription.
         /// </summary>

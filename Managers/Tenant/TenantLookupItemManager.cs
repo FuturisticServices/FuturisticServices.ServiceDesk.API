@@ -71,7 +71,7 @@ public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManag
         public async Task<LookupItem> GetItemAsync(string groupName, string itemName)
         {
             var query = _container.GetItemLinqQueryable<LookupGroup>(true);
-            LookupGroup lookupItems = query.Where<LookupGroup>(x => x.Name == groupName).AsEnumerable().FirstOrDefault();
+            LookupGroup lookupItems = query.Where<LookupGroup>(x => x.Group == groupName).AsEnumerable().FirstOrDefault();
             LookupItem lookupItem = lookupItems.Items.SingleOrDefault(x => x.Name == itemName);
 
             return lookupItem;
@@ -99,7 +99,7 @@ public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManag
 
         public async Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup)
         {
-            var results = await _container.CreateItemAsync<LookupGroup>(lookupGroup, new PartitionKey(lookupGroup.Name));
+            var results = await _container.CreateItemAsync<LookupGroup>(lookupGroup, new PartitionKey(lookupGroup.Group));
             return results;
         }
     }

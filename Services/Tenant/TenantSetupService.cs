@@ -92,7 +92,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
                         foreach (LookupGroup group in lookupGroups)
                         {
                             //  Skip over groups to ommit.
-                            if (lookupGroupsToOmit.Contains(group.Name)) continue;
+                            if (lookupGroupsToOmit.Contains(group.Group)) continue;
 
                             //  Overwrite existing ID with new GUID unique to tenant.
                             group.Items.ToList().ForEach(x => x.Id = Guid.NewGuid().ToString());
@@ -101,7 +101,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
                             await _tenantLookupItemService.CreateItem(group);
 
                             //  Add group response.
-                            responseContainers.Add(group.Name, new { statusCode = StatusCodes.Status201Created, statusCodeValue = HttpStatusCode.Created.GetDescription(), items = group.Items.ToList() });
+                            responseContainers.Add(group.Group, new { statusCode = StatusCodes.Status201Created, statusCodeValue = HttpStatusCode.Created.GetDescription(), items = group.Items.ToList() });
                         }
                     }
                 }
