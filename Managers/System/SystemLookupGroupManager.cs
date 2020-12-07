@@ -74,7 +74,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
         public async Task<LookupItem> GetItemAsync(string groupName, string itemName)
         {
             var query = _container.GetItemLinqQueryable<LookupGroup>(true);
-            LookupGroup lookupgroup = query.Where<LookupGroup>(x => x.Name == groupName).AsEnumerable().FirstOrDefault();
+            LookupGroup lookupgroup = query.Where<LookupGroup>(x => x.Group == groupName).AsEnumerable().FirstOrDefault();
             LookupItem lookupItem = lookupgroup.Items.SingleOrDefault(x => x.Name == itemName);
 
             return lookupItem;
@@ -102,7 +102,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
 
         public async Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup)
         {
-            var results = await _container.CreateItemAsync<LookupGroup>(lookupGroup, new PartitionKey(lookupGroup.Name));
+            var results = await _container.CreateItemAsync<LookupGroup>(lookupGroup, new PartitionKey(lookupGroup.Group));
             return results;
         }
     }

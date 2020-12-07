@@ -5,11 +5,11 @@
         "create": [
           {
             "name": "LookupItems",
-            "partitionKey": "name",
+            "partitionKey": "group",
             "groups": [
               {
                 "id": "7b8c8afe-e071-41b4-a12b-d538f2d8b31f",
-                "name": "Address Types",
+                "group": "Address Types",
                 "label": "Address types",
                 "items": [
                   {
@@ -32,7 +32,7 @@
               },
               {
                 "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
-                "name": "Phone Number Types",
+                "group": "Phone Number Types",
                 "label": "Phone number types",
                 "items": [
                   {
@@ -55,7 +55,7 @@
               },
               {
                 "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
-                "name": "Countries",
+                "group": "Countries",
                 "label": "Countries",
                 "items": [
                   {
@@ -77,8 +77,8 @@
               },
               {
                 "id": "fb3369c9-3e67-46ea-823b-2b73d07dcf52",
-                "name": "Email Address Types",
-                "label": "Website types",
+                "group": "Email Address Types",
+                "label": "Email address types",
                 "items": [
                   {
                     "id": "f013121f-5daa-48b8-8e3d-eabd7166b82c",
@@ -100,7 +100,7 @@
               },
               {
                 "id": "7b630eb4-7cbb-417b-8749-96667eb3aa7c",
-                "name": "Website Types",
+                "group": "Website Types",
                 "label": "Website types",
                 "items": [
                   {
@@ -123,7 +123,7 @@
               },
               {
                 "id": "97106d33-68c4-48b0-b39c-21eaf84f29e6",
-                "name": "States",
+                "group": "States",
                 "label": "States",
                 "items": [
                   {
@@ -425,7 +425,7 @@
               },
               {
                 "id": "2610f1bd-d698-4742-a748-eb0fc4a0b868",
-                "name": "Departments",
+                "group": "Departments",
                 "label": "Departments",
                 "items": [
                   {
@@ -500,7 +500,7 @@
               },
               {
                 "id": "24f1c565-c184-4cdb-8698-6493bc2ea089",
-                "name": "Database Platforms",
+                "group": "Database Platforms",
                 "label": "Database platforms",
                 "items": [
                   {
@@ -515,7 +515,7 @@
               },
               {
                 "id": "9261271b-e63c-4ee7-97cf-fef2cf73dba4",
-                "name": "Subscription Renewal Timeframes",
+                "group": "Subscription Renewal Timeframes",
                 "label": "Subscription renewal timeframes",
                 "items": [
                   {
@@ -536,11 +536,10 @@
           },
           {
             "name": "Subscriptions",
-            "partitionKey": "partitionKey",
+            "partitionKey": "name",
             "subscriptions": [
               {
                 "id": "06f6f8a2-3438-482b-b435-633bdeaff620",
-                "partitionKey": "Monthly Recurring",
                 "name": "Monthly",
                 "description": "Use for as long as you need it.",
                 "price": 10000,
@@ -560,7 +559,6 @@
               },
               {
                 "id": "cc3d07b6-51e7-4b02-bbc2-c26d8a8f6d18",
-                "partitionKey": "PC-5z9qqktstj",
                 "name": "PC-5z9qqktstj",
                 "description": "Our cheapest solution.",
                 "price": 10000,
@@ -581,7 +579,6 @@
               },
               {
                 "id": "a3077fd5-8b87-4bc7-9f88-575092549963",
-                "partitionKey": "Free Trial (30 Days)",
                 "name": "Free Trial (30 Days)",
                 "description": "No credit card or payment required. No strings attached.",
                 "price": 0,
@@ -599,7 +596,6 @@
               },
               {
                 "id": "600d25a3-5703-4cee-9a94-fdd6a1649c8a",
-                "partitionKey": "Yearly Recurring",
                 "name": "Yearly",
                 "description": "Our cheapest solution.",
                 "price": 10000,
@@ -650,7 +646,8 @@
                     },
                     "number": "1112223333"
                   }
-                ]
+                ],
+                "roles": ["System Admin", "DB Reset"]
               }
             ]
           },

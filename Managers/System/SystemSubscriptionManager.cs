@@ -100,7 +100,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
 
         public async Task<Subscription> CreateItemAsync(Subscription subscription)
         {
-            var results = await _container.CreateItemAsync<Subscription>(subscription, new PartitionKey(subscription.PartitionKey));
+            var results = await _container.CreateItemAsync<Subscription>(subscription, new PartitionKey(subscription.Name));
             return results;
         }
     }

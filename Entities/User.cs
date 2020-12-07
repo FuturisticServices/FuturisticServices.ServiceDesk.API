@@ -117,11 +117,8 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         [DisplayName("Phone numbers")]
         public List<PhoneNumber> PhoneNumbers { get; set; }
 
-        /// <summary>
-        /// Group(s) the user is associated with.
-        /// </summary>
-        [JsonProperty(PropertyName = "groups", Required = Required.Default)]
-        [DisplayName("Groups")]
-        public List<Group> Groups { get; set; }
+        [JsonProperty(PropertyName = "roles", Required = Required.Default)]
+        [DisplayName("Roles")]
+        public List<string> Roles { get; set; }
     }
 }

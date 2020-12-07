@@ -20,9 +20,9 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         public BillingInformation(BillingInformationModel model, List<LookupGroup> systemLookupItems)
         {
             //  Get all lookup items.
-            List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> states = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> countries = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItem> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItem> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
 
             Id = Guid.NewGuid().ToString();
             NameOnCard = model.NameOnCard;

@@ -18,8 +18,8 @@ namespace FuturisticServices.ServiceDesk.API.Managers
     {
         Task<LookupItem> GetItemAsync(string groupName, Guid id);
         Task<LookupGroup> GetItemAsync(string groupName);
-        Task<LookupItem> GetItemAsync(string groupName, string name);
         Task<IEnumerable<LookupGroup>> GetItemsAsync();
+        Task<LookupItem> GetItemAsync(string groupName, string name);
         Task<LookupItem> CreateItemAsync(LookupItem lookupItem);
     }
 
@@ -39,7 +39,7 @@ namespace FuturisticServices.ServiceDesk.API.Managers
             groupName = groupName.ToTitleCase();
 
             var query = _container.GetItemLinqQueryable<LookupGroup>();
-            var iterator = query.Where(x => x.Name == groupName).ToFeedIterator();
+            var iterator = query.Where(x => x.Group == groupName).ToFeedIterator();
             var result = await iterator.ReadNextAsync();
             return result.FirstOrDefault();
         }
@@ -62,13 +62,10 @@ namespace FuturisticServices.ServiceDesk.API.Managers
 
         public async Task<IEnumerable<LookupGroup>> GetItemsAsync()
         {
-            List<LookupGroup> result = new List<LookupGroup>();
-
             var query = _container.GetItemLinqQueryable<LookupGroup>();
             var iterator = query.ToFeedIterator();
-            FeedResponse<LookupGroup> response = await iterator.ReadNextAsync();
-            foreach (var item in response) result.Add(item);
-            return result;
+            var result = await iterator.ReadNextAsync();
+            return result.ToList();
 
             //  SQL async call.
             //QueryDefinition query = new QueryDefinition("SELECT * FROM c");

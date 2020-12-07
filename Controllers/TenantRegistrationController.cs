@@ -85,12 +85,12 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
             {
                 //  Get all lookup items.
                 List<LookupGroup> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
-                List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> phoneNumberTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> emailAddressTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.EmailAddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> websiteTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.WebsiteTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> states = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> countries = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItem> phoneNumberTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItem> emailAddressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.EmailAddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItem> websiteTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.WebsiteTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItem> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItem> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
 
                 RegistrationMetaDataModel model = new RegistrationMetaDataModel();
                 model.States = states;

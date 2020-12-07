@@ -20,11 +20,11 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         public Company(CompanyModel model, List<LookupGroup> systemLookupItems)
         {
             //  Get all lookup items.
-            List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> phoneNumberTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> websiteTypes = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.WebsiteTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> states = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> countries = systemLookupItems.Where(x => x.Name == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItem> phoneNumberTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItem> websiteTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.WebsiteTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItem> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItem> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
 
             Id = Guid.NewGuid().ToString();
             Name = model.Name;

@@ -151,7 +151,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
                 foreach (LookupGroup group in container.Groups)
                 {
                     await _systemLookupGroupManager.CreateItemAsync(group);
-                    createdGroups.Add(group.Name);
+                    createdGroups.Add(group.Group);
                 }
                 _responseContainer.items = createdGroups.ToArray();
             }

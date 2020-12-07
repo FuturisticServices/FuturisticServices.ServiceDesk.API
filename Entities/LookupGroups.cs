@@ -15,9 +15,9 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// Container parition key. *** CANNOT CHANGE VALUE (used by Cosmos DB)!!!!
         /// Group this setting is associated with.
         /// </summary>
-        [JsonProperty(PropertyName = "name")]
-        [Required, JsonRequired, MaxLength(50), DisplayName("Name")]
-        public string Name { get; set; }
+        [JsonProperty(PropertyName = "group")]
+        [Required, JsonRequired, MaxLength(50), DisplayName("Group")]
+        public string Group { get; set; }
 
         /// <summary>
         /// Friendly value to use for display.
