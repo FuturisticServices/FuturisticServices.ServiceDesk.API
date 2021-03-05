@@ -19,16 +19,12 @@
 
   <ItemGroup>
     <Compile Remove="Entities\z\**" />
-    <Compile Remove="TangledServices.Service.API\**" />
     <Compile Remove="Models\z\**" />
     <Content Remove="Entities\z\**" />
-    <Content Remove="TangledServices.Service.API\**" />
     <Content Remove="Models\z\**" />
     <EmbeddedResource Remove="Entities\z\**" />
-    <EmbeddedResource Remove="TangledServices.Service.API\**" />
     <EmbeddedResource Remove="Models\z\**" />
     <None Remove="Entities\z\**" />
-    <None Remove="TangledServices.Service.API\**" />
     <None Remove="Models\z\**" />
   </ItemGroup>
 
