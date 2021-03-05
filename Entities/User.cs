@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Spatial;
 using Newtonsoft.Json;
 
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     public class User : EntityBase
     {

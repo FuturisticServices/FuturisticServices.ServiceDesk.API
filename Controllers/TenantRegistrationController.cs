@@ -13,13 +13,13 @@ using Microsoft.Extensions.Configuration;
 
 using AutoMapper;
 
-using FuturisticServices.ServiceDesk.API.Common;
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Services;
+using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Services;
 
-namespace FuturisticServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServiceDesk.API.Controllers
 {
     [Route("api/tenant/registration")]
     [ApiVersion("1.0")]
@@ -84,13 +84,13 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
             try
             {
                 //  Get all lookup items.
-                List<LookupGroup> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
-                List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> phoneNumberTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> emailAddressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.EmailAddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> websiteTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.WebsiteTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-                List<LookupItem> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupGroupEntity> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
+                List<LookupItemEntity> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItemEntity> phoneNumberTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItemEntity> emailAddressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.EmailAddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItemEntity> websiteTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.WebsiteTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItemEntity> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+                List<LookupItemEntity> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
 
                 RegistrationMetaDataModel model = new RegistrationMetaDataModel();
                 model.States = states;
@@ -110,7 +110,7 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Validates the provided code against existing subscriptions in the [FuturisticServices.ServiceDesk] database Subscriptions container.
+        /// Validates the provided code against existing subscriptions in the [TangledServices.ServiceDesk] database Subscriptions container.
         /// Success ~ Returns associated subscription if subscription is valid.
         /// Failure ~ No subscription found associated to promotion code.
         /// </summary>
@@ -185,7 +185,7 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
 
         #region POST methods
         /// <summary>
-        /// Creates a new tenant within the [FuturisticServices.ServiceDesk] database Tenant container.
+        /// Creates a new tenant within the [TangledServices.ServiceDesk] database Tenant container.
         /// </summary>
         /// <param name="model">RegistrationModel view model.</param>
         /// <returns>HttpStatus 401 ~ Unauthorized</returns>

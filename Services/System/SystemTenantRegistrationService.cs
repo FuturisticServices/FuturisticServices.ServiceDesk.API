@@ -9,12 +9,12 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using FuturisticServices.ServiceDesk.API.Common;
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
-using FuturisticServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Models;
 
-namespace FuturisticServices.ServiceDesk.API.Services
+namespace TangledServices.ServiceDesk.API.Services
 {
     public interface ISystemTenantRegistrationService
     {
@@ -52,7 +52,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
             if (await TenantExists(model.Moniker)) throw new MonikerAlreadyExistsException(model.Moniker.ToUpper());
 
             //  Get all lookup items.
-            List<LookupGroup> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
+            List<LookupGroupEntity> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
 
             //  Get current subscription.
             Subscription currentSubscription = await _systemSubscriptionService.GetItem(model.SubscriptionId);
@@ -81,7 +81,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
             foreach (RegistrationModel registrationModel in models)
             {
                 //  Get all lookup items.
-                List<LookupGroup> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
+                List<LookupGroupEntity> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
 
                 //  Get current subscription.
                 Subscription currentSubscription = await _systemSubscriptionService.GetItem(registrationModel.SubscriptionId);

@@ -9,15 +9,15 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using FuturisticServices.ServiceDesk.API.Common;
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
-using FuturisticServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Models;
 
-namespace FuturisticServices.ServiceDesk.API.Services
+namespace TangledServices.ServiceDesk.API.Services
 {
     /// <summary>
-    /// Endpoint interfaces to control/manage the [FuturisticServices.ServiceDesk] database.
+    /// Endpoint interfaces to control/manage the [TangledServices.ServiceDesk] database.
     /// </summary>
     public interface ISystemService
     {
@@ -25,7 +25,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
     }
 
     /// <summary>
-    /// Endpoints to control/manage the [FuturisticServices.ServiceDesk] database.
+    /// Endpoints to control/manage the [TangledServices.ServiceDesk] database.
     /// </summary>
     public class SystemService : SystemBaseService, ISystemService
     {
@@ -37,7 +37,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
         private readonly IHashingService _hashingService;
         private readonly ICosmosDbManager _cosmosDbManager;
         private readonly ISystemManager _systemManager;
-        private readonly ISystemLookupGroupManager _systemLookupGroupManager;
+        private readonly ISystemLookupItemManager _systemLookupItemManager;
         private readonly ISystemLookupItemManager _systemLookupItemsManager;
         private readonly ISystemSubscriptionManager _systemSubscriptionsManager;
         private readonly ISystemUserManager _systemUsersManager;
@@ -50,20 +50,18 @@ namespace FuturisticServices.ServiceDesk.API.Services
         /// </summary>
         /// <param name="hashingService">Service for security encryption/decryption.</param>
         /// <param name="cosmosDbManager">Manager to Cosmos DB.</param>
-        /// <param name="systemManager">Manager to [FuturisticServices.ServiceDesk] database.</param>
-        /// <param name="systemLookupGroupManager">Manager to [FuturustucServices.ServiceDesk].[LookupItems] container from a 'group' perspective.</param>
+        /// <param name="systemManager">Manager to [TangledServices.ServiceDesk] database.</param>
         /// <param name="systemLookupItemManager">Manager to [FuturustucServices.ServiceDesk].[LookupItems] container from a 'item' perspective.</param>
-        /// <param name="systemSubscriptionManager">Manager to [FuturisticServices.ServiceDesk].[Subscriptions] container.</param>
-        /// <param name="systemUserManager">Manager to [FuturisticServices.ServiceDesk].[Users] container.</param>
-        /// <param name="systemTenantManager">Manager to [FuturisticServices.ServiceDesk].[Tenants] container.</param>
+        /// <param name="systemSubscriptionManager">Manager to [TangledServices.ServiceDesk].[Subscriptions] container.</param>
+        /// <param name="systemUserManager">Manager to [TangledServices.ServiceDesk].[Users] container.</param>
+        /// <param name="systemTenantManager">Manager to [TangledServices.ServiceDesk].[Tenants] container.</param>
         /// <param name="configuration">Manager to file-based, in-memory and environment variables.</param>
         /// <param name="webHostEnvironment">Manager to the web hosting environment the application is running in.</param>
-        public SystemService(IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupGroupManager systemLookupGroupManager, ISystemLookupItemManager systemLookupItemManager, ISystemSubscriptionManager systemSubscriptionManager, ISystemUserManager systemUserManager, ISystemTenantManager systemTenantManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemService(IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupItemManager systemLookupItemManager, ISystemSubscriptionManager systemSubscriptionManager, ISystemUserManager systemUserManager, ISystemTenantManager systemTenantManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _hashingService = hashingService;
             _cosmosDbManager = cosmosDbManager;
             _systemManager = systemManager;
-            _systemLookupGroupManager = systemLookupGroupManager;
             _systemLookupItemsManager = systemLookupItemManager;
             _systemSubscriptionsManager = systemSubscriptionManager;
             _systemUsersManager = systemUserManager;
@@ -73,9 +71,9 @@ namespace FuturisticServices.ServiceDesk.API.Services
         }
 
         /// <summary>
-        /// Resets the [FuturisticServices.ServiceDesk] database by -
-        ///     1.  If it exists, deletes the [FuturisticServices.ServiceDesk] database
-        ///     2.  Creates the [FuturisticServices.ServiceDesk] database
+        /// Resets the [TangledServices.ServiceDesk] database by -
+        ///     1.  If it exists, deletes the [TangledServices.ServiceDesk] database
+        ///     2.  Creates the [TangledServices.ServiceDesk] database
         ///     3.  Creates the required containers
         ///     4.  Persists the required data to the containers
         /// </summary>
@@ -94,7 +92,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
             if (databaseResponse.StatusCode == HttpStatusCode.Created)
             {
                 //  Create containers.
-                var systemContainersToCreate = _configuration.GetSection("system:reset:containers:create").Get<List<ResetContainerModel>>();
+                var systemContainersToCreate = _configuration.GetSection("system:reset:containers").Get<List<ResetContainerModel>>();
 
                 foreach (ResetContainerModel container in systemContainersToCreate)
                 {
@@ -120,9 +118,9 @@ namespace FuturisticServices.ServiceDesk.API.Services
 
         #region Private methods
         /// <summary>
-        /// Creates a container in the [FuturisticServices.ServiceDesk] database.
+        /// Creates a container in the [TangledServices.ServiceDesk] database.
         /// </summary>
-        /// <param name="database">The [FuturisticServices.ServiceDesk] database object.</param>
+        /// <param name="database">The [TangledServices.ServiceDesk] database object.</param>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
         private async Task<ContainerResponse> createContainer(Database database, ResetContainerModel container)
@@ -137,7 +135,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
         }
 
         /// <summary>
-        /// Creates multiple items in the [FuturisticServices.ServiceDesk].[LookupItems] container.
+        /// Creates multiple items in the [TangledServices.ServiceDesk].[LookupItems] container.
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
@@ -148,9 +146,9 @@ namespace FuturisticServices.ServiceDesk.API.Services
                 _responseContainer.numberOfItemsCreated = container.Groups.Count();
 
                 List<string> createdGroups = new List<string>();
-                foreach (LookupGroup group in container.Groups)
+                foreach (LookupGroupEntity group in container.Groups)
                 {
-                    await _systemLookupGroupManager.CreateItemAsync(group);
+                    await _systemLookupItemManager.CreateItemAsync(group);
                     createdGroups.Add(group.Group);
                 }
                 _responseContainer.items = createdGroups.ToArray();
@@ -158,7 +156,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
         }
 
         /// <summary>
-        /// Creates multiple subscriptions in the [FuturisticServices.ServiceDesk].[Subscriptions] container.
+        /// Creates multiple subscriptions in the [TangledServices.ServiceDesk].[Subscriptions] container.
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
@@ -172,7 +170,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
                 foreach (Subscription subscription in container.Subscriptions)
                 {
                     //  If a renewal timeframe exists, retrieve it. Otherwise, make it null.
-                    subscription.RenewalTimeframe = subscription.RenewalTimeframe == null ? null : await _systemLookupItemsManager.GetItemAsync("Subscription Renewal Timeframes", Guid.Parse(subscription.RenewalTimeframe.Id));
+                    subscription.RenewalTimeframe = subscription.RenewalTimeframe == null ? null : await _systemLookupItemsManager.GetItemAsync("Subscription Renewal Timeframes", subscription.RenewalTimeframe.Id);
                     await _systemSubscriptionsManager.CreateItemAsync(subscription);
                     createdSubscriptions.Add(subscription.Name);
                 }
@@ -181,7 +179,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
         }
 
         /// <summary>
-        /// Creates multiple subscriptions in the [FuturisticServices.ServiceDesk].[Users] container.
+        /// Creates multiple subscriptions in the [TangledServices.ServiceDesk].[Users] container.
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
@@ -202,16 +200,16 @@ namespace FuturisticServices.ServiceDesk.API.Services
                     foreach (EmailAddress userEmailAddress in user.EmailAddresses)
                     {
                         //  Retrieve email address 'type' lookup item.
-                        LookupGroup emailAddressesGroup = await _systemLookupItemsManager.GetItemAsync(Enums.LookupGroups.EmailAddressTypes.GetDescription());
-                        LookupItem emailAddressType = emailAddressesGroup.Items.SingleOrDefault(x => x.Name == userEmailAddress.Type.Name.ToString().ToTitleCase());
+                        LookupGroupEntity emailAddressesGroup = await _systemLookupItemsManager.GetItemAsync(Enums.LookupGroups.EmailAddressTypes.GetDescription());
+                        LookupItemEntity emailAddressType = emailAddressesGroup.Items.SingleOrDefault(x => x.Name == userEmailAddress.Type.Name.ToString().ToTitleCase());
                         userEmailAddress.Type = emailAddressType;
                     }
 
                     foreach (PhoneNumber userPhoneNumber in user.PhoneNumbers)
                     {
                         //  Retrieve email address 'type' lookup item.
-                        LookupGroup phoneNumberGroup = await _systemLookupItemsManager.GetItemAsync(Enums.LookupGroups.PhoneNumberTypes.GetDescription());
-                        LookupItem phoneNumberType = phoneNumberGroup.Items.SingleOrDefault(x => x.Name == userPhoneNumber.Type.Name.ToString().ToTitleCase());
+                        LookupGroupEntity phoneNumberGroup = await _systemLookupItemsManager.GetItemAsync(Enums.LookupGroups.PhoneNumberTypes.GetDescription());
+                        LookupItemEntity phoneNumberType = phoneNumberGroup.Items.SingleOrDefault(x => x.Name == userPhoneNumber.Type.Name.ToString().ToTitleCase());
                         userPhoneNumber.Type = phoneNumberType;
                     }
 

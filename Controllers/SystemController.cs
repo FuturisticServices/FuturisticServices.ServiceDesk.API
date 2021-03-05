@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Services;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Services;
 
-namespace FuturisticServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServiceDesk.API.Controllers
 {
     [Route("api/system")]
     [ApiVersion("1.0")]
@@ -34,8 +34,7 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Deletes and creates the [futuristic.services] system database. 
-        /// ** USE WITH CAUTION **
+        /// Deletes and creates the [TangledServices.ServiceDesk] system database.  ** USE WITH CAUTION **
         /// </summary>
         /// <returns></returns>
         [HttpGet("reset")]

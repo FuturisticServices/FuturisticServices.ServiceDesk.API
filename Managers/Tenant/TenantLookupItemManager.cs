@@ -8,18 +8,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
-using FuturisticServices.ServiceDesk.API.Common;
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
 
-namespace FuturisticServices.ServiceDesk.API.Managers
+namespace TangledServices.ServiceDesk.API.Managers
 {
     public interface ITenantLookupItemManager
     {
-        Task<LookupGroup> GetItemAsync(string lookupName);
-        Task<LookupItem> GetItemAsync(string lookupName, string name);
-        Task<IEnumerable<LookupGroup>> GetItemsAsync();
-        Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup);
+        Task<LookupGroupEntity> GetItemAsync(string lookupName);
+        Task<LookupItemEntity> GetItemAsync(string lookupName, string name);
+        Task<IEnumerable<LookupGroupEntity>> GetItemsAsync();
+        Task<LookupGroupEntity> CreateItemAsync(LookupGroupEntity lookupGroup);
 
 }
 
@@ -37,7 +37,7 @@ public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManag
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<LookupGroup> GetItemAsync(string groupName)
+        public async Task<LookupGroupEntity> GetItemAsync(string groupName)
         {
             Enums.LookupGroups lookupGroup;
 
@@ -49,12 +49,12 @@ public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManag
                 QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.lookupName = @groupName")
                 .WithParameter("@groupName", groupName);
 
-                LookupGroup result = new LookupGroup();
-                using (FeedIterator<LookupGroup> feedIterator = _container.GetItemQueryIterator<LookupGroup>(query))
+                LookupGroupEntity result = new LookupGroupEntity();
+                using (FeedIterator<LookupGroupEntity> feedIterator = _container.GetItemQueryIterator<LookupGroupEntity>(query))
                 {
                     while (feedIterator.HasMoreResults)
                     {
-                        FeedResponse<LookupGroup> response = await feedIterator.ReadNextAsync();
+                        FeedResponse<LookupGroupEntity> response = await feedIterator.ReadNextAsync();
                         foreach (var item in response)
                         {
                             result = item;
@@ -68,25 +68,25 @@ public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManag
             return null;
         }
 
-        public async Task<LookupItem> GetItemAsync(string groupName, string itemName)
+        public async Task<LookupItemEntity> GetItemAsync(string groupName, string itemName)
         {
-            var query = _container.GetItemLinqQueryable<LookupGroup>(true);
-            LookupGroup lookupItems = query.Where<LookupGroup>(x => x.Group == groupName).AsEnumerable().FirstOrDefault();
-            LookupItem lookupItem = lookupItems.Items.SingleOrDefault(x => x.Name == itemName);
+            var query = _container.GetItemLinqQueryable<LookupGroupEntity>(true);
+            LookupGroupEntity lookupItems = query.Where<LookupGroupEntity>(x => x.Group == groupName).AsEnumerable().FirstOrDefault();
+            LookupItemEntity lookupItem = lookupItems.Items.SingleOrDefault(x => x.Name == itemName);
 
             return lookupItem;
         }
 
-        public async Task<IEnumerable<LookupGroup>> GetItemsAsync()
+        public async Task<IEnumerable<LookupGroupEntity>> GetItemsAsync()
         {
             QueryDefinition query = new QueryDefinition("SELECT * FROM c");
 
-            List<LookupGroup> result = new List<LookupGroup>();
-            using (FeedIterator<LookupGroup> feedIterator = _container.GetItemQueryIterator<LookupGroup>(query))
+            List<LookupGroupEntity> result = new List<LookupGroupEntity>();
+            using (FeedIterator<LookupGroupEntity> feedIterator = _container.GetItemQueryIterator<LookupGroupEntity>(query))
             {
                 while (feedIterator.HasMoreResults)
                 {
-                    FeedResponse<LookupGroup> response = await feedIterator.ReadNextAsync();
+                    FeedResponse<LookupGroupEntity> response = await feedIterator.ReadNextAsync();
                     foreach (var item in response)
                     {
                         result.Add(item);
@@ -97,9 +97,9 @@ public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManag
             return result;
         }
 
-        public async Task<LookupGroup> CreateItemAsync(LookupGroup lookupGroup)
+        public async Task<LookupGroupEntity> CreateItemAsync(LookupGroupEntity lookupGroup)
         {
-            var results = await _container.CreateItemAsync<LookupGroup>(lookupGroup, new PartitionKey(lookupGroup.Group));
+            var results = await _container.CreateItemAsync<LookupGroupEntity>(lookupGroup, new PartitionKey(lookupGroup.Group));
             return results;
         }
     }

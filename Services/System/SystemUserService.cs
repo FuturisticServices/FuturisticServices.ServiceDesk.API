@@ -12,10 +12,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
 
-namespace FuturisticServices.ServiceDesk.API.Services
+namespace TangledServices.ServiceDesk.API.Services
 {
     public interface ISystemUserService
     {
@@ -90,7 +90,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
         #region Private methods
         public async Task<string> GenerateJwtToken(SystemUser user)
         {
-            string jwtSecretKey = _configuration.GetSection("keys:jwtSecretKey").Value;
+            string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value;
 
             var authClaims = new List<Claim>
                 {
@@ -108,7 +108,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
             var jwtSecurityToken = new JwtSecurityToken(
                 issuer: "futuristic.services",
                 audience: "futuristic.services",
-                expires: DateTime.Now.AddDays(365),
+                expires: DateTime.Now.AddDays(1),
                 claims: authClaims,
                 signingCredentials: credentials
             );

@@ -6,10 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Common;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     /// <summary>
     /// A record/history of all actions performed to/on an object.
@@ -26,7 +26,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
     {
         public string UserId { get; set; }
         public DateTime DateTime { get; set; }
-        public LookupItem Action { get; set; }
+        public LookupItemEntity Action { get; set; }
         public string BeforeModification { get; set; }
         public string AfterModification { get; set; }
     }

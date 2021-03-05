@@ -11,11 +11,11 @@ using Microsoft.IdentityModel.Tokens;
 
 using AutoMapper;
 
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
 using Microsoft.AspNetCore.Http;
 
-namespace FuturisticServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServiceDesk.API.Controllers
 {
     [Route("api/{moniker}/[controller]")]
     public class UserController : Controller
@@ -58,7 +58,7 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
 
                     if (username == "system.admin" && password == "password")
                     {
-                        string jwtSecretKey = _configuration.GetSection("keys:jwtSecretKey").Value;
+                        string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value;
 
                         var claimsData = new[] { new Claim(ClaimTypes.Name, username) };
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));

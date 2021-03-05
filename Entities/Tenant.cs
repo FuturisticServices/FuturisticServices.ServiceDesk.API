@@ -5,15 +5,15 @@ using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
-using FuturisticServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Models;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     public class Tenant : EntityBase
     {
         public Tenant() { }
 
-        public Tenant(RegistrationModel model, Subscription subscription, List<LookupGroup> systemLookupItems)
+        public Tenant(RegistrationModel model, Subscription subscription, List<LookupGroupEntity> systemLookupItems)
         {
             DateTime registrationDatetime = DateTime.Now;
 

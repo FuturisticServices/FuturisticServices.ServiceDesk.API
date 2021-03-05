@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 
 using Newtonsoft.Json;
 
-using FuturisticServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Entities;
 
-namespace FuturisticServices.ServiceDesk.API.Models
+namespace TangledServices.ServiceDesk.API.Models
 {
     /// <summary>
     /// Model to register a tenant.
@@ -123,12 +123,12 @@ namespace FuturisticServices.ServiceDesk.API.Models
         /// <summary>
         /// List of states.
         /// </summary>
-        public List<LookupItem> States { get; set; }
+        public List<LookupItemEntity> States { get; set; }
 
         /// <summary>
         /// List of countries.
         /// </summary>
-        public List<LookupItem> Countries { get; set; }
+        public List<LookupItemEntity> Countries { get; set; }
 
         /// <summary>
         /// List of subscriptions.

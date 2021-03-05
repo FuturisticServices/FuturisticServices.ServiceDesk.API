@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
-using FuturisticServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Models;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     /// <summary>
     /// Physical mailing address.
@@ -14,7 +14,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
     {
         public Address() { }
 
-        public Address(AddressModel model, LookupItem addressType, LookupItem state, LookupItem country)
+        public Address(AddressModel model, LookupItemEntity addressType, LookupItemEntity state, LookupItemEntity country)
         {
             Id = Guid.NewGuid().ToString();
             Type = addressType;
@@ -31,7 +31,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type")]
         [Required, JsonRequired]
-        public LookupItem Type { get; set; }
+        public LookupItemEntity Type { get; set; }
 
         /// <summary>
         /// Line 1 associated to the address.
@@ -59,7 +59,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "state")]
         [Required, JsonRequired, DisplayName("State")]
-        public LookupItem State { get; set; }
+        public LookupItemEntity State { get; set; }
 
         /// <summary>
         /// Post/zip code associated to the address.
@@ -73,6 +73,6 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "country")]
         [Required, JsonRequired, DisplayName("Country")]
-        public LookupItem Country { get; set; }
+        public LookupItemEntity Country { get; set; }
     }
 }

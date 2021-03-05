@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FuturisticServices.ServiceDesk.API.Common
+namespace TangledServices.ServiceDesk.API.Common
 {
     [Serializable]
     public class TenantDoesNotExistException : Exception
