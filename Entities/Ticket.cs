@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using FuturisticServices.ServiceDesk.API.Extensions;
-using FuturisticServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Extensions;
+using TangledServices.ServiceDesk.API.Models;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     public class Ticket : EntityBase
     {

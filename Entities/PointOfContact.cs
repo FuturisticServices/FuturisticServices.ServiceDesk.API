@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Newtonsoft.Json;
 
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Common;
-using FuturisticServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     public class PointOfContact : EntityBase
     {
         public PointOfContact() { }
 
-        public PointOfContact(PointOfContactModel model, List<LookupGroup> systemLookupItems)
+        public PointOfContact(PointOfContactModel model, List<LookupGroupEntity> systemLookupItems)
         {
             //  Get all lookup items.
-            List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> phoneNumberTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> emailAddressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.EmailAddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItemEntity> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItemEntity> phoneNumberTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItemEntity> emailAddressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.EmailAddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItemEntity> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItemEntity> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
 
             Id = Guid.NewGuid().ToString();
             FirstName = model.FirstName;

@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace FuturisticServices.ServiceDesk.API.Services
+namespace TangledServices.ServiceDesk.API.Services
 {
     //  https://mikaelkoskinen.net/post/encrypt-decrypt-string-asp-net-core
 
@@ -30,7 +30,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
         #region Public methods
         public string EncryptString(string text)
         {
-            var keyString = _configuration.GetSection("keys:passwordHashKey").Value;
+            var keyString = _configuration.GetSection("hash:secretKey").Value;
             var key = Encoding.UTF8.GetBytes(keyString);
 
             using (var aesAlg = Aes.Create())
@@ -62,7 +62,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
 
         public string DecryptString(string cipherText)
         {
-            var keyString = _configuration.GetSection("keys:passwordHashKey").Value;
+            var keyString = _configuration.GetSection("hash:secretKey").Value;
             var fullCipher = Convert.FromBase64String(cipherText);
 
             var iv = new byte[16];

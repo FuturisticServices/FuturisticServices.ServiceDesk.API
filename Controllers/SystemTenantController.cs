@@ -8,9 +8,9 @@ using Microsoft.Extensions.Configuration;
 
 using AutoMapper;
 
-using FuturisticServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Managers;
 
-namespace FuturisticServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServiceDesk.API.Controllers
 {
     [Route("api/system/{moniker}")]
     public class SystemTenantController : Controller

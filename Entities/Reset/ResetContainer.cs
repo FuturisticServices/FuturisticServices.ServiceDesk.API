@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     public class ResetContainer
     {
@@ -32,7 +32,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
 
         [JsonProperty(PropertyName = "groups", Required = Required.Default)]
         [DisplayName("Groups")]
-        public List<LookupGroup> Groups { get; set; }
+        public List<LookupGroupEntity> Groups { get; set; }
 
         [JsonProperty(PropertyName = "subscriptions", Required = Required.Default)]
         [DisplayName("Subscriptions")]

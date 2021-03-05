@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     public class SetupContainer
     {

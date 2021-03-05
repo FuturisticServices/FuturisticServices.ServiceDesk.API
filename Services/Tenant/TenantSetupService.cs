@@ -11,13 +11,13 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using FuturisticServices.ServiceDesk.API.Common;
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Services;
+using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Services;
 
-namespace FuturisticServices.ServiceDesk.API.Services
+namespace TangledServices.ServiceDesk.API.Services
 {
     public interface ITenantSetupService {
         Task<IDictionary<string, Object>> ServiceDesk(string moniker);
@@ -88,8 +88,8 @@ namespace FuturisticServices.ServiceDesk.API.Services
                     if (container.CloneItems == true)
                     {
                         // Populate lookup items from system database.
-                        List<LookupGroup> lookupGroups = (await _systemLookupItemService.GetItems()).ToList();
-                        foreach (LookupGroup group in lookupGroups)
+                        List<LookupGroupEntity> lookupGroups = (await _systemLookupItemService.GetItems()).ToList();
+                        foreach (LookupGroupEntity group in lookupGroups)
                         {
                             //  Skip over groups to ommit.
                             if (lookupGroupsToOmit.Contains(group.Group)) continue;

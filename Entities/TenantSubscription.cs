@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     /// <summary>
     /// A subscription is the offering a tenant signs up for.

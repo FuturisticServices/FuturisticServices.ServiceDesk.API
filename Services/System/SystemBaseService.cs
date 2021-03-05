@@ -8,7 +8,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 
-namespace FuturisticServices.ServiceDesk.API.Services
+namespace TangledServices.ServiceDesk.API.Services
 {
     public class SystemBaseService
     {

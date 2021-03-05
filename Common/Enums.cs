@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuturisticServices.ServiceDesk.API.Common
+namespace TangledServices.ServiceDesk.API.Common
 {
     public static class Enums
     {

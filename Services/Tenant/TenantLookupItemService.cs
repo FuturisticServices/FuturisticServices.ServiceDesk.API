@@ -9,16 +9,16 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using FuturisticServices.ServiceDesk.API.Common;
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
-using FuturisticServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Models;
 
-namespace FuturisticServices.ServiceDesk.API.Services
+namespace TangledServices.ServiceDesk.API.Services
 {
     public interface ITenantLookupItemService
     {
-        Task<LookupGroup> CreateItem(LookupGroup lookupGroup);
+        Task<LookupGroupEntity> CreateItem(LookupGroupEntity lookupGroup);
     }
 
     public class TenantLookupItemService : TenantBaseService, ITenantLookupItemService
@@ -34,7 +34,7 @@ namespace FuturisticServices.ServiceDesk.API.Services
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<LookupGroup> CreateItem(LookupGroup lookupGroup)
+        public async Task<LookupGroupEntity> CreateItem(LookupGroupEntity lookupGroup)
         {
             var results = await _tenantLookupItemManager.CreateItemAsync(lookupGroup);
             return results;

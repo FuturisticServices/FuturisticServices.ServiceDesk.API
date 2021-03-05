@@ -15,11 +15,11 @@ using Microsoft.Extensions.Configuration;
 using AutoMapper;
 using Newtonsoft.Json;
 
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Services;
-using FuturisticServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Services;
+using TangledServices.ServiceDesk.API.Common;
 
-namespace FuturisticServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServiceDesk.API.Controllers
 {
     [Route("api/tenant/setup")]
     [ApiVersion("1.0")]
@@ -48,7 +48,7 @@ namespace FuturisticServices.ServiceDesk.API.Controllers
 
         #region Public methods
         /// <summary>
-        /// Creates a [FuturisticServices.{moniker}.ServiceDesk] database.
+        /// Creates a [TangledServices.{moniker}.ServiceDesk] database.
         /// Inside the database, creates a 'LookupItems', 'Subscriptions' and 'Users' containers.
         /// Populates each container with appropriate items.
         /// </summary>

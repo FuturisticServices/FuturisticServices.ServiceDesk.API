@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
 
-namespace FuturisticServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServiceDesk.API.Controllers
 {
     /// <summary>
     /// Performs methods for the Service Desk setup process.

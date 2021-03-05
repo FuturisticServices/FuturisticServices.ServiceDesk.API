@@ -6,10 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Common;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     /// <summary>
     /// Physical email address.
@@ -18,7 +18,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
     {
         public DatabaseConnection() { }
 
-        public DatabaseConnection(LookupItem databasePlatform, string databaseName, string uri, string primaryKey)
+        public DatabaseConnection(LookupItemEntity databasePlatform, string databaseName, string uri, string primaryKey)
         {
             Id = Guid.NewGuid().ToString();
             DatabasePlatform = databasePlatform;
@@ -32,7 +32,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "databasePlatform", Required = Required.Always)]
         [Required]
-        public LookupItem DatabasePlatform { get; set; }
+        public LookupItemEntity DatabasePlatform { get; set; }
 
         /// <summary>
         /// Database name.

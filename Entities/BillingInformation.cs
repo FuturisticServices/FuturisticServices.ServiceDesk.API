@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Common;
-using FuturisticServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     /// <summary>
     /// Contains information how the tenant will pay for registration and
@@ -17,12 +17,12 @@ namespace FuturisticServices.ServiceDesk.API.Entities
     {
         public BillingInformation() { }
 
-        public BillingInformation(BillingInformationModel model, List<LookupGroup> systemLookupItems)
+        public BillingInformation(BillingInformationModel model, List<LookupGroupEntity> systemLookupItems)
         {
             //  Get all lookup items.
-            List<LookupItem> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItem> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItemEntity> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItemEntity> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
+            List<LookupItemEntity> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
 
             Id = Guid.NewGuid().ToString();
             NameOnCard = model.NameOnCard;

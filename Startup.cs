@@ -18,10 +18,10 @@ using Microsoft.OpenApi.Models;
 
 using AutoMapper;
 
-using FuturisticServices.ServiceDesk.API.Managers;
-using FuturisticServices.ServiceDesk.API.Services;
+using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Services;
 
-namespace FuturisticServices.ServiceDesk.API
+namespace TangledServices.ServiceDesk.API
 {
     public class Startup
     {
@@ -63,7 +63,7 @@ namespace FuturisticServices.ServiceDesk.API
 
                 c.AddSecurityDefinition("BasicAuth", new OpenApiSecurityScheme
                 {
-                    Description = "Provide a username and password to invoke the \"/api/{moniker}/tenantUser/authenticate\" API",
+                    Description = "Provide a username and password to invoke the \"/api/system/user/login\" API",
                     Name = "Authenticate",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
@@ -122,13 +122,6 @@ namespace FuturisticServices.ServiceDesk.API
                 //options.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
-            //  https://medium.com/net-core-api-jwt-authentication/net-core-api-jwt-authentication-380adcbee705
-            //  https://www.youtube.com/watch?v=EYBv5EBvwXw
-            //  JWT configurations.
-            //  Configure strongly types settings object.
-            var jwtSecretKey = Configuration.GetSection("Keys:jwtSecretKey").Value;
-            var key = Encoding.ASCII.GetBytes(jwtSecretKey);
-
             //  https://wildermuth.com/2018/04/10/Using-JwtBearer-Authentication-in-an-API-only-ASP-NET-Core-Project
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(a =>
@@ -137,12 +130,14 @@ namespace FuturisticServices.ServiceDesk.API
                 a.SaveToken = true;
                 a.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ValidateLifetime = true,
                     ValidateIssuer = false,
                     ValidateAudience = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = "futuristic.services",
                     ValidAudience = "futuristic.services",
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwt:secretKey"])),
+                    ClockSkew = TimeSpan.Zero,
                 };
             });
 
@@ -156,7 +151,7 @@ namespace FuturisticServices.ServiceDesk.API
             //switch (WebHostEnvironment.IsDevelopment())
             //{
             //    case false:
-            //        profile = "FuturisticServices.ServiceDesk.CosmosDb";
+            //        profile = "TangledServices.ServiceDesk.CosmosDb";
             //        break;
             //    default:
             //        profile = "Localhost.Tenants.CosmosDb";
@@ -179,14 +174,12 @@ namespace FuturisticServices.ServiceDesk.API
             services.AddSingleton<ISystemService, SystemService>();
             services.AddSingleton<ISystemTenantService, SystemTenantService>();
             services.AddSingleton<ISystemTenantRegistrationService, SystemTenantRegistrationService>();
-            services.AddSingleton<ISystemLookupGroupService, SystemLookupGroupService>();
             services.AddSingleton<ISystemLookupItemService, SystemLookupItemService>();
             services.AddSingleton<ISystemSubscriptionService, SystemSubscriptionService>();
             services.AddSingleton<ISystemUserService, SystemUserService>();
 
             //  System managers.
             services.AddSingleton<ISystemManager, SystemManager>();
-            services.AddSingleton<ISystemLookupGroupManager, SystemLookupGroupManager>();
             services.AddSingleton<ISystemLookupItemManager, SystemLookupItemManager>();
             services.AddSingleton<ISystemSubscriptionManager, SystemSubscriptionManager>();
             services.AddSingleton<ISystemUserManager, SystemUserManager>();
@@ -240,7 +233,7 @@ namespace FuturisticServices.ServiceDesk.API
 
         #region Private Methods
         ///// <summary>
-        ///// Initializes a Cosmos DB connection to "FuturisticServices.ServiceDesk" database, "Subscriptions" container.
+        ///// Initializes a Cosmos DB connection to "TangledServices.ServiceDesk" database, "Subscriptions" container.
         ///// </summary>
         ///// <param name="configurationSection"></param>
         ///// <returns></returns>

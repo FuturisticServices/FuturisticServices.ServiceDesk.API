@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
-    public class LookupGroup: EntityBase
+    public class LookupGroupEntity: EntityBase
     {
         /// <summary>
         /// Container parition key. *** CANNOT CHANGE VALUE (used by Cosmos DB)!!!!
@@ -31,10 +31,10 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "items", Required = Required.Default)]
         [DisplayName("Items")]
-        public IEnumerable<LookupItem> Items { get; set; }
+        public IEnumerable<LookupItemEntity> Items { get; set; }
     }
 
-    public class LookupItem : EntityBase
+    public class LookupItemEntity : EntityBase
     {
         /// <summary>
         /// System value. *** SHOULD NOT CHANGE!!!!
@@ -55,6 +55,6 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "items", Required = Required.Default)]
         [DisplayName("Items")]
-        public IEnumerable<LookupItem> Items { get; set; }
+        public IEnumerable<LookupItemEntity> Items { get; set; }
     }
 }

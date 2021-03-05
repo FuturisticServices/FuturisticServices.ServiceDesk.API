@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using FuturisticServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Entities;
 
-namespace FuturisticServices.ServiceDesk.API.Models
+namespace TangledServices.ServiceDesk.API.Models
 {
     public class UserModel : BaseModel
     {

@@ -10,10 +10,10 @@ using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.Extensions.Configuration;
 
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
 
-namespace FuturisticServices.ServiceDesk.API.Managers
+namespace TangledServices.ServiceDesk.API.Managers
 {
     public class TenantBaseManager
     {

@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     public class EntityBase
     {
         /// <summary>
         /// Unique identifier (GUID) of the entity.
         /// </summary>
-        [JsonProperty(PropertyName = "id", Required = Required.AllowNull)]
+        [JsonProperty(PropertyName = "id", Required = Required.Always)]
         public string Id { get; set; }
 
         ///// <summary>

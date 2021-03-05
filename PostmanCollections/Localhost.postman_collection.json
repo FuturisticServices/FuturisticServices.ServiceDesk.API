@@ -69,10 +69,20 @@
 						{
 							"name": "Lookup Items",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoic3lzdGVtLmFkbWluIiwianRpIjoiMDJkNDZmZGEtZWQzZC00NWM4LTkzNjctZDRkYjM0MzQxZGQyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIlN5c3RlbSBBZG1pbiIsIkRCIFJlc2V0Il0sImV4cCI6MTYwNzQ3NzU1MSwiaXNzIjoiZnV0dXJpc3RpYy5zZXJ2aWNlcyIsImF1ZCI6ImZ1dHVyaXN0aWMuc2VydmljZXMifQ.Ct37Z79Iyjj6dluG1ayC1i9danNxv5aAAB03opyuRc0",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:51340/api/system/lookupitems/departments",
+									"raw": "http://localhost:51340/api/system/lookupitems/address types",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -82,7 +92,48 @@
 										"api",
 										"system",
 										"lookupitems",
-										"departments"
+										"address types"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lookup Items",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoic3lzdGVtLmFkbWluIiwianRpIjoiMDJkNDZmZGEtZWQzZC00NWM4LTkzNjctZDRkYjM0MzQxZGQyIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIlN5c3RlbSBBZG1pbiIsIkRCIFJlc2V0Il0sImV4cCI6MTYwNzQ3NzU1MSwiaXNzIjoiZnV0dXJpc3RpYy5zZXJ2aWNlcyIsImF1ZCI6ImZ1dHVyaXN0aWMuc2VydmljZXMifQ.Ct37Z79Iyjj6dluG1ayC1i9danNxv5aAAB03opyuRc0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"name\": \"Corporate\",\r\n        \"abbreviation\": \"Corp\",\r\n        \"items\": null,\r\n        \"id\": \"5d807feb-8a68-416d-94c2-f7489cba8121\"\r\n    }\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:51340/api/system/lookupitems/address types",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "51340",
+									"path": [
+										"api",
+										"system",
+										"lookupitems",
+										"address types"
 									]
 								}
 							},

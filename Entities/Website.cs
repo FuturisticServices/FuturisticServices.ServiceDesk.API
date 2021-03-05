@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Newtonsoft.Json;
 
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Common;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     /// <summary>
     /// A website accessible from a modern web browser.
@@ -19,7 +19,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
     {
         public Website() { }
 
-        public Website(WebsiteModel model, LookupItem type)
+        public Website(WebsiteModel model, LookupItemEntity type)
         {
             Id = Guid.NewGuid().ToString();
             Type = type;
@@ -31,7 +31,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required]
-        public LookupItem Type { get; set; }
+        public LookupItemEntity Type { get; set; }
 
         /// <summary>
         /// The website URL.

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using FuturisticServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Entities;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     public class Subscription: EntityBase
     {
@@ -64,7 +64,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "renewalTimeframe", Required = Required.AllowNull)]
         [DisplayName("Renewal timeframe")]
-        public LookupItem RenewalTimeframe { get; set; }
+        public LookupItemEntity RenewalTimeframe { get; set; }
 
         /// <summary>
         /// Name of the subscription.

@@ -9,13 +9,13 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using FuturisticServices.ServiceDesk.API.Common;
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Managers;
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Services;
+using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Services;
 
-namespace FuturisticServices.ServiceDesk.API.Services
+namespace TangledServices.ServiceDesk.API.Services
 {
     public interface IzEmptyService
     {

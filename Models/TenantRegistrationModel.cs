@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using FuturisticServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Entities;
 
-namespace FuturisticServices.ServiceDesk.API.Models
+namespace TangledServices.ServiceDesk.API.Models
 {
     /// <summary>
     /// Contains information required to create/setup a tenant in the
-    /// FuturisticServices-->Tenant container.
+    /// TangledServices-->Tenant container.
     /// </summary>
     public class TenantRegistrationModel : BaseModel
     {

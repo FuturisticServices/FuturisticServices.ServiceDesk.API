@@ -15,11 +15,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-using FuturisticServices.ServiceDesk.API.Entities;
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Services;
+using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Services;
 
-namespace FuturisticServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServiceDesk.API.Controllers
 {
     [Route("api/system/user")]
     [ApiVersion("1.0")]

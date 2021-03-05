@@ -6,10 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
-using FuturisticServices.ServiceDesk.API.Models;
-using FuturisticServices.ServiceDesk.API.Common;
+using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServiceDesk.API.Common;
 
-namespace FuturisticServices.ServiceDesk.API.Entities
+namespace TangledServices.ServiceDesk.API.Entities
 {
     /// <summary>
     /// Physical email address.
@@ -18,7 +18,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
     {
         public EmailAddress() { }
 
-        public EmailAddress(EmailAddressModel model, LookupItem type)
+        public EmailAddress(EmailAddressModel model, LookupItemEntity type)
         {
             Id = Guid.NewGuid().ToString();
             Type = type;
@@ -30,7 +30,7 @@ namespace FuturisticServices.ServiceDesk.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required]
-        public LookupItem Type { get; set; }
+        public LookupItemEntity Type { get; set; }
 
         /// <summary>
         /// Physical email address.
