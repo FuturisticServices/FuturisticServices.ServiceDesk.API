@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Models;
 
-namespace TangledServices.ServiceDesk.API.Profiles
+namespace TangledServices.ServicePortal.API.Profiles
 {
     public class TenantUserProfile : Profile
     {

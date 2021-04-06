@@ -13,13 +13,13 @@ using Microsoft.Extensions.Configuration;
 
 using AutoMapper;
 
-using TangledServices.ServiceDesk.API.Common;
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Managers;
-using TangledServices.ServiceDesk.API.Models;
-using TangledServices.ServiceDesk.API.Services;
+using TangledServices.ServicePortal.API.Common;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Managers;
+using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Services;
 
-namespace TangledServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServicePortal.API.Controllers
 {
     [Route("api/tenant/registration")]
     [ApiVersion("1.0")]
@@ -110,7 +110,7 @@ namespace TangledServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Validates the provided code against existing subscriptions in the [TangledServices.ServiceDesk] database Subscriptions container.
+        /// Validates the provided code against existing subscriptions in the [TangledServices.ServicePortal] database Subscriptions container.
         /// Success ~ Returns associated subscription if subscription is valid.
         /// Failure ~ No subscription found associated to promotion code.
         /// </summary>
@@ -185,7 +185,7 @@ namespace TangledServices.ServiceDesk.API.Controllers
 
         #region POST methods
         /// <summary>
-        /// Creates a new tenant within the [TangledServices.ServiceDesk] database Tenant container.
+        /// Creates a new tenant within the [TangledServices.ServicePortal] database Tenant container.
         /// </summary>
         /// <param name="model">RegistrationModel view model.</param>
         /// <returns>HttpStatus 401 ~ Unauthorized</returns>

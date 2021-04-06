@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Newtonsoft.Json;
 
-using TangledServices.ServiceDesk.API.Models;
-using TangledServices.ServiceDesk.API.Common;
-using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Common;
+using TangledServices.ServicePortal.API.Entities;
 
-namespace TangledServices.ServiceDesk.API.Entities
+namespace TangledServices.ServicePortal.API.Entities
 {
     public class PointOfContact : EntityBase
     {

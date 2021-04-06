@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace TangledServices.ServiceDesk.API.Services
+namespace TangledServices.ServicePortal.API.Services
 {
     //  https://mikaelkoskinen.net/post/encrypt-decrypt-string-asp-net-core
 

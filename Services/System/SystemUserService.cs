@@ -12,10 +12,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Managers;
 
-namespace TangledServices.ServiceDesk.API.Services
+namespace TangledServices.ServicePortal.API.Services
 {
     public interface ISystemUserService
     {

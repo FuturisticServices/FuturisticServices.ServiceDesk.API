@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
-using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServicePortal.API.Models;
 
-namespace TangledServices.ServiceDesk.API.Entities
+namespace TangledServices.ServicePortal.API.Entities
 {
     /// <summary>
     /// Physical mailing address.

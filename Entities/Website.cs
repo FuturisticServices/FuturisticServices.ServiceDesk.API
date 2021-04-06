@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Newtonsoft.Json;
 
-using TangledServices.ServiceDesk.API.Models;
-using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Common;
 
-namespace TangledServices.ServiceDesk.API.Entities
+namespace TangledServices.ServicePortal.API.Entities
 {
     /// <summary>
     /// A website accessible from a modern web browser.

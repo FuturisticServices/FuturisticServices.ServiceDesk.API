@@ -9,13 +9,13 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServiceDesk.API.Common;
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Managers;
-using TangledServices.ServiceDesk.API.Models;
-using TangledServices.ServiceDesk.API.Services;
+using TangledServices.ServicePortal.API.Common;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Managers;
+using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Services;
 
-namespace TangledServices.ServiceDesk.API.Services
+namespace TangledServices.ServicePortal.API.Services
 {
     public interface ICosmosDbService {
         Task<DatabaseResponse> CreateDatabase(Tenant tenant);

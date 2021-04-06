@@ -8,7 +8,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 
-namespace TangledServices.ServiceDesk.API.Managers
+namespace TangledServices.ServicePortal.API.Managers
 {
     public class CosmosDbBaseManager
     {

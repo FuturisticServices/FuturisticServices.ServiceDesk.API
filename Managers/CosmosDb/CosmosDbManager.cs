@@ -6,9 +6,9 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServicePortal.API.Entities;
 
-namespace TangledServices.ServiceDesk.API.Managers
+namespace TangledServices.ServicePortal.API.Managers
 {
     public interface ICosmosDbManager
     {

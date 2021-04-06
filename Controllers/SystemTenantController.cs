@@ -8,9 +8,9 @@ using Microsoft.Extensions.Configuration;
 
 using AutoMapper;
 
-using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServicePortal.API.Managers;
 
-namespace TangledServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServicePortal.API.Controllers
 {
     [Route("api/system/{moniker}")]
     public class SystemTenantController : Controller

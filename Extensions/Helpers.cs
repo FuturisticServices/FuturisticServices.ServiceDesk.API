@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 
-namespace TangledServices.ServiceDesk.API.Extensions
+namespace TangledServices.ServicePortal.API.Extensions
 {
     public static class Helpers
     {

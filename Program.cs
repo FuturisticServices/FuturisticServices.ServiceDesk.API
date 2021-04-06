@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace TangledServices.ServiceDesk.API
+namespace TangledServices.ServicePortal.API
 {
     public class Program
     {

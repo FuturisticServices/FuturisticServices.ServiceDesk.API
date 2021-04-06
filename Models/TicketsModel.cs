@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TangledServices.ServiceDesk.API.Models
+namespace TangledServices.ServicePortal.API.Models
 {
     public class TicketsModel
     {

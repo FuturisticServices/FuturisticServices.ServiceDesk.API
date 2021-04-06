@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServicePortal.API.Entities;
 
-namespace TangledServices.ServiceDesk.API.Models
+namespace TangledServices.ServicePortal.API.Models
 {
     /// <summary>
     /// Contains information required to create/setup a tenant in the

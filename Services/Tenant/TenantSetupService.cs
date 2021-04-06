@@ -11,16 +11,16 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServiceDesk.API.Common;
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Managers;
-using TangledServices.ServiceDesk.API.Models;
-using TangledServices.ServiceDesk.API.Services;
+using TangledServices.ServicePortal.API.Common;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Managers;
+using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Services;
 
-namespace TangledServices.ServiceDesk.API.Services
+namespace TangledServices.ServicePortal.API.Services
 {
     public interface ITenantSetupService {
-        Task<IDictionary<string, Object>> ServiceDesk(string moniker);
+        Task<IDictionary<string, Object>> ServicePortal(string moniker);
     }
 
     public class TenantSetupService : TenantBaseService, ITenantSetupService
@@ -49,7 +49,7 @@ namespace TangledServices.ServiceDesk.API.Services
         #endregion Constructors
 
         #region Public methods
-        public async Task<IDictionary<string, Object>> ServiceDesk(string moniker)
+        public async Task<IDictionary<string, Object>> ServicePortal(string moniker)
         {
             var responseContainers = new ExpandoObject() as IDictionary<string, object>;
             var responseUsers = new ExpandoObject() as IDictionary<string, object>;

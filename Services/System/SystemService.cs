@@ -9,15 +9,15 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServiceDesk.API.Common;
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Managers;
-using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServicePortal.API.Common;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Managers;
+using TangledServices.ServicePortal.API.Models;
 
-namespace TangledServices.ServiceDesk.API.Services
+namespace TangledServices.ServicePortal.API.Services
 {
     /// <summary>
-    /// Endpoint interfaces to control/manage the [TangledServices.ServiceDesk] database.
+    /// Endpoint interfaces to control/manage the [TangledServices.ServicePortal] database.
     /// </summary>
     public interface ISystemService
     {
@@ -25,20 +25,15 @@ namespace TangledServices.ServiceDesk.API.Services
     }
 
     /// <summary>
-    /// Endpoints to control/manage the [TangledServices.ServiceDesk] database.
+    /// Endpoints to control/manage the [TangledServices.ServicePortal] database.
     /// </summary>
     public class SystemService : SystemBaseService, ISystemService
     {
-        private dynamic _response = new ExpandoObject();
-        private dynamic _responseContainer = new ExpandoObject();
-        private dynamic _responseTenant = new ExpandoObject();
-        private List<dynamic> _responseContainers = new List<dynamic>();
-
         private readonly IHashingService _hashingService;
         private readonly ICosmosDbManager _cosmosDbManager;
         private readonly ISystemManager _systemManager;
         private readonly ISystemLookupItemManager _systemLookupItemManager;
-        private readonly ISystemLookupItemManager _systemLookupItemsManager;
+        //private readonly ISystemLookupItemManager _systemLookupItemsManager;
         private readonly ISystemSubscriptionManager _systemSubscriptionsManager;
         private readonly ISystemUserManager _systemUsersManager;
         private readonly ISystemTenantManager _systemTenantManager;
@@ -50,11 +45,11 @@ namespace TangledServices.ServiceDesk.API.Services
         /// </summary>
         /// <param name="hashingService">Service for security encryption/decryption.</param>
         /// <param name="cosmosDbManager">Manager to Cosmos DB.</param>
-        /// <param name="systemManager">Manager to [TangledServices.ServiceDesk] database.</param>
-        /// <param name="systemLookupItemManager">Manager to [FuturustucServices.ServiceDesk].[LookupItems] container from a 'item' perspective.</param>
-        /// <param name="systemSubscriptionManager">Manager to [TangledServices.ServiceDesk].[Subscriptions] container.</param>
-        /// <param name="systemUserManager">Manager to [TangledServices.ServiceDesk].[Users] container.</param>
-        /// <param name="systemTenantManager">Manager to [TangledServices.ServiceDesk].[Tenants] container.</param>
+        /// <param name="systemManager">Manager to [TangledServices.ServicePortal] database.</param>
+        /// <param name="systemLookupItemManager">Manager to [FuturustucServices.ServicePortal].[LookupItems] container from a 'item' perspective.</param>
+        /// <param name="systemSubscriptionManager">Manager to [TangledServices.ServicePortal].[Subscriptions] container.</param>
+        /// <param name="systemUserManager">Manager to [TangledServices.ServicePortal].[Users] container.</param>
+        /// <param name="systemTenantManager">Manager to [TangledServices.ServicePortal].[Tenants] container.</param>
         /// <param name="configuration">Manager to file-based, in-memory and environment variables.</param>
         /// <param name="webHostEnvironment">Manager to the web hosting environment the application is running in.</param>
         public SystemService(IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupItemManager systemLookupItemManager, ISystemSubscriptionManager systemSubscriptionManager, ISystemUserManager systemUserManager, ISystemTenantManager systemTenantManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
@@ -62,7 +57,7 @@ namespace TangledServices.ServiceDesk.API.Services
             _hashingService = hashingService;
             _cosmosDbManager = cosmosDbManager;
             _systemManager = systemManager;
-            _systemLookupItemsManager = systemLookupItemManager;
+            _systemLookupItemManager = systemLookupItemManager;
             _systemSubscriptionsManager = systemSubscriptionManager;
             _systemUsersManager = systemUserManager;
             _systemTenantManager = systemTenantManager;
@@ -71,9 +66,9 @@ namespace TangledServices.ServiceDesk.API.Services
         }
 
         /// <summary>
-        /// Resets the [TangledServices.ServiceDesk] database by -
-        ///     1.  If it exists, deletes the [TangledServices.ServiceDesk] database
-        ///     2.  Creates the [TangledServices.ServiceDesk] database
+        /// Resets the [TangledServices.ServicePortal] database by -
+        ///     1.  If it exists, deletes the [TangledServices.ServicePortal] database
+        ///     2.  Creates the [TangledServices.ServicePortal] database
         ///     3.  Creates the required containers
         ///     4.  Persists the required data to the containers
         /// </summary>
@@ -82,13 +77,6 @@ namespace TangledServices.ServiceDesk.API.Services
         {
             DatabaseResponse databaseResponse = await _systemManager.CreateDatabase();
 
-            //  Setup _response.
-            _response.system = new ExpandoObject();
-            _response.system.database = new ExpandoObject();
-            _response.system.database.name = databaseResponse.Resource.Id;
-            _response.system.database.statusCode = (int)databaseResponse.StatusCode;
-            _response.system.database.status = databaseResponse.StatusCode;
-
             if (databaseResponse.StatusCode == HttpStatusCode.Created)
             {
                 //  Create containers.
@@ -96,46 +84,42 @@ namespace TangledServices.ServiceDesk.API.Services
 
                 foreach (ResetContainerModel container in systemContainersToCreate)
                 {
-                    _responseContainer = new ExpandoObject();
-                    _responseContainers.Add(_responseContainer);
-
                     await createContainer(databaseResponse.Database, container);
                     await createContainerLookupGroups(container);
                     await createContainerSubscriptions(container);
                     await createContainerUsers(container);
                 }
 
-                _response.system.containers = _responseContainers;
-
-                return _response;
+                _responseSuccess.StatusCode = (int)HttpStatusCode.OK;
+                _responseSuccess.Description = "System reset sucessfull.";
+                return _responseSuccess;
             }
 
-            _response.statusCode = (int)HttpStatusCode.BadRequest;
-            _response.status = HttpStatusCode.BadRequest;
-            _response.value = "System reset not sucessfull.";
-            return _response;
+            _responseSuccess.StatusCode = (int)HttpStatusCode.BadRequest;
+            _responseSuccess.Description = "System reset NOT sucessfull.";
+            return _responseSuccess;
         }
 
         #region Private methods
         /// <summary>
-        /// Creates a container in the [TangledServices.ServiceDesk] database.
+        /// Creates a container in the [TangledServices.ServicePortal] database.
         /// </summary>
-        /// <param name="database">The [TangledServices.ServiceDesk] database object.</param>
+        /// <param name="database">The [TangledServices.ServicePortal] database object.</param>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
         private async Task<ContainerResponse> createContainer(Database database, ResetContainerModel container)
         {
             ContainerResponse containerResponse = await _systemManager.CreateContainer(database, container.Name, container.PartitionKey);
 
-            _responseContainer.name = containerResponse.Resource.Id;
-            _responseContainer.statusCode = (int)containerResponse.StatusCode;
-            _responseContainer.status = containerResponse.StatusCode;
+            //_responseContainer.name = containerResponse.Resource.Id;
+            //_responseContainer.statusCode = (int)containerResponse.StatusCode;
+            //_responseContainer.status = containerResponse.StatusCode;
 
             return containerResponse;
         }
 
         /// <summary>
-        /// Creates multiple items in the [TangledServices.ServiceDesk].[LookupItems] container.
+        /// Creates multiple items in the [TangledServices.ServicePortal].[LookupItems] container.
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
@@ -143,20 +127,17 @@ namespace TangledServices.ServiceDesk.API.Services
         {
             if (container.Groups != null)
             {
-                _responseContainer.numberOfItemsCreated = container.Groups.Count();
-
                 List<string> createdGroups = new List<string>();
                 foreach (LookupGroupEntity group in container.Groups)
                 {
                     await _systemLookupItemManager.CreateItemAsync(group);
                     createdGroups.Add(group.Group);
                 }
-                _responseContainer.items = createdGroups.ToArray();
             }
         }
 
         /// <summary>
-        /// Creates multiple subscriptions in the [TangledServices.ServiceDesk].[Subscriptions] container.
+        /// Creates multiple subscriptions in the [TangledServices.ServicePortal].[Subscriptions] container.
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
@@ -164,22 +145,22 @@ namespace TangledServices.ServiceDesk.API.Services
         {
             if (container.Subscriptions != null)
             {
-                _responseContainer.numberOfItemsCreated = container.Subscriptions.Count();
+                //_responseContainer.numberOfItemsCreated = container.Subscriptions.Count();
 
                 List<string> createdSubscriptions = new List<string>();
                 foreach (Subscription subscription in container.Subscriptions)
                 {
                     //  If a renewal timeframe exists, retrieve it. Otherwise, make it null.
-                    subscription.RenewalTimeframe = subscription.RenewalTimeframe == null ? null : await _systemLookupItemsManager.GetItemAsync("Subscription Renewal Timeframes", subscription.RenewalTimeframe.Id);
+                    subscription.RenewalTimeframe = subscription.RenewalTimeframe == null ? null : await _systemLookupItemManager.GetItemAsync("Subscription Renewal Timeframes", subscription.RenewalTimeframe.Id);
                     await _systemSubscriptionsManager.CreateItemAsync(subscription);
                     createdSubscriptions.Add(subscription.Name);
                 }
-                _responseContainer.items = createdSubscriptions;
+                //_responseContainer.items = createdSubscriptions;
             }
         }
 
         /// <summary>
-        /// Creates multiple subscriptions in the [TangledServices.ServiceDesk].[Users] container.
+        /// Creates multiple subscriptions in the [TangledServices.ServicePortal].[Users] container.
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
@@ -187,8 +168,6 @@ namespace TangledServices.ServiceDesk.API.Services
         {
             if (container.Users != null)
             {
-                _responseContainer.numberOfItemsCreated = container.Users.Count();
-
                 List<string> createdUsers = new List<string>();
                 foreach (Entities.User user in container.Users)
                 {
@@ -200,7 +179,7 @@ namespace TangledServices.ServiceDesk.API.Services
                     foreach (EmailAddress userEmailAddress in user.EmailAddresses)
                     {
                         //  Retrieve email address 'type' lookup item.
-                        LookupGroupEntity emailAddressesGroup = await _systemLookupItemsManager.GetItemAsync(Enums.LookupGroups.EmailAddressTypes.GetDescription());
+                        LookupGroupEntity emailAddressesGroup = await _systemLookupItemManager.GetItemAsync(Enums.LookupGroups.EmailAddressTypes.GetDescription());
                         LookupItemEntity emailAddressType = emailAddressesGroup.Items.SingleOrDefault(x => x.Name == userEmailAddress.Type.Name.ToString().ToTitleCase());
                         userEmailAddress.Type = emailAddressType;
                     }
@@ -208,7 +187,7 @@ namespace TangledServices.ServiceDesk.API.Services
                     foreach (PhoneNumber userPhoneNumber in user.PhoneNumbers)
                     {
                         //  Retrieve email address 'type' lookup item.
-                        LookupGroupEntity phoneNumberGroup = await _systemLookupItemsManager.GetItemAsync(Enums.LookupGroups.PhoneNumberTypes.GetDescription());
+                        LookupGroupEntity phoneNumberGroup = await _systemLookupItemManager.GetItemAsync(Enums.LookupGroups.PhoneNumberTypes.GetDescription());
                         LookupItemEntity phoneNumberType = phoneNumberGroup.Items.SingleOrDefault(x => x.Name == userPhoneNumber.Type.Name.ToString().ToTitleCase());
                         userPhoneNumber.Type = phoneNumberType;
                     }
@@ -222,7 +201,6 @@ namespace TangledServices.ServiceDesk.API.Services
                     //  Add status to _response.
                     createdUsers.Add(string.Format("{0} {1}", user.NameFirst, user.NameLast));
                 }
-                _responseContainer.items = createdUsers;
             }
         }
 

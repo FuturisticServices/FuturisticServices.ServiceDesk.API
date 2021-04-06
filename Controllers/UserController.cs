@@ -11,11 +11,11 @@ using Microsoft.IdentityModel.Tokens;
 
 using AutoMapper;
 
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Managers;
 using Microsoft.AspNetCore.Http;
 
-namespace TangledServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServicePortal.API.Controllers
 {
     [Route("api/{moniker}/[controller]")]
     public class UserController : Controller
