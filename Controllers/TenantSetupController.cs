@@ -15,11 +15,11 @@ using Microsoft.Extensions.Configuration;
 using AutoMapper;
 using Newtonsoft.Json;
 
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Services;
-using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Services;
+using TangledServices.ServicePortal.API.Common;
 
-namespace TangledServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServicePortal.API.Controllers
 {
     [Route("api/tenant/setup")]
     [ApiVersion("1.0")]
@@ -48,7 +48,7 @@ namespace TangledServices.ServiceDesk.API.Controllers
 
         #region Public methods
         /// <summary>
-        /// Creates a [TangledServices.{moniker}.ServiceDesk] database.
+        /// Creates a [TangledServices.{moniker}.ServicePortal] database.
         /// Inside the database, creates a 'LookupItems', 'Subscriptions' and 'Users' containers.
         /// Populates each container with appropriate items.
         /// </summary>
@@ -56,7 +56,7 @@ namespace TangledServices.ServiceDesk.API.Controllers
         /// <returns>HttpStatus 401 ~ Unauthorized</returns>
         /// <returns>HttpStatus 200 ~ Success</returns>
         /// <returns>HttpStatus 400 ~ Bad request</returns>
-        [HttpPost("servicedesk/{moniker}")]
+        [HttpPost("serviceportal/{moniker}")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -64,7 +64,7 @@ namespace TangledServices.ServiceDesk.API.Controllers
         {
             try
             {
-                var response = await _tenantSetupService.ServiceDesk(moniker);
+                var response = await _tenantSetupService.ServicePortal(moniker);
                 var json = JsonConvert.SerializeObject(response);
                 return Content(json, "application/json");
             }

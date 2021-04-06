@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Spatial;
 using Newtonsoft.Json;
 
-using TangledServices.ServiceDesk.API.Models;
-using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace TangledServices.ServiceDesk.API.Entities
+namespace TangledServices.ServicePortal.API.Entities
 {
     public class SystemUser : EntityBase
     {

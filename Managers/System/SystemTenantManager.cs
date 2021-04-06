@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Common;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Common;
 
-namespace TangledServices.ServiceDesk.API.Managers
+namespace TangledServices.ServicePortal.API.Managers
 {
     public interface ISystemTenantManager
     {
@@ -134,7 +134,7 @@ namespace TangledServices.ServiceDesk.API.Managers
         //{
         //    List<LookupItem> datababasePlatforms = systemLookupItems.Where(x => x.LookupName == Enums.LookupGroups.DatabasePlatforms.GetDescription().ToCamelCase()).SelectMany(x => x.Items).ToList();
         //    LookupItem lookupItemAzureCosmosDb = datababasePlatforms.SingleOrDefault(x => x.LookupName == Enums.DatabasePlatforms.azureCosmosDb.GetDescription().ToCamelCase());
-        //    string databaseName = string.Format("Futuristic.{0}.ServiceDesk", tenant.Moniker);
+        //    string databaseName = string.Format("Futuristic.{0}.ServicePortal", tenant.Moniker);
 
         //    DatabaseConnection databaseConnection = new DatabaseConnection(lookupItemAzureCosmosDb, databaseName, );
 

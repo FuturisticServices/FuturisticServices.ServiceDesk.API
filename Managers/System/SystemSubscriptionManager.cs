@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServiceDesk.API.Common;
-using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServicePortal.API.Common;
+using TangledServices.ServicePortal.API.Entities;
 
-namespace TangledServices.ServiceDesk.API.Managers
+namespace TangledServices.ServicePortal.API.Managers
 {
     public interface ISystemSubscriptionManager
     {

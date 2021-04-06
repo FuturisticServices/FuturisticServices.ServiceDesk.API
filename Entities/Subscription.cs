@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServicePortal.API.Entities;
 
-namespace TangledServices.ServiceDesk.API.Entities
+namespace TangledServices.ServicePortal.API.Entities
 {
     public class Subscription: EntityBase
     {

@@ -8,7 +8,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 
-namespace TangledServices.ServiceDesk.API.Services
+namespace TangledServices.ServicePortal.API.Services
 {
     public class TenantBaseService
     {

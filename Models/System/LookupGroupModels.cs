@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-namespace TangledServices.ServiceDesk.API.Models
+namespace TangledServices.ServicePortal.API.Models
 {
     #region HttpPost models
     public class LookupGroupPostModel

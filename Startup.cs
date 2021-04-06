@@ -18,10 +18,10 @@ using Microsoft.OpenApi.Models;
 
 using AutoMapper;
 
-using TangledServices.ServiceDesk.API.Managers;
-using TangledServices.ServiceDesk.API.Services;
+using TangledServices.ServicePortal.API.Managers;
+using TangledServices.ServicePortal.API.Services;
 
-namespace TangledServices.ServiceDesk.API
+namespace TangledServices.ServicePortal.API
 {
     public class Startup
     {
@@ -151,7 +151,7 @@ namespace TangledServices.ServiceDesk.API
             //switch (WebHostEnvironment.IsDevelopment())
             //{
             //    case false:
-            //        profile = "TangledServices.ServiceDesk.CosmosDb";
+            //        profile = "TangledServices.ServicePortal.CosmosDb";
             //        break;
             //    default:
             //        profile = "Localhost.Tenants.CosmosDb";
@@ -233,7 +233,7 @@ namespace TangledServices.ServiceDesk.API
 
         #region Private Methods
         ///// <summary>
-        ///// Initializes a Cosmos DB connection to "TangledServices.ServiceDesk" database, "Subscriptions" container.
+        ///// Initializes a Cosmos DB connection to "TangledServices.ServicePortal" database, "Subscriptions" container.
         ///// </summary>
         ///// <param name="configurationSection"></param>
         ///// <returns></returns>

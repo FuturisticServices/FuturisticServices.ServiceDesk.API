@@ -12,11 +12,11 @@ using Microsoft.Extensions.Configuration;
 
 using AutoMapper;
 
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Models;
-using TangledServices.ServiceDesk.API.Services;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Services;
 
-namespace TangledServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServicePortal.API.Controllers
 {
     [Route("api/system/lookupitems")]
     [ApiVersion("1.0")]
@@ -39,7 +39,7 @@ namespace TangledServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all items in the [LookupItems] container from the [TangledServices.ServiceDesk] database.
+        /// Retrieves all items in the [LookupItems] container from the [TangledServices.ServicePortal] database.
         /// </summary>
         /// <returns>401 ~ Not authorized or invalid JWT token.</returns>
         /// <returns>200 ~ OK</returns>
@@ -78,7 +78,7 @@ namespace TangledServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all items in the [LookupItems] container with a group = {groupName} from the [TangledServices.ServiceDesk] database.
+        /// Retrieves all items in the [LookupItems] container with a group = {groupName} from the [TangledServices.ServicePortal] database.
         /// </summary>
         /// <param name="groupName">The name of group to retrieve.</param>
         /// <returns>401 ~ Not authorized or invalid JWT token.</returns>
@@ -118,7 +118,7 @@ namespace TangledServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new item in the [LookupItems] container in the [TangledServices.ServiceDesk] database.
+        /// Creates a new item in the [LookupItems] container in the [TangledServices.ServicePortal] database.
         /// </summary>
         /// <param name="group">Object {LookupGroup} to create.</param>
         /// <returns></returns>

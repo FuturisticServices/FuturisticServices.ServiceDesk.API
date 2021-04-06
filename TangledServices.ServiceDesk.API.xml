@@ -1,26 +1,26 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>TangledServices.ServiceDesk.API</name>
+        <name>TangledServices.ServicePortal.API</name>
     </assembly>
     <members>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.SystemController.Reset">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.SystemController.Reset">
             <summary>
             Deletes and creates the [futuristic.services] system database. 
             ** USE WITH CAUTION **
             </summary>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.SystemLookupItemsController.Get(System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.SystemLookupItemsController.Get(System.String)">
             <summary>
-            Retrieves all items associated to the specified group from the [TangledServices.ServiceDesk] database 'LookupItems' container.
+            Retrieves all items associated to the specified group from the [TangledServices.ServicePortal] database 'LookupItems' container.
             </summary>
             <param name="groupName">The name of group to retrieve.</param>
             <returns>401 ~ Not authorized or invalid JWT token.</returns>
             <returns>200 ~ OK</returns>
             <returns>400 ~ Bad request</returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.SystemTenantController.Tenant(System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.SystemTenantController.Tenant(System.String)">
             <summary>
             Sets up a tenant in the [futuristic.services] database Tenant container.
             Tenant details come from the 'tenants.json' config file with matching moniker.
@@ -29,14 +29,14 @@
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.SystemUserController.Reset(System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.SystemUserController.Reset(System.String)">
             <summary>
             Deletes and creates the [futuristic.services] system database. 
             ** USE WITH CAUTION **
             </summary>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TenantRegistrationController.#ctor(TangledServices.ServiceDesk.API.Services.ISystemTenantService,TangledServices.ServiceDesk.API.Services.ISystemTenantRegistrationService,TangledServices.ServiceDesk.API.Services.ISystemLookupItemService,TangledServices.ServiceDesk.API.Services.ISystemSubscriptionService,AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantRegistrationController.#ctor(TangledServices.ServicePortal.API.Services.ISystemTenantService,TangledServices.ServicePortal.API.Services.ISystemTenantRegistrationService,TangledServices.ServicePortal.API.Services.ISystemLookupItemService,TangledServices.ServicePortal.API.Services.ISystemSubscriptionService,AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Manages all endpoints for the registration process.
             </summary>
@@ -48,7 +48,7 @@
             <param name="configuration"></param>
             <param name="webHostEnvironment"></param>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TenantRegistrationController.MetaData">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantRegistrationController.MetaData">
             <summary>
             Retrieves all data required to populate controls on the Tenant registration form (ie. states, countries, address types, etc).
             </summary>
@@ -56,9 +56,9 @@
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TenantRegistrationController.PromotionCode(System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantRegistrationController.PromotionCode(System.String)">
             <summary>
-            Validates the provided code against existing subscriptions in the [TangledServices.ServiceDesk] database Subscriptions container.
+            Validates the provided code against existing subscriptions in the [TangledServices.ServicePortal] database Subscriptions container.
             Success ~ Returns associated subscription if subscription is valid.
             Failure ~ No subscription found associated to promotion code.
             </summary>
@@ -67,7 +67,7 @@
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TenantRegistrationController.Moniker(System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantRegistrationController.Moniker(System.String)">
             <summary>
             Determines if the provided moniker is available for use.
             </summary>
@@ -76,16 +76,16 @@
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad Request</returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TenantRegistrationController.Tenant(TangledServices.ServiceDesk.API.Models.RegistrationModel)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantRegistrationController.Tenant(TangledServices.ServicePortal.API.Models.RegistrationModel)">
             <summary>
-            Creates a new tenant within the [TangledServices.ServiceDesk] database Tenant container.
+            Creates a new tenant within the [TangledServices.ServicePortal] database Tenant container.
             </summary>
             <param name="model">RegistrationModel view model.</param>
             <returns>HttpStatus 401 ~ Unauthorized</returns>
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad Request</returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TenantRegistrationController.Tenant(System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantRegistrationController.Tenant(System.String)">
             <summary>
             Registers a tenant with the matching moniker from the tenants.json file.
             </summary>
@@ -93,29 +93,29 @@
             <returns>HTTPStatus 200 OK ~ success</returns>
             <returns>HTTPStatus 400 BadRequest ~ failure</returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TenantSetupController.Setup(System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantSetupController.Setup(System.String)">
             <summary>
-            Creates a [TangledServices.{moniker}.ServiceDesk] database.
-            Inside the database, creates a 'LookupItems', 'Subscriptions' and 'Users' containers.
-            Populates each container with appropriate items.
+                Creates a [TangledServices.{moniker}.ServicePortal] database.
+                Inside the database, creates a 'LookupItems', 'Subscriptions' and 'Users' containers.
+                Populates each container with appropriate items.
             </summary>
             <param name="moniker">ID unique to each Tenant used in all API requests.</param>
             <returns>HttpStatus 401 ~ Unauthorized</returns>
             <returns>HttpStatus 200 ~ Success</returns>
             <returns>HttpStatus 400 ~ Bad request</returns>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Controllers.TokenController">
+        <member name="T:TangledServices.ServicePortal.API.Controllers.TokenController">
             <summary>
             Performs methods for the Service Desk setup process.
             </summary>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TokenController.#ctor(TangledServices.ServiceDesk.API.Managers.ISystemTenantManager)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TokenController.#ctor(TangledServices.ServicePortal.API.Managers.ISystemTenantManager)">
             <summary>
             Service Desk constructor.
             </summary>
             <param name="systemTenantService"></param>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TokenController.Validate(System.String,System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TokenController.Validate(System.String,System.String)">
             <summary>
             Determines if a setup token (GUID) is authentic and associated to the proper tenant.
             </summary>
@@ -123,7 +123,7 @@
             <param name="token">The token (GUID) to validate.</param>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.TokenController.New(System.String,System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TokenController.New(System.String,System.String)">
             <summary>
             Validates the moniker and pocEmailAddress is associated to the proper tenant.
             If valid, generates a new setup token. Token is emailed to the provided PoC email address.
@@ -133,596 +133,596 @@
             <param name="pocEmailAddress"></param>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Controllers.UserController.authenticate(System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.UserController.authenticate(System.String)">
             <summary>
             Authenicates a username/password. If successful, returns a JWT token. Otherwise, login failed.
             </summary>
             <param name="moniker">Unique tenant ID used in URL routing.</param>
             <returns></returns>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.Address">
+        <member name="T:TangledServices.ServicePortal.API.Entities.Address">
             <summary>
             Physical mailing address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Address.Type">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Address.Type">
             <summary>
             Purpose/usage of the address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Address.Line1">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Address.Line1">
             <summary>
             Line 1 associated to the address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Address.Line2">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Address.Line2">
             <summary>
             (optional) Line 2 associated to the address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Address.City">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Address.City">
             <summary>
             City associated to the address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Address.State">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Address.State">
             <summary>
             State associated to the address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Address.PostalCode">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Address.PostalCode">
             <summary>
             Post/zip code associated to the address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Address.Country">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Address.Country">
             <summary>
             Country origina associated to the address.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.BillingInformation">
+        <member name="T:TangledServices.ServicePortal.API.Entities.BillingInformation">
             <summary>
             Contains information how the tenant will pay for registration and
             subscription renewals.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.BillingInformation.NameOnCard">
+        <member name="P:TangledServices.ServicePortal.API.Entities.BillingInformation.NameOnCard">
             <summary>
             Full name as it appears on the credit card.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.BillingInformation.CardNumber">
+        <member name="P:TangledServices.ServicePortal.API.Entities.BillingInformation.CardNumber">
             <summary>
             Full credit card number.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.BillingInformation.CardSecurityValue">
+        <member name="P:TangledServices.ServicePortal.API.Entities.BillingInformation.CardSecurityValue">
             <summary>
             The credit card security value (CSV).
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.BillingInformation.ExpirationMonth">
+        <member name="P:TangledServices.ServicePortal.API.Entities.BillingInformation.ExpirationMonth">
             <summary>
             The two (2) digit credit card expiration month.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.BillingInformation.ExpirationYear">
+        <member name="P:TangledServices.ServicePortal.API.Entities.BillingInformation.ExpirationYear">
             <summary>
             The two (2) digit credit card expiration year.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.BillingInformation.Address">
+        <member name="P:TangledServices.ServicePortal.API.Entities.BillingInformation.Address">
             <summary>
             The billing address of the credit card.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.Company">
+        <member name="T:TangledServices.ServicePortal.API.Entities.Company">
             <summary>
             Information related to the legal entity of a tenant.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Company.Name">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Company.Name">
             <summary>
             Legal entity name of the tenant.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Company.Address">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Company.Address">
             <summary>
             Primary address of the tenant.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Company.PhoneNumber">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Company.PhoneNumber">
             <summary>
             Primary phone number of the tenant.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Company.Website">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Company.Website">
             <summary>
             Company public website URL.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.DatabaseConnection">
+        <member name="T:TangledServices.ServicePortal.API.Entities.DatabaseConnection">
             <summary>
             Physical email address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.DatabaseConnection.DatabasePlatform">
+        <member name="P:TangledServices.ServicePortal.API.Entities.DatabaseConnection.DatabasePlatform">
             <summary>
             Database platform.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.DatabaseConnection.DatabaseName">
+        <member name="P:TangledServices.ServicePortal.API.Entities.DatabaseConnection.DatabaseName">
             <summary>
             Database name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.DatabaseConnection.Uri">
+        <member name="P:TangledServices.ServicePortal.API.Entities.DatabaseConnection.Uri">
             <summary>
             Database name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.DatabaseConnection.PrimaryKey">
+        <member name="P:TangledServices.ServicePortal.API.Entities.DatabaseConnection.PrimaryKey">
             <summary>
             Database name.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.EmailAddress">
+        <member name="T:TangledServices.ServicePortal.API.Entities.EmailAddress">
             <summary>
             Physical email address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.EmailAddress.Type">
+        <member name="P:TangledServices.ServicePortal.API.Entities.EmailAddress.Type">
             <summary>
             Purpose/usage of the email address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.EmailAddress.Address">
+        <member name="P:TangledServices.ServicePortal.API.Entities.EmailAddress.Address">
             <summary>
             Physical email address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.EntityBase.Id">
+        <member name="P:TangledServices.ServicePortal.API.Entities.EntityBase.Id">
             <summary>
             Unique identifier (GUID) of the entity.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Group.ParentGroupId">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Group.ParentGroupId">
             <summary>
             The parent group ID this group belongs to (null ~ top level group).
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Group.Name">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Group.Name">
             <summary>
             Group(s) the user is associated with.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Group.Description">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Group.Description">
             <summary>
             A descriptoon/purpose of the group.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Group.ProfileImageUrl">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Group.ProfileImageUrl">
             <summary>
             URL of the user's profile image.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Group.ManagerUserId">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Group.ManagerUserId">
             <summary>
             The manager {User} of the group.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Group.Users">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Group.Users">
             <summary>
             The manager {User} of the group.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Group.ObjectHistory">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Group.ObjectHistory">
             <summary>
             Create/update history of this object.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.LookupGroup.Name">
+        <member name="P:TangledServices.ServicePortal.API.Entities.LookupGroup.Name">
             <summary>
             Container parition key. *** CANNOT CHANGE VALUE (used by Cosmos DB)!!!!
             Group this setting is associated with.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.LookupGroup.Label">
+        <member name="P:TangledServices.ServicePortal.API.Entities.LookupGroup.Label">
             <summary>
             Friendly value to use for display.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.LookupGroup.Items">
+        <member name="P:TangledServices.ServicePortal.API.Entities.LookupGroup.Items">
             <summary>
             List of values.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.LookupItem.Name">
+        <member name="P:TangledServices.ServicePortal.API.Entities.LookupItem.Name">
             <summary>
             System value. *** SHOULD NOT CHANGE!!!!
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.LookupItem.Abbreviation">
+        <member name="P:TangledServices.ServicePortal.API.Entities.LookupItem.Abbreviation">
             <summary>
             Value of the item.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.LookupItem.Items">
+        <member name="P:TangledServices.ServicePortal.API.Entities.LookupItem.Items">
             <summary>
             List of values.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.ObjectHistory">
+        <member name="T:TangledServices.ServicePortal.API.Entities.ObjectHistory">
             <summary>
             A record/history of all actions performed to/on an object.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.ObjectModification">
+        <member name="T:TangledServices.ServicePortal.API.Entities.ObjectModification">
             <summary>
             A specific 
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.PhoneNumber">
+        <member name="T:TangledServices.ServicePortal.API.Entities.PhoneNumber">
             <summary>
             Physical phone number.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.PhoneNumber.Type">
+        <member name="P:TangledServices.ServicePortal.API.Entities.PhoneNumber.Type">
             <summary>
             Purpose/usage of the phone number.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.PhoneNumber.Number">
+        <member name="P:TangledServices.ServicePortal.API.Entities.PhoneNumber.Number">
             <summary>
             The physical phone number.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.PointOfContact.PhoneNumber">
+        <member name="P:TangledServices.ServicePortal.API.Entities.PointOfContact.PhoneNumber">
             <summary>
             The primary phone number associated to the PoC.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.PointOfContact.EmailAddress">
+        <member name="P:TangledServices.ServicePortal.API.Entities.PointOfContact.EmailAddress">
             <summary>
             The primary email addresses associated to PoC.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.ResetContainer.Name">
+        <member name="P:TangledServices.ServicePortal.API.Entities.ResetContainer.Name">
             <summary>
             Container name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.ResetContainer.PartitionKey">
+        <member name="P:TangledServices.ServicePortal.API.Entities.ResetContainer.PartitionKey">
             <summary>
             Container name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SetupContainer.Name">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SetupContainer.Name">
             <summary>
             Container name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SetupContainer.PartitionKey">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SetupContainer.PartitionKey">
             <summary>
             Container name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SetupContainer.CloneItems">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SetupContainer.CloneItems">
             <summary>
             Whether to clone items from the system container.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Subscription.Name">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Subscription.Name">
             <summary>
             Name of the subscription.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Subscription.Description">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Subscription.Description">
             <summary>
             Name of the subscription.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Subscription.Price">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Subscription.Price">
             <summary>
             Name of the subscription.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Subscription.PromotionCode">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Subscription.PromotionCode">
             <summary>
             Name of the subscription.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Subscription.RenewalOccurrence">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Subscription.RenewalOccurrence">
             <summary>
             Name of the subscription.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Subscription.RenewalTimeframe">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Subscription.RenewalTimeframe">
             <summary>
             Name of the subscription.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Subscription.Highlights">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Subscription.Highlights">
             <summary>
             Name of the subscription.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.EmployeeID">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.EmployeeID">
             <summary>
             Suffix of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.NamePrefix">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.NamePrefix">
             <summary>
             Suffix of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.NameFirst">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.NameFirst">
             <summary>
             First name of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.NameLast">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.NameLast">
             <summary>
             Last name of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.NameSuffix">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.NameSuffix">
             <summary>
             Suffix of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.Username">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.Username">
             <summary>
             Unique user identifier used for authentication.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.Password">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.Password">
             <summary>
             Hashed password used for authentication.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.DisplayName">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.DisplayName">
             <summary>
             Unique identifier used when displaying the 'user' within the interface.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.ProfileImageUrl">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.ProfileImageUrl">
             <summary>
             URL of the user's profile image.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.MustChangePasswordAtNextLogin">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.MustChangePasswordAtNextLogin">
             <summary>
             Admin setting used to force the user to change their password.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.PasswordExpirationDateTime">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.PasswordExpirationDateTime">
             <summary>
             Admin setting used to force the user to change their password.
             If value is null, the password does NOT expire.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.Enabled">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.Enabled">
             <summary>
             Controls whether this user can attempt to login.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.EmailAddresses">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.EmailAddresses">
             <summary>
             Email addresses associated to the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.PhoneNumbers">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.PhoneNumbers">
             <summary>
             Phone numbers associated to the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.SystemUser.Groups">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.Groups">
             <summary>
             Group(s) the user is associated with.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Tenant.Moniker">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Tenant.Moniker">
             <summary>
             Tenant unique identifiers used when invoking APIs.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Tenant.SetupToken">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Tenant.SetupToken">
             <summary>
             Tenant unique GUID used to invoke the service desk setup process.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Tenant.Company">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Tenant.Company">
             <summary>
             Legal name of the tenant.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Tenant.PointOfContact">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Tenant.PointOfContact">
             <summary>
             Tenant point of contact.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Tenant.BillingInformation">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Tenant.BillingInformation">
             <summary>
             Tenant payment information for registration and subscription renewals.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Tenant.CurrentSubscription">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Tenant.CurrentSubscription">
             <summary>
             Tenant active subscription currently in use.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Tenant.Subscriptions">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Tenant.Subscriptions">
              <summary>
              All tenant subscriptions including active and expired.
              </summary>
             
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.TenantSubscription">
+        <member name="T:TangledServices.ServicePortal.API.Entities.TenantSubscription">
             <summary>
             A subscription is the offering a tenant signs up for.
             A subscription can determine the funcationality of the system.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.TenantSubscription.Subscription">
+        <member name="P:TangledServices.ServicePortal.API.Entities.TenantSubscription.Subscription">
             <summary>
             Name of the subscription.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.TenantSubscription.StartDatetime">
+        <member name="P:TangledServices.ServicePortal.API.Entities.TenantSubscription.StartDatetime">
             <summary>
             The date when the subscrition is set to expire.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.TenantSubscription.EndDatetime">
+        <member name="P:TangledServices.ServicePortal.API.Entities.TenantSubscription.EndDatetime">
             <summary>
             The date when the subscrition is set to expire.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.TenantSubscription.RenewalDate">
+        <member name="P:TangledServices.ServicePortal.API.Entities.TenantSubscription.RenewalDate">
             <summary>
             The date when the subscription is set to automatically renew
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:TangledServices.ServiceDesk.API.Entities.TenantSubscription.BillingAndPaymentTermsAgreementDate" -->
-        <member name="P:TangledServices.ServiceDesk.API.Entities.TenantSubscription.ServiceTermsAgreementDate">
+        <!-- Badly formed XML comment ignored for member "P:TangledServices.ServicePortal.API.Entities.TenantSubscription.BillingAndPaymentTermsAgreementDate" -->
+        <member name="P:TangledServices.ServicePortal.API.Entities.TenantSubscription.ServiceTermsAgreementDate">
             <summary>
             Datetime of tenant agreeing to the 'Service Terms' legal agreement
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.EmployeeID">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.EmployeeID">
             <summary>
             Suffix of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.NamePrefix">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.NamePrefix">
             <summary>
             Suffix of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.NameFirst">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.NameFirst">
             <summary>
             First name of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.NameLast">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.NameLast">
             <summary>
             Last name of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.NameSuffix">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.NameSuffix">
             <summary>
             Suffix of the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.Username">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.Username">
             <summary>
             Unique user identifier used for authentication.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.Password">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.Password">
             <summary>
             Hashed password used for authentication.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.DisplayName">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.DisplayName">
             <summary>
             Unique identifier used when displaying the 'user' within the interface.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.ProfileImageUrl">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.ProfileImageUrl">
             <summary>
             URL of the user's profile image.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.MustChangePasswordAtNextLogin">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.MustChangePasswordAtNextLogin">
             <summary>
             Admin setting used to force the user to change their password.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.PasswordExpirationDateTime">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.PasswordExpirationDateTime">
             <summary>
             Admin setting used to force the user to change their password.
             If value is null, the password does NOT expire.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.Enabled">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.Enabled">
             <summary>
             Controls whether this user can attempt to login.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.EmailAddresses">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.EmailAddresses">
             <summary>
             Email addresses associated to the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.PhoneNumbers">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.PhoneNumbers">
             <summary>
             Phone numbers associated to the user.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.User.Groups">
+        <member name="P:TangledServices.ServicePortal.API.Entities.User.Groups">
             <summary>
             Group(s) the user is associated with.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Entities.Website">
+        <member name="T:TangledServices.ServicePortal.API.Entities.Website">
             <summary>
             A website accessible from a modern web browser.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Website.Type">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Website.Type">
             <summary>
             Purpose/usage of the website.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Entities.Website.Url">
+        <member name="P:TangledServices.ServicePortal.API.Entities.Website.Url">
             <summary>
             The website URL.
             </summary>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Extensions.Helpers.ConvertToObjectWithoutPropertiesWithNullValues``1(``0)">
+        <member name="M:TangledServices.ServicePortal.API.Extensions.Helpers.ConvertToObjectWithoutPropertiesWithNullValues``1(``0)">
             <returns>A dynamic object with only the filled properties of an object</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:TangledServices.ServiceDesk.API.Extensions.Helpers.ReadAsList(Microsoft.AspNetCore.Http.IFormFile)" -->
-        <!-- Badly formed XML comment ignored for member "M:TangledServices.ServiceDesk.API.Extensions.Helpers.ReadAsStringAsync(Microsoft.AspNetCore.Http.IFormFile)" -->
-        <member name="M:TangledServices.ServiceDesk.API.Extensions.Helpers.ReadFromFileAsync(Microsoft.AspNetCore.Http.IFormFile)">
+        <!-- Badly formed XML comment ignored for member "M:TangledServices.ServicePortal.API.Extensions.Helpers.ReadAsList(Microsoft.AspNetCore.Http.IFormFile)" -->
+        <!-- Badly formed XML comment ignored for member "M:TangledServices.ServicePortal.API.Extensions.Helpers.ReadAsStringAsync(Microsoft.AspNetCore.Http.IFormFile)" -->
+        <member name="M:TangledServices.ServicePortal.API.Extensions.Helpers.ReadFromFileAsync(Microsoft.AspNetCore.Http.IFormFile)">
             <summary>
             https://stackoverflow.com/questions/40045147/how-to-read-into-memory-the-lines-of-a-text-file-from-an-iformfile-in-asp-net-co
             </summary>
             <param name="file"></param>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Managers.CosmosDbManager.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:TangledServices.ServicePortal.API.Managers.CosmosDbManager.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Constructor with DI.
             </summary>
             <param name="configuration"></param>
             <param name="webHostEnvironment"></param>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Managers.CosmosDbManager.CreateDatabaseAsync(TangledServices.ServiceDesk.API.Entities.Tenant)">
+        <member name="M:TangledServices.ServicePortal.API.Managers.CosmosDbManager.CreateDatabaseAsync(TangledServices.ServicePortal.API.Entities.Tenant)">
             <summary>
             Persists a new tenant object to the container.
             </summary>
             <param name="tenant">Tenant entity</param>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Managers.SystemTenantManager.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:TangledServices.ServicePortal.API.Managers.SystemTenantManager.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Constructor with DI.
             </summary>
             <param name="configuration"></param>
             <param name="webHostEnvironment"></param>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Managers.SystemTenantManager.CreateItemAsync(TangledServices.ServiceDesk.API.Entities.Tenant)">
+        <member name="M:TangledServices.ServicePortal.API.Managers.SystemTenantManager.CreateItemAsync(TangledServices.ServicePortal.API.Entities.Tenant)">
             <summary>
             Persists a new tenant object to the container.
             </summary>
             <param name="tenant">Tenant entity</param>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Managers.SystemTenantManager.ValidateToken(System.String,System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Managers.SystemTenantManager.ValidateToken(System.String,System.String)">
             <summary>
             Authenticates a setup token is associated to an existing tenant.
             </summary>
@@ -730,231 +730,231 @@
             <param name="setupToken">GUID representing the setup token.</param>
             <returns>True if the token is authentic. False otherwise.</returns>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Models.RegistrationModel">
+        <member name="T:TangledServices.ServicePortal.API.Models.RegistrationModel">
             <summary>
             Model to register a tenant.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.RegistrationModel.Moniker">
+        <member name="P:TangledServices.ServicePortal.API.Models.RegistrationModel.Moniker">
             <summary>
             A unique abbreviation that identifies the tenant in the system.
             Included in each and every API request to identify which
             database the system will interact with.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.RegistrationModel.SubscriptionId">
+        <member name="P:TangledServices.ServicePortal.API.Models.RegistrationModel.SubscriptionId">
             <summary>
             The selected subscription ID.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.RegistrationModel.Company">
+        <member name="P:TangledServices.ServicePortal.API.Models.RegistrationModel.Company">
             <summary>
             Contains information related to the tenant's legal business entity.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.RegistrationModel.PointOfContact">
+        <member name="P:TangledServices.ServicePortal.API.Models.RegistrationModel.PointOfContact">
             <summary>
             Contains information related to tenant's primary contact.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.RegistrationModel.BillingInformation">
+        <member name="P:TangledServices.ServicePortal.API.Models.RegistrationModel.BillingInformation">
             <summary>
             Contains information to charge the tenant for subscription feees.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.RegistrationMetaDataModel.States">
+        <member name="P:TangledServices.ServicePortal.API.Models.RegistrationMetaDataModel.States">
             <summary>
             List of states.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.RegistrationMetaDataModel.Countries">
+        <member name="P:TangledServices.ServicePortal.API.Models.RegistrationMetaDataModel.Countries">
             <summary>
             List of countries.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.RegistrationMetaDataModel.Subscriptions">
+        <member name="P:TangledServices.ServicePortal.API.Models.RegistrationMetaDataModel.Subscriptions">
             <summary>
             List of subscriptions.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.ResetContainerModel.Name">
+        <member name="P:TangledServices.ServicePortal.API.Models.ResetContainerModel.Name">
             <summary>
             Container name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.ResetContainerModel.PartitionKey">
+        <member name="P:TangledServices.ServicePortal.API.Models.ResetContainerModel.PartitionKey">
             <summary>
             Container name.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Models.TenantRegistrationModel">
+        <member name="T:TangledServices.ServicePortal.API.Models.TenantRegistrationModel">
             <summary>
             Contains information required to create/setup a tenant in the
             TangledServices-->Tenant container.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.TenantRegistrationModel.Moniker">
+        <member name="P:TangledServices.ServicePortal.API.Models.TenantRegistrationModel.Moniker">
             <summary>
             A unique abbreviation that identifies the tenant in the system.
             Included in each and every API request to identify which
             database the system will interact with.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.TenantRegistrationModel.SubscriptionId">
+        <member name="P:TangledServices.ServicePortal.API.Models.TenantRegistrationModel.SubscriptionId">
             <summary>
             The selected subscription ID.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.TenantRegistrationModel.Company">
+        <member name="P:TangledServices.ServicePortal.API.Models.TenantRegistrationModel.Company">
             <summary>
             Contains information related to the tenant's legal business entity.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.TenantRegistrationModel.PointOfContact">
+        <member name="P:TangledServices.ServicePortal.API.Models.TenantRegistrationModel.PointOfContact">
             <summary>
             Contains information related to tenant's primary contact.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.TenantRegistrationModel.BillingInformation">
+        <member name="P:TangledServices.ServicePortal.API.Models.TenantRegistrationModel.BillingInformation">
             <summary>
             Contains information to charge the tenant for subscription feees.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.EmployeeId">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.EmployeeId">
             <summary>
             Unique ID associated to a user by the tenant.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.NamePrefix">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.NamePrefix">
             <summary>
             User's name prefix.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.NameFirst">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.NameFirst">
             <summary>
             User's first name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.NameLast">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.NameLast">
             <summary>
             User's last name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.NameSuffix">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.NameSuffix">
             <summary>
             User's name suffix.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.Username">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.Username">
             <summary>
             User's login user ID.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.Password">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.Password">
             <summary>
             User's login password.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.DisplayName">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.DisplayName">
             <summary>
             User's display name as it appears in the user interfaces.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.ProfileImageUrl">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.ProfileImageUrl">
             <summary>
             URL of user's image displayed in the user interfaces.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.MustChangePasswordAtNextLogin">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.MustChangePasswordAtNextLogin">
             <summary>
             Determines if user is forced to change their password upon the next successful login.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.PasswordExpirationDateTime">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.PasswordExpirationDateTime">
             <summary>
             The date when the user is forced to the change their password upon the 1st successful login.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.Enabled">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.Enabled">
             <summary>
             Controls if the user's account is active or disabled.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.EmailAddresses">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.EmailAddresses">
             <summary>
             List of user email addresses.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.PhoneNumbers">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.PhoneNumbers">
             <summary>
             List of user phone numbers.
             </summary>
         </member>
-        <member name="P:TangledServices.ServiceDesk.API.Models.UserModel.Groups">
+        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.Groups">
             <summary>
             List if groups the user is assigned/associated to/with.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Services.ISystemService">
+        <member name="T:TangledServices.ServicePortal.API.Services.ISystemService">
             <summary>
-            Endpoint interfaces to control/manage the [TangledServices.ServiceDesk] database.
+            Endpoint interfaces to control/manage the [TangledServices.ServicePortal] database.
             </summary>
         </member>
-        <member name="T:TangledServices.ServiceDesk.API.Services.SystemService">
+        <member name="T:TangledServices.ServicePortal.API.Services.SystemService">
             <summary>
-            Endpoints to control/manage the [TangledServices.ServiceDesk] database.
+            Endpoints to control/manage the [TangledServices.ServicePortal] database.
             </summary>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Services.SystemService.#ctor(TangledServices.ServiceDesk.API.Services.IHashingService,TangledServices.ServiceDesk.API.Managers.ICosmosDbManager,TangledServices.ServiceDesk.API.Managers.ISystemManager,TangledServices.ServiceDesk.API.Managers.ISystemLookupGroupManager,TangledServices.ServiceDesk.API.Managers.ISystemLookupItemManager,TangledServices.ServiceDesk.API.Managers.ISystemSubscriptionManager,TangledServices.ServiceDesk.API.Managers.ISystemUserManager,TangledServices.ServiceDesk.API.Managers.ISystemTenantManager,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:TangledServices.ServicePortal.API.Services.SystemService.#ctor(TangledServices.ServicePortal.API.Services.IHashingService,TangledServices.ServicePortal.API.Managers.ICosmosDbManager,TangledServices.ServicePortal.API.Managers.ISystemManager,TangledServices.ServicePortal.API.Managers.ISystemLookupGroupManager,TangledServices.ServicePortal.API.Managers.ISystemLookupItemManager,TangledServices.ServicePortal.API.Managers.ISystemSubscriptionManager,TangledServices.ServicePortal.API.Managers.ISystemUserManager,TangledServices.ServicePortal.API.Managers.ISystemTenantManager,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Constructor w/ DI for SystemService endpoints.
             </summary>
             <param name="hashingService">Service for security encryption/decryption.</param>
             <param name="cosmosDbManager">Manager to Cosmos DB.</param>
-            <param name="systemManager">Manager to [TangledServices.ServiceDesk] database.</param>
-            <param name="systemLookupGroupManager">Manager to [FuturustucServices.ServiceDesk].[LookupItems] container from a 'group' perspective.</param>
-            <param name="systemLookupItemManager">Manager to [FuturustucServices.ServiceDesk].[LookupItems] container from a 'item' perspective.</param>
-            <param name="systemSubscriptionManager">Manager to [TangledServices.ServiceDesk].[Subscriptions] container.</param>
-            <param name="systemUserManager">Manager to [TangledServices.ServiceDesk].[Users] container.</param>
-            <param name="systemTenantManager">Manager to [TangledServices.ServiceDesk].[Tenants] container.</param>
+            <param name="systemManager">Manager to [TangledServices.ServicePortal] database.</param>
+            <param name="systemLookupGroupManager">Manager to [FuturustucServices.ServicePortal].[LookupItems] container from a 'group' perspective.</param>
+            <param name="systemLookupItemManager">Manager to [FuturustucServices.ServicePortal].[LookupItems] container from a 'item' perspective.</param>
+            <param name="systemSubscriptionManager">Manager to [TangledServices.ServicePortal].[Subscriptions] container.</param>
+            <param name="systemUserManager">Manager to [TangledServices.ServicePortal].[Users] container.</param>
+            <param name="systemTenantManager">Manager to [TangledServices.ServicePortal].[Tenants] container.</param>
             <param name="configuration">Manager to file-based, in-memory and environment variables.</param>
             <param name="webHostEnvironment">Manager to the web hosting environment the application is running in.</param>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Services.SystemService.Reset">
+        <member name="M:TangledServices.ServicePortal.API.Services.SystemService.Reset">
             <summary>
-            Resets the [TangledServices.ServiceDesk] database by -
-                1.  If it exists, deletes the [TangledServices.ServiceDesk] database
-                2.  Creates the [TangledServices.ServiceDesk] database
+            Resets the [TangledServices.ServicePortal] database by -
+                1.  If it exists, deletes the [TangledServices.ServicePortal] database
+                2.  Creates the [TangledServices.ServicePortal] database
                 3.  Creates the required containers
                 4.  Persists the required data to the containers
             </summary>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Services.SystemService.createContainer(Microsoft.Azure.Cosmos.Database,TangledServices.ServiceDesk.API.Models.ResetContainerModel)">
+        <member name="M:TangledServices.ServicePortal.API.Services.SystemService.createContainer(Microsoft.Azure.Cosmos.Database,TangledServices.ServicePortal.API.Models.ResetContainerModel)">
             <summary>
-            Creates a container in the [TangledServices.ServiceDesk] database.
+            Creates a container in the [TangledServices.ServicePortal] database.
             </summary>
-            <param name="database">The [TangledServices.ServiceDesk] database object.</param>
+            <param name="database">The [TangledServices.ServicePortal] database object.</param>
             <param name="container">The container represented as a ResetContainerModel object.</param>
             <returns>ContainerResponse object</returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Services.SystemService.createContainerLookupGroups(TangledServices.ServiceDesk.API.Models.ResetContainerModel)">
+        <member name="M:TangledServices.ServicePortal.API.Services.SystemService.createContainerLookupGroups(TangledServices.ServicePortal.API.Models.ResetContainerModel)">
             <summary>
-            Creates multiple items in the [TangledServices.ServiceDesk].[LookupItems] container.
+            Creates multiple items in the [TangledServices.ServicePortal].[LookupItems] container.
             </summary>
             <param name="container">The container represented as a ResetContainerModel object.</param>
             <returns>ContainerResponse object</returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Services.SystemService.createContainerSubscriptions(TangledServices.ServiceDesk.API.Models.ResetContainerModel)">
+        <member name="M:TangledServices.ServicePortal.API.Services.SystemService.createContainerSubscriptions(TangledServices.ServicePortal.API.Models.ResetContainerModel)">
             <summary>
-            Creates multiple subscriptions in the [TangledServices.ServiceDesk].[Subscriptions] container.
+            Creates multiple subscriptions in the [TangledServices.ServicePortal].[Subscriptions] container.
             </summary>
             <param name="container">The container represented as a ResetContainerModel object.</param>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServiceDesk.API.Services.SystemService.createContainerUsers(TangledServices.ServiceDesk.API.Models.ResetContainerModel)">
+        <member name="M:TangledServices.ServicePortal.API.Services.SystemService.createContainerUsers(TangledServices.ServicePortal.API.Models.ResetContainerModel)">
             <summary>
-            Creates multiple subscriptions in the [TangledServices.ServiceDesk].[Users] container.
+            Creates multiple subscriptions in the [TangledServices.ServicePortal].[Users] container.
             </summary>
             <param name="container">The container represented as a ResetContainerModel object.</param>
             <returns></returns>

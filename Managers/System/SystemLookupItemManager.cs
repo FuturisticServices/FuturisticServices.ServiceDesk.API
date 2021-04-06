@@ -8,12 +8,12 @@ using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServiceDesk.API.Common;
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Extensions;
-using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServicePortal.API.Common;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Extensions;
+using TangledServices.ServicePortal.API.Models;
 
-namespace TangledServices.ServiceDesk.API.Managers
+namespace TangledServices.ServicePortal.API.Managers
 {
     public interface ISystemLookupItemManager
     {

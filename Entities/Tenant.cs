@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
-using TangledServices.ServiceDesk.API.Models;
+using TangledServices.ServicePortal.API.Models;
 
-namespace TangledServices.ServiceDesk.API.Entities
+namespace TangledServices.ServicePortal.API.Entities
 {
     public class Tenant : EntityBase
     {

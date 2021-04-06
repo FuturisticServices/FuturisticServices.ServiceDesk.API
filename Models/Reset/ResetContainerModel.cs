@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
-using TangledServices.ServiceDesk.API.Entities;
+using TangledServices.ServicePortal.API.Entities;
 
-namespace TangledServices.ServiceDesk.API.Models
+namespace TangledServices.ServicePortal.API.Models
 {
     public class ResetContainerModel
     {

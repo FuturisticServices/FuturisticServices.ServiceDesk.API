@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Models;
-using TangledServices.ServiceDesk.API.Services;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Services;
 
-namespace TangledServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServicePortal.API.Controllers
 {
     [Route("api/system")]
     [ApiVersion("1.0")]
@@ -34,7 +34,7 @@ namespace TangledServices.ServiceDesk.API.Controllers
         }
 
         /// <summary>
-        /// Deletes and creates the [TangledServices.ServiceDesk] system database.  ** USE WITH CAUTION **
+        /// Deletes and creates the [TangledServices.ServicePortal] system database.  ** USE WITH CAUTION **
         /// </summary>
         /// <returns></returns>
         [HttpGet("reset")]

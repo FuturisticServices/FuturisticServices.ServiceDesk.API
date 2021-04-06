@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using TangledServices.ServiceDesk.API.Entities;
-using TangledServices.ServiceDesk.API.Managers;
+using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Managers;
 
-namespace TangledServices.ServiceDesk.API.Controllers
+namespace TangledServices.ServicePortal.API.Controllers
 {
     /// <summary>
     /// Performs methods for the Service Desk setup process.

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TangledServices.ServiceDesk.API", "TangledServices.ServiceDesk.API.csproj", "{CDEF53FC-6AEB-4687-BEE3-6E8D9C7C4EDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TangledServices.ServicePortal.API", "TangledServices.ServicePortal.API.csproj", "{CDEF53FC-6AEB-4687-BEE3-6E8D9C7C4EDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
