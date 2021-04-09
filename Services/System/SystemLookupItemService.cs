@@ -84,6 +84,7 @@ namespace TangledServices.ServicePortal.API.Services
                 LookupGroupEntity results = await _systemLookupItemManager.UpsertGroupAsync(group);
                 return results;
             }
+
             return null;
         }
 

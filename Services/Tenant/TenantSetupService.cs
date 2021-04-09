@@ -20,13 +20,13 @@ using TangledServices.ServicePortal.API.Services;
 namespace TangledServices.ServicePortal.API.Services
 {
     public interface ITenantSetupService {
-        Task<IDictionary<string, Object>> ServicePortal(string moniker);
+        Task<Tenant> Setup(string moniker);
     }
 
     public class TenantSetupService : TenantBaseService, ITenantSetupService
     {
         #region Members
-        private readonly ISystemTenantService _systemTenantService;
+        private readonly ISystemTenantsService _systemTenantService;
         private readonly ISystemLookupItemService _systemLookupItemService;
         private readonly ITenantLookupItemService _tenantLookupItemService;
         private readonly ITenantUserService _tenantUserService;
@@ -36,7 +36,7 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Members
 
         #region Constructors
-        public TenantSetupService(ISystemTenantService systemTenantService, ISystemLookupItemService systemLookupItemService, ITenantLookupItemService tenantLookupItemService, ITenantUserService tenantUserService, ICosmosDbService cosmosDbService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public TenantSetupService(ISystemTenantsService systemTenantService, ISystemLookupItemService systemLookupItemService, ITenantLookupItemService tenantLookupItemService, ITenantUserService tenantUserService, ICosmosDbService cosmosDbService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemTenantService = systemTenantService;
             _systemLookupItemService = systemLookupItemService;
@@ -49,85 +49,95 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Constructors
 
         #region Public methods
-        public async Task<IDictionary<string, Object>> ServicePortal(string moniker)
+        public async Task<Tenant> Setup(string moniker)
         {
-            var responseContainers = new ExpandoObject() as IDictionary<string, object>;
-            var responseUsers = new ExpandoObject() as IDictionary<string, object>;
+            SystemTenant systemTenant = await _systemTenantService.Get(moniker);
 
-            dynamic response = new ExpandoObject();
-            response.status = new ExpandoObject();
-            response.results = new ExpandoObject();
-            response.results.databases = new ExpandoObject();
-            response.results.containers = responseContainers;
-            response.results.users = responseUsers;
+            DatabaseResponse databaseResponse = await _cosmosDbService.CreateDatabase(systemTenant);
+            if (databaseResponse.StatusCode != HttpStatusCode.Created && databaseResponse.StatusCode != HttpStatusCode.OK) throw new TenantSetupDatabaseCouldNotBeCreatedException(moniker);
 
-            Tenant tenant = await _systemTenantService.GetItem(moniker);
+            //  Retrieve tenant containers to create.
+            var containers = _configuration.GetSection("tenant:setup:containers:create").Get<List<DatabaseContainer>>();
+            if (!containers.Any()) throw new TenantSetupNoContainersFoundToCreateException();
 
-            if (tenant == null) throw new TenantDoesNotExistException(moniker);
+            //  Retrieve lookup groups to omit.
+            var omitLookupGroups = _configuration.GetSection("tenant:setup:lookupGroups:omit").GetChildren().Select(x => x.Value).ToList();
 
-            DatabaseResponse databaseResponse = await _cosmosDbService.CreateDatabase(tenant);
-
-            //  Add database response.
-            response.results.databases = new { name = databaseResponse.Resource.Id, statusCode = databaseResponse.StatusCode, statusCodeValue = databaseResponse.StatusCode.GetDescription() };
-
-            if (databaseResponse.StatusCode == HttpStatusCode.Created || databaseResponse.StatusCode == HttpStatusCode.OK)
+            foreach (DatabaseContainer container in containers)
             {
-                //  Retrieve tenant containers to create.
-                var containersToCreate = _configuration.GetSection("tenant:setup:containers:create").Get<List<SetupContainer>>();
+                ContainerResponse containerResponse = await _cosmosDbService.CreateContainer(databaseResponse.Database, container.Name, container.PartitionKey);
+                if (containerResponse.StatusCode != HttpStatusCode.Created && containerResponse.StatusCode != HttpStatusCode.OK) throw new TenantSetupCreateContainerFailedException(container.Name);
 
-                //  Retrieve lookup groups to omit.
-                var lookupGroupsToOmit = _configuration.GetSection("tenant:setup:lookupGroups:omit").GetChildren().Select(x => x.Value).ToList();
-
-                foreach (SetupContainer container in containersToCreate)
+                if (container.CloneItems)
                 {
-                    ContainerResponse containerResponse = await _cosmosDbService.CreateContainer(databaseResponse.Database, container.Name, container.PartitionKey);
-
-                    //  Add container response
-                    responseContainers.Add(container.Name, new { statusCode = containerResponse.StatusCode, statusCodeValue = containerResponse.StatusCode.GetDescription() });
-
-                    if (container.CloneItems == true)
+                    //  Populate lookup items from system database.
+                    List<LookupGroupEntity> lookupGroups = (await _systemLookupItemService.GetItems()).ToList();
+                    foreach (LookupGroupEntity group in lookupGroups)
                     {
-                        // Populate lookup items from system database.
-                        List<LookupGroupEntity> lookupGroups = (await _systemLookupItemService.GetItems()).ToList();
-                        foreach (LookupGroupEntity group in lookupGroups)
-                        {
-                            //  Skip over groups to ommit.
-                            if (lookupGroupsToOmit.Contains(group.Group)) continue;
+                        //  Skip over groups to ommit.
+                        if (omitLookupGroups.Contains(group.Group)) continue;
 
-                            //  Overwrite existing ID with new GUID unique to tenant.
-                            group.Items.ToList().ForEach(x => x.Id = Guid.NewGuid().ToString());
+                        //  Overwrite existing ID with new GUID unique to tenant.
+                        group.Items.ToList().ForEach(x => x.Id = Guid.NewGuid().ToString());
 
-                            //  Persist item.
-                            await _tenantLookupItemService.CreateItem(group);
-
-                            //  Add group response.
-                            responseContainers.Add(group.Group, new { statusCode = StatusCodes.Status201Created, statusCodeValue = HttpStatusCode.Created.GetDescription(), items = group.Items.ToList() });
-                        }
+                        //  Persist item.
+                        await _tenantLookupItemService.CreateItem(group);
                     }
                 }
-
-                //  Retrieve tenant users to create.
-                var users = _configuration.GetSection("tenant:setup:users").Get<List<Entities.User>>();
-
-                // Persist tenant users.
-                foreach (Entities.User user in users)
-                {
-                    //  Create unique user ID.
-                    user.Id = Guid.NewGuid().ToString();
-
-                    //  Persist item.
-                    await _tenantUserService.CreateItem(user);
-
-                    //  Add status to response.
-                    responseUsers.Add(string.Format("user: {0} {1}", user.NameFirst, user.NameLast), new { statusCode = StatusCodes.Status201Created, statusCodeValue = HttpStatusCode.Created.GetDescription() });
-                }
-
-                response.status = new { statusCode = StatusCodes.Status201Created, statusCodeValue = HttpStatusCode.Created.GetDescription() };
-                return response;
             }
 
-            response.status = new { statusCode = StatusCodes.Status400BadRequest, statusCodeValue = HttpStatusCode.BadRequest.GetDescription() };
-            return response;
+            Tenant tenant = new Tenant();
+
+
+
+
+
+
+            //if (databaseResponse.StatusCode == HttpStatusCode.Created || databaseResponse.StatusCode == HttpStatusCode.OK)
+            //{
+            //    //  Retrieve tenant containers to create.
+            //    var containersToCreate = _configuration.GetSection("tenant:setup:containers:create").Get<List<SetupContainer>>();
+
+            //    //  Retrieve lookup groups to omit.
+            //    var omitLookupGroups = _configuration.GetSection("tenant:setup:lookupGroups:omit").GetChildren().Select(x => x.Value).ToList();
+
+            //    foreach (SetupContainer container in containersToCreate)
+            //    {
+            //        ContainerResponse containerResponse = await _cosmosDbService.CreateContainer(databaseResponse.Database, container.Name, container.PartitionKey);
+
+            //        if (container.CloneItems == true)
+            //        {
+            //            // Populate lookup items from system database.
+            //            List<LookupGroupEntity> lookupGroups = (await _systemLookupItemService.GetItems()).ToList();
+            //            foreach (LookupGroupEntity group in lookupGroups)
+            //            {
+            //                //  Skip over groups to ommit.
+            //                if (omitLookupGroups.Contains(group.Group)) continue;
+
+            //                //  Overwrite existing ID with new GUID unique to tenant.
+            //                group.Items.ToList().ForEach(x => x.Id = Guid.NewGuid().ToString());
+
+            //                //  Persist item.
+            //                await _tenantLookupItemService.CreateItem(group);
+            //            }
+            //        }
+            //    }
+
+            //    //  Retrieve tenant users to create.
+            //    var users = _configuration.GetSection("tenant:setup:users").Get<List<Entities.User>>();
+
+            //    // Persist tenant users.
+            //    foreach (Entities.User user in users)
+            //    {
+            //        //  Create unique user ID.
+            //        user.Id = Guid.NewGuid().ToString();
+
+            //        //  Persist item.
+            //        await _tenantUserService.CreateItem(user);
+            //    }
+            //}
+
+            return tenant;
         }
         #endregion Public methods
     }

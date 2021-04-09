@@ -20,16 +20,16 @@ namespace TangledServices.ServicePortal.API.Managers
         public string _uri;
         public string _primaryKey;
 
-        public Tenant _tenant;
+        public SystemTenant _tenant;
         public string _moniker;
         public string _databaseName;
         public CosmosClient _dbClient;
         public Microsoft.Azure.Cosmos.Container _container;
 
-        public TenantBaseManager(string containerName, ISystemTenantManager systemTenantManager, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public TenantBaseManager(string containerName, ISystemTenantsManager systemTenantsManager, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _moniker = httpContextAccessor.HttpContext.Request.RouteValues["moniker"] != null ? httpContextAccessor.HttpContext.Request.RouteValues["moniker"].ToString() : string.Empty;
-            _tenant = systemTenantManager.GetItem(_moniker);
+            _tenant = systemTenantsManager.GetItem(_moniker);
 
             if (_tenant == null) return;  //  No tenant, no entry!
 

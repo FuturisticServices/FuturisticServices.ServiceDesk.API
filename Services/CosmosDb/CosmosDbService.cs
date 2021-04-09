@@ -18,7 +18,7 @@ using TangledServices.ServicePortal.API.Services;
 namespace TangledServices.ServicePortal.API.Services
 {
     public interface ICosmosDbService {
-        Task<DatabaseResponse> CreateDatabase(Tenant tenant);
+        Task<DatabaseResponse> CreateDatabase(SystemTenant systemTenant);
         Task<ContainerResponse> CreateContainer(Database database, string containerName, string partitionKeyName);
         Container GetContainer(Database database, string containerName);
     }
@@ -41,15 +41,15 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Constructors
 
         #region Public methods
-        public async Task<DatabaseResponse> CreateDatabase(Tenant tenant)
+        public async Task<DatabaseResponse> CreateDatabase(SystemTenant systemTenant)
         {
-            DatabaseResponse response = await _cosmosDbManager.CreateDatabaseAsync(tenant);
+            DatabaseResponse response = await _cosmosDbManager.CreateDatabaseAsync(systemTenant);
             return response;
         }
 
         public async Task<ContainerResponse> CreateContainer(Database database, string containerName, string partitionKeyName)
         {
-            ContainerResponse response = await _cosmosDbManager.CreateContainerAsync(database, containerName, partitionKeyName);
+            ContainerResponse response = await _cosmosDbManager.CreateContainerIfNotExistsAsync(database, containerName, partitionKeyName);
             return response;
         }
 
@@ -57,6 +57,12 @@ namespace TangledServices.ServicePortal.API.Services
         {
             Container response = _cosmosDbManager.GetContainer(database, containerName);
             return response;
+        }
+
+        public bool Exists(Database database, string containerName)
+        {
+            Container container = _cosmosDbManager.GetContainer(database, containerName);
+            return container == null ? false : true;
         }
         #endregion Public methods
     }

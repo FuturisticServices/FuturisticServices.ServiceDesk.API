@@ -5,11 +5,11 @@ using Newtonsoft.Json;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class SetupContainer
+    public class DatabaseContainer
     {
-        public SetupContainer() { }
+        public DatabaseContainer() { }
 
-        public SetupContainer(string name, string partitionKey, bool cloneItems)
+        public DatabaseContainer(string name, string partitionKey, bool cloneItems)
         {
             Name = name;
             PartitionKey = partitionKey;

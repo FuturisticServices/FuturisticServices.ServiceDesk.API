@@ -25,12 +25,12 @@ namespace TangledServices.ServicePortal.API.Managers
 
 public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManager
     {
-        internal ISystemTenantManager _systemCustomerService;
+        internal ISystemTenantsManager _systemTenantsService;
         internal IHttpContextAccessor _httpContextAccessor;
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public TenantLookupItemManager(ISystemTenantManager systemTenantService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", systemTenantService, httpContextAccessor, configuration, webHostEnvironment)
+        public TenantLookupItemManager(ISystemTenantsManager systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", systemTenantsService, httpContextAccessor, configuration, webHostEnvironment)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;

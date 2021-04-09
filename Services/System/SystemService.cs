@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -8,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+
+using Newtonsoft.Json;
 
 using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
@@ -21,7 +22,7 @@ namespace TangledServices.ServicePortal.API.Services
     /// </summary>
     public interface ISystemService
     {
-        Task<object> Reset();
+        Task Reset();
     }
 
     /// <summary>
@@ -36,7 +37,7 @@ namespace TangledServices.ServicePortal.API.Services
         //private readonly ISystemLookupItemManager _systemLookupItemsManager;
         private readonly ISystemSubscriptionManager _systemSubscriptionsManager;
         private readonly ISystemUserManager _systemUsersManager;
-        private readonly ISystemTenantManager _systemTenantManager;
+        private readonly ISystemTenantsManager _systemTenantsManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -49,10 +50,10 @@ namespace TangledServices.ServicePortal.API.Services
         /// <param name="systemLookupItemManager">Manager to [FuturustucServices.ServicePortal].[LookupItems] container from a 'item' perspective.</param>
         /// <param name="systemSubscriptionManager">Manager to [TangledServices.ServicePortal].[Subscriptions] container.</param>
         /// <param name="systemUserManager">Manager to [TangledServices.ServicePortal].[Users] container.</param>
-        /// <param name="systemTenantManager">Manager to [TangledServices.ServicePortal].[Tenants] container.</param>
+        /// <param name="systemTenantsManager">Manager to [TangledServices.ServicePortal].[Tenants] container.</param>
         /// <param name="configuration">Manager to file-based, in-memory and environment variables.</param>
         /// <param name="webHostEnvironment">Manager to the web hosting environment the application is running in.</param>
-        public SystemService(IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupItemManager systemLookupItemManager, ISystemSubscriptionManager systemSubscriptionManager, ISystemUserManager systemUserManager, ISystemTenantManager systemTenantManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemService(IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupItemManager systemLookupItemManager, ISystemSubscriptionManager systemSubscriptionManager, ISystemUserManager systemUserManager, ISystemTenantsManager systemTenantsManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _hashingService = hashingService;
             _cosmosDbManager = cosmosDbManager;
@@ -60,7 +61,7 @@ namespace TangledServices.ServicePortal.API.Services
             _systemLookupItemManager = systemLookupItemManager;
             _systemSubscriptionsManager = systemSubscriptionManager;
             _systemUsersManager = systemUserManager;
-            _systemTenantManager = systemTenantManager;
+            _systemTenantsManager = systemTenantsManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -73,31 +74,22 @@ namespace TangledServices.ServicePortal.API.Services
         ///     4.  Persists the required data to the containers
         /// </summary>
         /// <returns></returns>
-        public async Task<object> Reset()
+        public async Task Reset()
         {
-            DatabaseResponse databaseResponse = await _systemManager.CreateDatabase();
+            var databaseResponse = await _systemManager.CreateDatabase();
+            if (databaseResponse.StatusCode != HttpStatusCode.Created) throw new SystemDatabaseNotCreatedException();
 
-            if (databaseResponse.StatusCode == HttpStatusCode.Created)
+            //  Create containers.
+            var systemContainersToCreate = _configuration.GetSection("system:reset:containers").Get<List<ResetContainerModel>>();
+
+            //  Persist data to containers.
+            foreach (ResetContainerModel container in systemContainersToCreate)
             {
-                //  Create containers.
-                var systemContainersToCreate = _configuration.GetSection("system:reset:containers").Get<List<ResetContainerModel>>();
-
-                foreach (ResetContainerModel container in systemContainersToCreate)
-                {
-                    await createContainer(databaseResponse.Database, container);
-                    await createContainerLookupGroups(container);
-                    await createContainerSubscriptions(container);
-                    await createContainerUsers(container);
-                }
-
-                _responseSuccess.StatusCode = (int)HttpStatusCode.OK;
-                _responseSuccess.Description = "System reset sucessfull.";
-                return _responseSuccess;
+                var containerResponse = await createContainer(databaseResponse.Database, container);
+                var lookupGroupEntities = await createContainerLookupGroups(container);
+                var subscriptions = await createContainerSubscriptions(container);
+                var users = await createContainerUsers(container);
             }
-
-            _responseSuccess.StatusCode = (int)HttpStatusCode.BadRequest;
-            _responseSuccess.Description = "System reset NOT sucessfull.";
-            return _responseSuccess;
         }
 
         #region Private methods
@@ -110,11 +102,6 @@ namespace TangledServices.ServicePortal.API.Services
         private async Task<ContainerResponse> createContainer(Database database, ResetContainerModel container)
         {
             ContainerResponse containerResponse = await _systemManager.CreateContainer(database, container.Name, container.PartitionKey);
-
-            //_responseContainer.name = containerResponse.Resource.Id;
-            //_responseContainer.statusCode = (int)containerResponse.StatusCode;
-            //_responseContainer.status = containerResponse.StatusCode;
-
             return containerResponse;
         }
 
@@ -123,17 +110,20 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
-        private async Task createContainerLookupGroups(ResetContainerModel container)
+        private async Task<IEnumerable<LookupGroupEntity>> createContainerLookupGroups(ResetContainerModel container)
         {
+            List<LookupGroupEntity> items = new List<LookupGroupEntity>();
+
             if (container.Groups != null)
             {
-                List<string> createdGroups = new List<string>();
                 foreach (LookupGroupEntity group in container.Groups)
                 {
-                    await _systemLookupItemManager.CreateItemAsync(group);
-                    createdGroups.Add(group.Group);
+                    var item = await _systemLookupItemManager.CreateItemAsync(group);
+                    items.Add(item);
                 }
             }
+
+            return items;
         }
 
         /// <summary>
@@ -141,22 +131,22 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
-        private async Task createContainerSubscriptions(ResetContainerModel container)
+        private async Task<IEnumerable<Subscription>> createContainerSubscriptions(ResetContainerModel container)
         {
+            List<Subscription> items = new List<Subscription>();
+
             if (container.Subscriptions != null)
             {
-                //_responseContainer.numberOfItemsCreated = container.Subscriptions.Count();
-
-                List<string> createdSubscriptions = new List<string>();
                 foreach (Subscription subscription in container.Subscriptions)
                 {
                     //  If a renewal timeframe exists, retrieve it. Otherwise, make it null.
                     subscription.RenewalTimeframe = subscription.RenewalTimeframe == null ? null : await _systemLookupItemManager.GetItemAsync("Subscription Renewal Timeframes", subscription.RenewalTimeframe.Id);
-                    await _systemSubscriptionsManager.CreateItemAsync(subscription);
-                    createdSubscriptions.Add(subscription.Name);
+                    var item = await _systemSubscriptionsManager.CreateItemAsync(subscription);
+                    items.Add(item);
                 }
-                //_responseContainer.items = createdSubscriptions;
             }
+
+            return items;
         }
 
         /// <summary>
@@ -164,18 +154,14 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
-        private async Task createContainerUsers(ResetContainerModel container)
+        private async Task<IEnumerable<Entities.User>> createContainerUsers(ResetContainerModel container)
         {
+            List<Entities.User> items = new List<Entities.User>();
+
             if (container.Users != null)
             {
-                List<string> createdUsers = new List<string>();
                 foreach (Entities.User user in container.Users)
                 {
-                    if (await UsernameUnique(user.Username) == false)
-                    {
-                        createdUsers.Add(string.Format("{0} {1} not created (username '{2}' not unique)", user.NameFirst, user.NameLast, user.Username));
-                    }
-
                     foreach (EmailAddress userEmailAddress in user.EmailAddresses)
                     {
                         //  Retrieve email address 'type' lookup item.
@@ -196,15 +182,17 @@ namespace TangledServices.ServicePortal.API.Services
                     user.Password = _hashingService.EncryptString(user.Password);
 
                     //  Persist item.
-                    await _systemUsersManager.CreateItemAsync(user);
+                    var item = await _systemUsersManager.CreateItemAsync(user);
 
                     //  Add status to _response.
-                    createdUsers.Add(string.Format("{0} {1}", user.NameFirst, user.NameLast));
+                    items.Add(item);
                 }
             }
+
+            return items;
         }
 
-        private async Task<bool> UsernameUnique(string username)
+        private async Task<bool> UsernameNotUnique(string username)
         {
             var users = await _systemUsersManager.GetItemsAsync();
             var usernameExists = users.Any(x => x.Username.ToLower() == username.ToLower());

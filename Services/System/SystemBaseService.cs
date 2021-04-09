@@ -17,8 +17,7 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public class SystemBaseService
     {
-        public ResponseSuccess _responseSuccess = new ResponseSuccess();
-        public ResponseError _responseError = new ResponseError();
+        internal ApiResponse _response;
 
         public SystemBaseService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         { }

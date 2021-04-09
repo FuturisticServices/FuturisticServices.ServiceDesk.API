@@ -166,7 +166,7 @@ namespace TangledServices.ServicePortal.API.Controllers
 
             try
             {
-                Tenant tenant = await _systemTenantService.GetItem(moniker);
+                SystemTenant tenant = await _systemTenantService.GetItem(moniker);
                 bool monikerIsUnique = tenant == null ? true : false;
 
                 response.statusCode = StatusCode(StatusCodes.Status200OK, monikerIsUnique ? "Moniker is unique." : "Moniker is NOT unique.");
@@ -195,13 +195,13 @@ namespace TangledServices.ServicePortal.API.Controllers
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Tenant([FromBody] RegistrationModel model)
+        public async Task<IActionResult> Tenant([FromBody] SystemTenantModel model)
         {
             dynamic response = new ExpandoObject();
 
             try
             {
-                Tenant tenant = await _systemTenantRegistrationService.Register(model);
+                SystemTenant tenant = await _systemTenantRegistrationService.Register(model);
 
                 if (tenant != null)
                 {
@@ -236,7 +236,7 @@ namespace TangledServices.ServicePortal.API.Controllers
 
             try
             {
-                Tenant tenant = (await _systemTenantRegistrationService.Register(moniker));
+                SystemTenant tenant = (await _systemTenantRegistrationService.Register(moniker));
 
                 if (tenant != null)
                 {

@@ -18,8 +18,8 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface ISystemTenantRegistrationService
     {
-        Task<Tenant> Register(RegistrationModel model);
-        Task<Tenant> Register(string moniker);
+        Task<SystemTenant> Register(RegistrationModel model);
+        Task<SystemTenant> Register(string moniker);
     }
 
     public class SystemTenantRegistrationService : SystemBaseService, ISystemTenantRegistrationService
@@ -44,9 +44,9 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Constructors
 
         #region Public methods
-        public async Task<Tenant> Register(RegistrationModel model)
+        public async Task<SystemTenant> Register(SystemTenantModel model)
         {
-            Tenant tenant = null;
+            SystemTenant tenant = null;
 
             //  If tenant exists in container, return.
             if (await TenantExists(model.Moniker)) throw new MonikerAlreadyExistsException(model.Moniker.ToUpper());
@@ -58,27 +58,27 @@ namespace TangledServices.ServicePortal.API.Services
             Subscription currentSubscription = await _systemSubscriptionService.GetItem(model.SubscriptionId);
 
             //  Create and populate tenant object.
-            tenant = new Tenant(model, currentSubscription, systemLookupItems);
+            tenant = new SystemTenant(model, currentSubscription, systemLookupItems);
 
             tenant = await _systemTenantManager.CreateItemAsync(tenant);
 
             return tenant;
         }
 
-        public async Task<Tenant> Register(string moniker)
+        public async Task<SystemTenant> Register(string moniker)
         {
-            Tenant tenant = null;
+            SystemTenant tenant = null;
 
             //  If tenant exists in container, return.
             if (await TenantExists(moniker)) throw new MonikerAlreadyExistsException(moniker.ToUpper());
 
             //  Get list of tenants from config file.
-            var models = _configuration.GetSection("tenants").Get<List<RegistrationModel>>();
+            var models = _configuration.GetSection("tenants").Get<List<SystemTenantModel>>();
 
             //  If tenant does not exist in config file, return.
             if (!models.Exists(x => string.Compare(x.Moniker, moniker, true) == 0)) throw new MonikerDoesNotExistException(moniker.ToUpper());
 
-            foreach (RegistrationModel registrationModel in models)
+            foreach (SystemTenantModel registrationModel in models)
             {
                 //  Get all lookup items.
                 List<LookupGroupEntity> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
@@ -87,7 +87,7 @@ namespace TangledServices.ServicePortal.API.Services
                 Subscription currentSubscription = await _systemSubscriptionService.GetItem(registrationModel.SubscriptionId);
 
                 //  Create and populate tenant object.
-                tenant = new Tenant(registrationModel, currentSubscription, systemLookupItems);
+                tenant = new SystemTenant(registrationModel, currentSubscription, systemLookupItems);
 
                 tenant = await _systemTenantManager.CreateItemAsync(tenant);
 

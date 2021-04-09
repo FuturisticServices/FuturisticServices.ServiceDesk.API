@@ -12,10 +12,10 @@ namespace TangledServices.ServicePortal.API.Managers
 {
     public interface ICosmosDbManager
     {
-        Task<DatabaseResponse> CreateDatabaseAsync(Tenant tenant);
-        Task<ContainerResponse> CreateContainerAsync(Database database, string containerName, string partitionKeyName);
-
+        Task<DatabaseResponse> CreateDatabaseAsync(SystemTenant systemTenant);
+        Task<ContainerResponse> CreateContainerIfNotExistsAsync(Database database, string containerName, string partitionKeyName);
         Container GetContainer(Database database, string containerName);
+        Task<ContainerResponse> DeleteContainer(Database database, string containerName);
     }
 
     public class CosmosDbManager : CosmosDbBaseManager, ICosmosDbManager
@@ -44,24 +44,24 @@ namespace TangledServices.ServicePortal.API.Managers
         /// </summary>
         /// <param name="tenant">Tenant entity</param>
         /// <returns></returns>
-        public async Task<DatabaseResponse> CreateDatabaseAsync(Tenant tenant)
+        public async Task<DatabaseResponse> CreateDatabaseAsync(SystemTenant systemTenant)
         {
-            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], tenant.Moniker.ToUpper());
+            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], systemTenant.Moniker.ToUpper());
 
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
             CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
             DatabaseResponse response = await client.CreateDatabaseIfNotExistsAsync(_databaseName);
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                response = await DeleteDatabaseAsync(tenant);
-                response = await client.CreateDatabaseAsync(_databaseName);
-            }
+            //if (response.StatusCode == HttpStatusCode.OK)
+            //{
+            //    response = await DeleteDatabaseAsync(systemTenant);
+            //    response = await client.CreateDatabaseAsync(_databaseName);
+            //}
 
             return response;
         }
 
-        public async Task<ContainerResponse> CreateContainerAsync(Database database, string containerName, string partitionKeyName)
+        public async Task<ContainerResponse> CreateContainerIfNotExistsAsync(Database database, string containerName, string partitionKeyName)
         {
             ContainerProperties containerProperties = new ContainerProperties()
             {
@@ -84,12 +84,19 @@ namespace TangledServices.ServicePortal.API.Managers
             Container response = database.GetContainer(containerName);
             return response;
         }
+
+        public async Task<ContainerResponse> DeleteContainer(Database database, string containerName)
+        {
+            Container container = GetContainer(database, containerName);
+            ContainerResponse response = await container.DeleteContainerAsync();
+            return response;
+        }
         #endregion Public methods
 
         #region Private methods
-        private async Task<DatabaseResponse> DeleteDatabaseAsync(Tenant tenant)
+        private async Task<DatabaseResponse> DeleteDatabaseAsync(SystemTenant systemTenant)
         {
-            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], tenant.Moniker.ToUpper());
+            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], systemTenant.Moniker.ToUpper());
 
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
             CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();

@@ -106,8 +106,8 @@ namespace TangledServices.ServicePortal.API.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
             var jwtSecurityToken = new JwtSecurityToken(
-                issuer: "futuristic.services",
-                audience: "futuristic.services",
+                issuer: "tangled.services",
+                audience: "tangled.services",
                 expires: DateTime.Now.AddDays(1),
                 claims: authClaims,
                 signingCredentials: credentials
