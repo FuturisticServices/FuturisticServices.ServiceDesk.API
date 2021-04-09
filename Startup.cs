@@ -34,7 +34,7 @@ namespace TangledServices.ServicePortal.API
             .SetBasePath(webHostEnvironment.ContentRootPath + @"\ConfigurationFiles")
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddJsonFile("system.json", optional: true)
-            .AddJsonFile("tenants.json", optional: true)
+            .AddJsonFile("tenantSetup.json", optional: true)
             .AddEnvironmentVariables();
 
             Configuration = configurationBuilder.Build();
@@ -134,8 +134,8 @@ namespace TangledServices.ServicePortal.API
                     ValidateIssuer = false,
                     ValidateAudience = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "futuristic.services",
-                    ValidAudience = "futuristic.services",
+                    ValidIssuer = "tangled.services",
+                    ValidAudience = "tangled.services",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwt:secretKey"])),
                     ClockSkew = TimeSpan.Zero,
                 };
@@ -172,8 +172,8 @@ namespace TangledServices.ServicePortal.API
 
             //  System services.
             services.AddSingleton<ISystemService, SystemService>();
-            services.AddSingleton<ISystemTenantService, SystemTenantService>();
-            services.AddSingleton<ISystemTenantRegistrationService, SystemTenantRegistrationService>();
+            services.AddSingleton<ISystemTenantsService, SystemTenantsService>();
+            //services.AddSingleton<ISystemTenantRegistrationService, SystemTenantRegistrationService>();
             services.AddSingleton<ISystemLookupItemService, SystemLookupItemService>();
             services.AddSingleton<ISystemSubscriptionService, SystemSubscriptionService>();
             services.AddSingleton<ISystemUserService, SystemUserService>();
@@ -183,7 +183,7 @@ namespace TangledServices.ServicePortal.API
             services.AddSingleton<ISystemLookupItemManager, SystemLookupItemManager>();
             services.AddSingleton<ISystemSubscriptionManager, SystemSubscriptionManager>();
             services.AddSingleton<ISystemUserManager, SystemUserManager>();
-            services.AddSingleton<ISystemTenantManager, SystemTenantManager>();
+            services.AddSingleton<ISystemTenantsManager, SystemTenantsManager>();
 
             //  Tenant services.
             services.AddSingleton<ITenantService, TenantService>();

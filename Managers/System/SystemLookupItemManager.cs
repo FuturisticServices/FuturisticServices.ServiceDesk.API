@@ -10,8 +10,6 @@ using Microsoft.Extensions.Configuration;
 
 using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
-using TangledServices.ServicePortal.API.Extensions;
-using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Managers
 {
@@ -62,8 +60,8 @@ namespace TangledServices.ServicePortal.API.Managers
 
         public async Task<LookupGroupEntity> CreateItemAsync(LookupGroupEntity group)
         {
-            var results = await _container.CreateItemAsync<LookupGroupEntity>(group);
-            return results;
+            var item = await _container.CreateItemAsync<LookupGroupEntity>(group);
+            return item;
         }
 
         public async Task<LookupGroupEntity> UpsertGroupAsync(LookupGroupEntity group)

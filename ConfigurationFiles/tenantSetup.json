@@ -1,0 +1,28 @@
+{
+    "tenant": {
+      "setup": {
+        "containers": {
+          "create": [
+            {
+              "name": "LookupItems",
+              "partitionKey": "group",
+              "cloneItems": true
+            },
+            {
+              "name": "Subscriptions",
+              "partitionKey": "name",
+              "cloneItems": false
+            },
+            {
+              "name": "Users",
+              "partitionKey": "employeeId",
+              "cloneItems": false
+            }
+          ]
+        },
+        "lookupGroups": {
+          "omit": ["Database Platforms", "Subscription Renewal Timeframes"]
+        }
+      }
+    }
+}

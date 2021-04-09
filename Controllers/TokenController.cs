@@ -31,42 +31,6 @@ namespace TangledServices.ServicePortal.API.Controllers
         }
 
         /// <summary>
-        /// Determines if a setup token (GUID) is authentic and associated to the proper tenant.
-        /// </summary>
-        /// <param name="moniker">Unique ID assigned to each tenant used making API requests.</param>
-        /// <param name="token">The token (GUID) to validate.</param>
-        /// <returns></returns>
-        [HttpGet("validate")]
-        [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Validate(string moniker, [FromQuery][Required] string token)
-        {
-            try
-            {
-                bool tokenIsValid = await _systemTenantsService.ValidateToken(moniker, token);
-
-                if (tokenIsValid)
-                {
-                    ObjectResult statusCode = StatusCode(StatusCodes.Status200OK, "Setup token is authentic.");
-                    var response = new { token, tokenIsValid, statusCode };
-                    return Ok(new { response });
-                }
-                else
-                {
-                    ObjectResult statusCode = StatusCode(StatusCodes.Status400BadRequest, "Setup token is NOT authentic.");
-                    var response = new { token, tokenIsValid, statusCode };
-                    return BadRequest(new { response });
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Error validating setup token. Error: " + ex.Message);
-            }
-        }
-
-        /// <summary>
         /// Validates the moniker and pocEmailAddress is associated to the proper tenant.
         /// If valid, generates a new setup token. Token is emailed to the provided PoC email address.
         /// Otherwise, HTTP-BadRequest.
@@ -83,11 +47,10 @@ namespace TangledServices.ServicePortal.API.Controllers
         {
             try
             {
-                Tenant tenant = await _systemTenantsService.GetItemAsync(moniker);
+                SystemTenant tenant = await _systemTenantsService.GetItemAsync(moniker);
 
                 if (tenant.PointOfContact.EmailAddress.Address.Equals(pocEmailAddress, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    tenant.SetupToken = Guid.NewGuid().ToString();
                     tenant = await _systemTenantsService.ReplaceItemAsync(tenant);
 
                     ObjectResult statusCode = StatusCode(StatusCodes.Status200OK, "New token issued.");

@@ -31,6 +31,8 @@
   <ItemGroup>
     <Compile Remove="Controllers\CustomersController.cs" />
     <Compile Remove="Controllers\SystemLookupGroupsController.cs" />
+    <Compile Remove="Controllers\TenantRegistrationController.cs" />
+    <Compile Remove="Controllers\TokenController.cs" />
     <Compile Remove="Controllers\zTenantUserController.cs" />
     <Compile Remove="Controllers\zTicketsController.cs" />
     <Compile Remove="Entities\AppSettings.cs" />
@@ -49,6 +51,7 @@
     <Compile Remove="Managers\zTenantUserService.cs" />
     <Compile Remove="Managers\zTicketsService.cs" />
     <Compile Remove="Services\System\SystemLookupGroupService.cs" />
+    <Compile Remove="Services\System\SystemTenantRegistrationService.cs" />
   </ItemGroup>
 
   <ItemGroup>

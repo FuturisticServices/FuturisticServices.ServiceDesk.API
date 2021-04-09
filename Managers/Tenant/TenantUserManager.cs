@@ -25,12 +25,12 @@ namespace TangledServices.ServicePortal.API.Managers
 
 public class TenantUserManager : TenantBaseManager, ITenantUserManager
     {
-        internal ISystemTenantManager _systemCustomerService;
+        internal ISystemTenantsManager _systemTenantsService;
         internal IHttpContextAccessor _httpContextAccessor;
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public TenantUserManager(ISystemTenantManager systemTenantService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", systemTenantService, httpContextAccessor, configuration, webHostEnvironment)
+        public TenantUserManager(ISystemTenantsManager systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", systemTenantsService, httpContextAccessor, configuration, webHostEnvironment)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;

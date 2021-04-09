@@ -46,6 +46,6 @@ namespace TangledServices.ServicePortal.API.Models
 
         [JsonProperty(PropertyName = "tenants", Required = Required.Default)]
         [DisplayName("Tenants")]
-        public List<Tenant> Tenants { get; set; }
+        public List<SystemTenant> Tenants { get; set; }
     }
 }

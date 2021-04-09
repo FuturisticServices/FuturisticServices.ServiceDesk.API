@@ -6,8 +6,8 @@
     <members>
         <member name="M:TangledServices.ServicePortal.API.Controllers.SystemController.Reset">
             <summary>
-            Deletes and creates the [futuristic.services] system database. 
-            ** USE WITH CAUTION **
+                Deletes and creates the [tangled.services] system database.
+                ** USE WITH CAUTION **
             </summary>
             <returns></returns>
         </member>
@@ -22,8 +22,8 @@
         </member>
         <member name="M:TangledServices.ServicePortal.API.Controllers.SystemTenantController.Tenant(System.String)">
             <summary>
-            Sets up a tenant in the [futuristic.services] database Tenant container.
-            Tenant details come from the 'tenants.json' config file with matching moniker.
+                Sets up a tenant in the [tangled.services] database Tenant container.
+                Tenant details come from the 'tenants.json' config file with matching moniker.
             </summary>
             <param name="moniker"></param>
             <returns>HttpStatus 200 ~ Success</returns>
@@ -31,8 +31,8 @@
         </member>
         <member name="M:TangledServices.ServicePortal.API.Controllers.SystemUserController.Reset(System.String)">
             <summary>
-            Deletes and creates the [futuristic.services] system database. 
-            ** USE WITH CAUTION **
+                Deletes and creates the [tangled.services] system database.
+                ** USE WITH CAUTION **
             </summary>
             <returns></returns>
         </member>

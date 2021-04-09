@@ -13,7 +13,7 @@ namespace TangledServices.ServicePortal.API.Models
     /// <summary>
     /// Model to register a tenant.
     /// </summary>
-    public class Tenant
+    public class TenantModels
     {
         /// <summary>
         /// A unique abbreviation that identifies the tenant in the system.

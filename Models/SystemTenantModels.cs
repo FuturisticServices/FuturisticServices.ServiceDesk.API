@@ -1,19 +1,14 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-using Microsoft.AspNetCore.Mvc.Abstractions;
-
 using Newtonsoft.Json;
-
-using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
 {
     /// <summary>
     /// Model to register a tenant.
     /// </summary>
-    public class Tenant
+    public class SystemTenantModel : BaseModel
     {
         /// <summary>
         /// A unique abbreviation that identifies the tenant in the system.

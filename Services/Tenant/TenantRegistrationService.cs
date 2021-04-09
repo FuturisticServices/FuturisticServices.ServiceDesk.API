@@ -25,13 +25,13 @@ namespace TangledServices.ServicePortal.API.Services
         #region Members
         private readonly ISystemLookupItemService _systemLookupItemService;
         private readonly ISystemSubscriptionService _systemSubscriptionService;
-        private readonly ISystemTenantService _systemTenantService;
+        private readonly ISystemTenantsService _systemTenantService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
         #endregion Members
 
         #region Public methods
-        public TenantRegistrationService(ISystemLookupItemService systemLookupItemService, ISystemSubscriptionService systemSubscriptionService, ISystemTenantService systemTenantService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public TenantRegistrationService(ISystemLookupItemService systemLookupItemService, ISystemSubscriptionService systemSubscriptionService, ISystemTenantsService systemTenantService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemLookupItemService = systemLookupItemService;
             _systemSubscriptionService = systemSubscriptionService;

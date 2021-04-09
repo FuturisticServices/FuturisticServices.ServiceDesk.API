@@ -1,30 +1,4 @@
 {
-  "tenant": {
-    "setup": {
-      "containers": {
-        "create": [
-          {
-            "name": "LookupItems",
-            "partitionKey": "name",
-            "cloneItems": true
-          },
-          {
-            "name": "Subscriptions",
-            "partitionKey": "partitionKey",
-            "cloneItems": false
-          },
-          {
-            "name": "Users",
-            "partitionKey": "employeeId",
-            "cloneItems": false
-          }
-        ]
-      },
-      "lookupGroups": {
-        "omit": ["Database Platforms", "Subscription Renewal Timeframes"]
-      }
-    }
-  },
   "tenants": [
     {
       "id": "ec67a2c5-6cc1-4d23-b32a-ae450dd802c4",
@@ -94,11 +68,11 @@
           "enabled": true,
           "emailAddresses": [
             {
-              "id": "ea768bca-7d22-4a21-9753-4770eea4f3e9",
-              "type": {
-                "name": "work"
-              },
-              "address": "system.admin@futuristic.services"
+                "id": "ea768bca-7d22-4a21-9753-4770eea4f3e9",
+                "type": {
+                    "name": "work"
+                },
+                "address": "system.admin@tangled.services"
             }
           ],
           "phoneNumbers": [

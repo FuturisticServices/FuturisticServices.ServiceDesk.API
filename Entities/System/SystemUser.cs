@@ -2,15 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos.Spatial;
-using Newtonsoft.Json;
 
-using TangledServices.ServicePortal.API.Models;
-using TangledServices.ServicePortal.API.Entities;
-using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace TangledServices.ServicePortal.API.Entities
 {

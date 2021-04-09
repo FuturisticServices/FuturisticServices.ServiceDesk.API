@@ -39,7 +39,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         }
 
         /// <summary>
-        /// Deletes and creates the [futuristic.services] system database. 
+        /// Deletes and creates the [tangled.services] system database. 
         /// ** USE WITH CAUTION **
         /// </summary>
         /// <returns></returns>
