@@ -31,12 +31,12 @@ namespace TangledServices.ServicePortal.API.Services
     public class SystemService : SystemBaseService, ISystemService
     {
         private readonly IHashingService _hashingService;
+        private readonly ISystemUsersService _systemUsersService;
         private readonly ICosmosDbManager _cosmosDbManager;
         private readonly ISystemManager _systemManager;
         private readonly ISystemLookupItemManager _systemLookupItemManager;
-        //private readonly ISystemLookupItemManager _systemLookupItemsManager;
         private readonly ISystemSubscriptionManager _systemSubscriptionsManager;
-        private readonly ISystemUserManager _systemUsersManager;
+        private readonly ISystemUsersManager _systemUsersManager;
         private readonly ISystemTenantsManager _systemTenantsManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -49,18 +49,19 @@ namespace TangledServices.ServicePortal.API.Services
         /// <param name="systemManager">Manager to [TangledServices.ServicePortal] database.</param>
         /// <param name="systemLookupItemManager">Manager to [FuturustucServices.ServicePortal].[LookupItems] container from a 'item' perspective.</param>
         /// <param name="systemSubscriptionManager">Manager to [TangledServices.ServicePortal].[Subscriptions] container.</param>
-        /// <param name="systemUserManager">Manager to [TangledServices.ServicePortal].[Users] container.</param>
+        /// <param name="systemUsersManager">Manager to [TangledServices.ServicePortal].[Users] container.</param>
         /// <param name="systemTenantsManager">Manager to [TangledServices.ServicePortal].[Tenants] container.</param>
         /// <param name="configuration">Manager to file-based, in-memory and environment variables.</param>
         /// <param name="webHostEnvironment">Manager to the web hosting environment the application is running in.</param>
-        public SystemService(IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupItemManager systemLookupItemManager, ISystemSubscriptionManager systemSubscriptionManager, ISystemUserManager systemUserManager, ISystemTenantsManager systemTenantsManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemService(ISystemUsersService systemUsersService, IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupItemManager systemLookupItemManager, ISystemSubscriptionManager systemSubscriptionManager, ISystemUsersManager systemUsersManager, ISystemTenantsManager systemTenantsManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
+            _systemUsersService = systemUsersService;
             _hashingService = hashingService;
             _cosmosDbManager = cosmosDbManager;
             _systemManager = systemManager;
             _systemLookupItemManager = systemLookupItemManager;
             _systemSubscriptionsManager = systemSubscriptionManager;
-            _systemUsersManager = systemUserManager;
+            _systemUsersManager = systemUsersManager;
             _systemTenantsManager = systemTenantsManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -80,7 +81,7 @@ namespace TangledServices.ServicePortal.API.Services
             if (databaseResponse.StatusCode != HttpStatusCode.Created) throw new SystemDatabaseNotCreatedException();
 
             //  Create containers.
-            var systemContainersToCreate = _configuration.GetSection("system:reset:containers").Get<List<ResetContainerModel>>();
+            var systemContainersToCreate = _configuration.GetSection("system:reset:containers").Get<List<ResetContainerModel>>(); //  from system-reset.json
 
             //  Persist data to containers.
             foreach (ResetContainerModel container in systemContainersToCreate)

@@ -78,6 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ConfigurationFiles\API json\" />
     <Folder Include="PostmanCollections\" />
     <Folder Include="Resources\" />
   </ItemGroup>

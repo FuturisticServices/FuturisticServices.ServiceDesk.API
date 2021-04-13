@@ -54,38 +54,7 @@
           "postalCode": "86011",
           "countryId": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
         }
-      },
-      "users": [
-        {
-          "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
-          "employeeId": "0",
-          "nameFirst": "Tenant",
-          "nameLast": "Admin",
-          "username": "{moniker}.admin",
-          "password": "password",
-          "displayName": "Tenant Admin",
-          "mustChangePasswordAtNextLogin": false,
-          "enabled": true,
-          "emailAddresses": [
-            {
-                "id": "ea768bca-7d22-4a21-9753-4770eea4f3e9",
-                "type": {
-                    "name": "work"
-                },
-                "address": "system.admin@tangled.services"
-            }
-          ],
-          "phoneNumbers": [
-            {
-              "id": "eed6e23c-178c-4ea1-9866-b3b9e4f51537",
-              "type": {
-                "name": "work"
-              },
-              "number": "1112223333"
-            }
-          ]
-        }
-      ]
+      }
     }
   ]
 }

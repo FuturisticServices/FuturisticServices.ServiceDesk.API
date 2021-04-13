@@ -30,7 +30,7 @@ namespace TangledServices.ServicePortal.API.Services
         #region Public methods
         public string EncryptString(string text)
         {
-            var keyString = _configuration.GetSection("hash:secretKey").Value;
+            var keyString = _configuration.GetSection("hash:secretKey").Value; //  from appsettings.json
             var key = Encoding.UTF8.GetBytes(keyString);
 
             using (var aesAlg = Aes.Create())
@@ -62,7 +62,7 @@ namespace TangledServices.ServicePortal.API.Services
 
         public string DecryptString(string cipherText)
         {
-            var keyString = _configuration.GetSection("hash:secretKey").Value;
+            var keyString = _configuration.GetSection("hash:secretKey").Value; //  from appsettings.json
             var fullCipher = Convert.FromBase64String(cipherText);
 
             var iv = new byte[16];

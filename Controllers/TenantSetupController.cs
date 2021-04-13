@@ -69,9 +69,8 @@ namespace TangledServices.ServicePortal.API.Controllers
             {
                 if (await _systemTenantsService.NotExists(moniker)) throw new SystemTenantDoesNotExistException(moniker);
 
-                Tenant tenant = await _tenantSetupService.Setup(moniker);
-                TenantModels tenantModel = new TenantModels() { Moniker = tenant.Moniker, Company = tenant.Company, SubscriptionId = tenant.SubscriptionId, BillingInformation = tenant.BillingInformation, PointOfContact = tenant.PointOfContact };
-
+                await _tenantSetupService.Setup(moniker);
+                
                 response = new ApiResponse(HttpStatusCode.Created, string.Format("Tenant with moniker '{0}' created successfully.", moniker));
                 return Ok( new { response });
             }

@@ -16,8 +16,8 @@ namespace TangledServices.ServicePortal.API.Managers
 {
     public interface ITenantLookupItemManager
     {
-        Task<LookupGroupEntity> GetItemAsync(string lookupName);
-        Task<LookupItemEntity> GetItemAsync(string lookupName, string name);
+        Task<LookupGroupEntity> GetItemAsync(string groupName);
+        Task<LookupItemEntity> GetItemAsync(string groupName, string itemName);
         Task<IEnumerable<LookupGroupEntity>> GetItemsAsync();
         Task<LookupGroupEntity> CreateItemAsync(LookupGroupEntity lookupGroup);
 
@@ -72,7 +72,7 @@ public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManag
         {
             var query = _container.GetItemLinqQueryable<LookupGroupEntity>(true);
             LookupGroupEntity lookupItems = query.Where<LookupGroupEntity>(x => x.Group == groupName).AsEnumerable().FirstOrDefault();
-            LookupItemEntity lookupItem = lookupItems.Items.SingleOrDefault(x => x.Name == itemName);
+            LookupItemEntity lookupItem = lookupItems.Items.SingleOrDefault(x => string.Equals(x.Name, itemName, StringComparison.OrdinalIgnoreCase));
 
             return lookupItem;
         }

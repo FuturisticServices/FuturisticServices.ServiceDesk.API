@@ -18,6 +18,7 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface ITenantLookupItemService
     {
+        Task<LookupItemEntity> GetItem(string groupName, string itemName);
         Task<LookupGroupEntity> CreateItem(LookupGroupEntity lookupGroup);
     }
 
@@ -32,6 +33,12 @@ namespace TangledServices.ServicePortal.API.Services
             _tenantLookupItemManager = tenantLookupItemManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<LookupItemEntity> GetItem(string groupName, string itemName)
+        {
+            var results = await _tenantLookupItemManager.GetItemAsync(groupName, itemName);
+            return results;
         }
 
         public async Task<LookupGroupEntity> CreateItem(LookupGroupEntity lookupGroup)
