@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-using AutoMapper;
 using Newtonsoft.Json;
 
 using TangledServices.ServicePortal.API.Common;
@@ -21,13 +20,11 @@ namespace TangledServices.ServicePortal.API.Controllers
     public class SystemTenantsController : BasePortalController
     {
         private readonly ISystemTenantsService _systemTenantService;
-        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
-        public SystemTenantsController(ISystemTenantsService systemTenantService, IMapper mapper, IConfiguration configuration)
+        public SystemTenantsController(ISystemTenantsService systemTenantService, IConfiguration configuration)
         {
             _systemTenantService = systemTenantService;
-            _mapper = mapper;
             _configuration = configuration;
         }
 

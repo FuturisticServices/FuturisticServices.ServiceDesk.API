@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-using AutoMapper;
-
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Managers;
 using Microsoft.AspNetCore.Http;
@@ -21,14 +19,12 @@ namespace TangledServices.ServicePortal.API.Controllers
     public class UserController : Controller
     {
         private readonly ISystemTenantsManager _systemTenantsService;
-        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private SystemTenant _systemTenant;
 
-        public UserController(ISystemTenantsManager customerService, IMapper mapper, IConfiguration configuration)
+        public UserController(ISystemTenantsManager customerService, IConfiguration configuration)
         {
             _systemTenantsService = customerService;
-            _mapper = mapper;
             _configuration = configuration;
         }
 

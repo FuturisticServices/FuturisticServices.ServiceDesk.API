@@ -12,6 +12,7 @@ namespace TangledServices.ServicePortal.API.Controllers
     {
         public ApiResponse response;
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
