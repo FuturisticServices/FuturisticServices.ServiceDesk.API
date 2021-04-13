@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 
-using AutoMapper;
 using Newtonsoft.Json;
 
 using TangledServices.ServicePortal.API.Entities;
@@ -30,7 +29,6 @@ namespace TangledServices.ServicePortal.API.Controllers
         #region Members
         private readonly ISystemTenantsService _systemTenantsService;
         private readonly ITenantSetupService _tenantSetupService;
-        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
         #endregion Members
@@ -38,13 +36,11 @@ namespace TangledServices.ServicePortal.API.Controllers
         #region Constructors
         public TenantSetupController(ITenantSetupService tenantSetupService,
                                 ISystemTenantsService systemTenantsService,
-                                IMapper mapper,
                                 IConfiguration configuration,
                                 IWebHostEnvironment webHostEnvironment)
         {
             _systemTenantsService = systemTenantsService;
             _tenantSetupService = tenantSetupService;
-            _mapper = mapper;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }

@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-using AutoMapper;
-
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Models;
 using TangledServices.ServicePortal.API.Services;
@@ -24,16 +22,14 @@ namespace TangledServices.ServicePortal.API.Controllers
     public class SystemLookupItemsController : ControllerBase
     {
         private readonly ISystemLookupItemService _systemService;
-        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         private readonly dynamic _response = new ExpandoObject();
 
-        public SystemLookupItemsController(ISystemLookupItemService systemService, IMapper mapper, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public SystemLookupItemsController(ISystemLookupItemService systemService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _systemService = systemService;
-            _mapper = mapper;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }

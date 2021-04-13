@@ -18,6 +18,7 @@ namespace TangledServices.ServicePortal.API.Services
     {
         Task<IEnumerable<SystemTenant>> Get();
         Task<SystemTenant> Get(string moniker);
+        Task<bool> Exists(string moniker);
         Task<bool> NotExists(string moniker);
         Task<SystemTenant> Create(SystemTenantModel model);
     }
@@ -60,6 +61,12 @@ namespace TangledServices.ServicePortal.API.Services
             return systemTenant;
         }
 
+        public async Task<bool> Exists(string moniker)
+        {
+            SystemTenant systemTenant = await _systemTenantsManager.GetItemAsync(moniker);
+            return systemTenant != null;
+        }
+
         public async Task<bool> NotExists(string moniker)
         {
             SystemTenant systemTenant = await _systemTenantsManager.GetItemAsync(moniker);
@@ -69,7 +76,7 @@ namespace TangledServices.ServicePortal.API.Services
         public async Task<SystemTenant> Create(SystemTenantModel model)
         {
             //  Cannot create tenant if it already exists in the system DB.
-            if (await NotExists(model.Moniker)) throw new SystemTenantAlreadyExistsException(model.Moniker);
+            if (await Exists(model.Moniker)) throw new SystemTenantAlreadyExistsException(model.Moniker);
 
             //  Get subscription.
             Subscription subscription = await _systemSubscriptionService.GetItem(model.SubscriptionId);

@@ -16,8 +16,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-using AutoMapper;
-
 using TangledServices.ServicePortal.API.Managers;
 using TangledServices.ServicePortal.API.Services;
 
@@ -46,8 +44,6 @@ namespace TangledServices.ServicePortal.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Startup));
-
             //services.AddSwaggerGen((options) => {
             //    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Futuristic Service Desk API", Version = "v1" });
             //});

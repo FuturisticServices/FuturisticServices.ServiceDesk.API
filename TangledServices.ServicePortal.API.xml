@@ -36,7 +36,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantRegistrationController.#ctor(TangledServices.ServicePortal.API.Services.ISystemTenantService,TangledServices.ServicePortal.API.Services.ISystemTenantRegistrationService,TangledServices.ServicePortal.API.Services.ISystemLookupItemService,TangledServices.ServicePortal.API.Services.ISystemSubscriptionService,AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantRegistrationController.#ctor(TangledServices.ServicePortal.API.Services.ISystemTenantService,TangledServices.ServicePortal.API.Services.ISystemTenantRegistrationService,TangledServices.ServicePortal.API.Services.ISystemLookupItemService,TangledServices.ServicePortal.API.Services.ISystemSubscriptionService,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Manages all endpoints for the registration process.
             </summary>
