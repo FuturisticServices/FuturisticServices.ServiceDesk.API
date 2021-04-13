@@ -58,7 +58,7 @@ namespace TangledServices.ServicePortal.API.Controllers
 
                     if (username == "system.admin" && password == "password")
                     {
-                        string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value;
+                        string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value; //  from appsettings.json
 
                         var claimsData = new[] { new Claim(ClaimTypes.Name, username) };
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));

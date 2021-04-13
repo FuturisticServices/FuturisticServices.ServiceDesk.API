@@ -45,6 +45,7 @@ namespace TangledServices.ServicePortal.API.Managers
 
         public void SetConnectionParameters(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
+            //  webHostEnvironment.EnvironmentName configured in launchSettings.json
             if (webHostEnvironment.EnvironmentName == "Production")
             {
                 _uri = configuration["cosmosDb.Production:URI"];

@@ -33,8 +33,8 @@ namespace TangledServices.ServicePortal.API
             var configurationBuilder = new ConfigurationBuilder()
             .SetBasePath(webHostEnvironment.ContentRootPath + @"\ConfigurationFiles")
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile("system.json", optional: true)
-            .AddJsonFile("tenantSetup.json", optional: true)
+            .AddJsonFile("system-reset.json", optional: true)
+            .AddJsonFile("tenant-setup.json", optional: true)
             .AddEnvironmentVariables();
 
             Configuration = configurationBuilder.Build();
@@ -176,13 +176,13 @@ namespace TangledServices.ServicePortal.API
             //services.AddSingleton<ISystemTenantRegistrationService, SystemTenantRegistrationService>();
             services.AddSingleton<ISystemLookupItemService, SystemLookupItemService>();
             services.AddSingleton<ISystemSubscriptionService, SystemSubscriptionService>();
-            services.AddSingleton<ISystemUserService, SystemUserService>();
+            services.AddSingleton<ISystemUsersService, SystemUsersService>();
 
             //  System managers.
             services.AddSingleton<ISystemManager, SystemManager>();
             services.AddSingleton<ISystemLookupItemManager, SystemLookupItemManager>();
             services.AddSingleton<ISystemSubscriptionManager, SystemSubscriptionManager>();
-            services.AddSingleton<ISystemUserManager, SystemUserManager>();
+            services.AddSingleton<ISystemUsersManager, SystemUsersManager>();
             services.AddSingleton<ISystemTenantsManager, SystemTenantsManager>();
 
             //  Tenant services.

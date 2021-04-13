@@ -15,19 +15,19 @@ using TangledServices.ServicePortal.API.Managers;
 
 namespace TangledServices.ServicePortal.API.Managers
 {
-    public interface ISystemUserManager
+    public interface ISystemUsersManager
     {
         Task<SystemUser> GetItemAsync(string username);
         Task<IEnumerable<SystemUser>> GetItemsAsync();
         Task<Entities.User> CreateItemAsync(Entities.User user);
 }
 
-public class SystemUserManager : SystemBaseManager, ISystemUserManager
+public class SystemUsersManager : SystemBaseManager, ISystemUsersManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public SystemUserManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", configuration, webHostEnvironment)
+        public SystemUsersManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -51,7 +51,7 @@ public class SystemUserManager : SystemBaseManager, ISystemUserManager
 
         public async Task<Entities.User> CreateItemAsync(Entities.User user)
         {
-            var results = await _container.CreateItemAsync<Entities.User>(user, new PartitionKey(user.NameLast));
+            var results = await _container.CreateItemAsync<Entities.User>(user, new PartitionKey(user.EmployeeID));
             return results;
         }
     }

@@ -13,29 +13,31 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Extensions;
 using TangledServices.ServicePortal.API.Managers;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface ISystemUserService
+    public interface ISystemUsersService
     {
         Task<string> GetUsernameAsync(string basicAuthHeader);
         Task<string> GetPasswordAsync(string basicAuthHeader);
         Task<SystemUser> AuthenticateAsync(string basicAuthHeader);
         Task<string> GenerateJwtToken(SystemUser user);
+        Task<string> GetUniqueEmployeeId(string moniker);
     }
 
-    public class SystemUserService : SystemBaseService, ISystemUserService
+    public class SystemUsersService : SystemBaseService, ISystemUsersService
     {
         private readonly IHashingService _hashingService;
-        private readonly ISystemUserManager _systemUserManager;
+        private readonly ISystemUsersManager _systemUsersManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemUserService(IHashingService hashingService, ISystemUserManager systemUserManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemUsersService(IHashingService hashingService, ISystemUsersManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _hashingService = hashingService;
-            _systemUserManager = systemUserManager;
+            _systemUsersManager = systemUsersManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -74,7 +76,7 @@ namespace TangledServices.ServicePortal.API.Services
 
                 if (!string.IsNullOrEmpty(loginUsername) && !string.IsNullOrEmpty(loginPassword))
                 {
-                    var user = await _systemUserManager.GetItemAsync(loginUsername);
+                    var user = await _systemUsersManager.GetItemAsync(loginUsername);
                     if (user != null)
                     {
                         var password = _hashingService.DecryptString(user.Password);
@@ -85,12 +87,29 @@ namespace TangledServices.ServicePortal.API.Services
 
             return null;
         }
+
+        public async Task<string> GetUniqueEmployeeId(string moniker)
+        {
+            var users = await _systemUsersManager.GetItemsAsync();
+            string employeeId = string.Empty;
+            bool employeeIdNotUnique = true;
+
+            do
+            {
+                string randomNumber = Helpers.GetRandomNumber();
+                employeeId = string.Format("{0}{1}", moniker, randomNumber);
+                employeeIdNotUnique = users.Any(x => x.EmployeeID.ToLower() == employeeId.ToLower());
+
+            } while (employeeIdNotUnique);
+
+            return employeeId;
+        }
         #endregion Public methods
 
         #region Private methods
         public async Task<string> GenerateJwtToken(SystemUser user)
         {
-            string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value;
+            string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value; //  from appsettings.json
 
             var authClaims = new List<Claim>
                 {

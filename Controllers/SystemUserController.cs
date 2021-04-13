@@ -26,11 +26,11 @@ namespace TangledServices.ServicePortal.API.Controllers
     [ApiController]
     public class SystemUserController : ControllerBase
     {
-        private readonly ISystemUserService _systemUserService;
+        private readonly ISystemUsersService _systemUserService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemUserController(ISystemUserService systemUserService,
+        public SystemUserController(ISystemUsersService systemUserService,
                                 IConfiguration configuration,
                                 IWebHostEnvironment webHostEnvironment)
         {

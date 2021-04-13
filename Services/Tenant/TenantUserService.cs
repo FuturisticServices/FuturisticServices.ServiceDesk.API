@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Extensions;
 using TangledServices.ServicePortal.API.Managers;
 using TangledServices.ServicePortal.API.Models;
 
@@ -19,6 +20,8 @@ namespace TangledServices.ServicePortal.API.Services
     public interface ITenantUserService
     {
         Task<Entities.User> CreateItem(Entities.User user);
+        Task<Entities.User> GetItem(string employeeId);
+        Task<string> GetUniqueEmployeeId(string moniker);
     }
 
     public class TenantUserService : TenantBaseService, ITenantUserService
@@ -43,6 +46,30 @@ namespace TangledServices.ServicePortal.API.Services
         {
             var results = await _tenantUserManager.CreateItemAsync(user);
             return results;
+        }
+
+        public async Task<Entities.User> GetItem(string employeeId)
+        {
+            var results = await _tenantUserManager.GetItemsAsync();
+            var user = results.ToList().SingleOrDefault(x => x.EmployeeID.ToLower() == employeeId.ToLower());
+            return user;
+        }
+
+        public async Task<string> GetUniqueEmployeeId(string moniker)
+        {
+            var users = await _tenantUserManager.GetItemsAsync();
+            string employeeId = string.Empty;
+            bool employeeIdNotUnique = true;
+            
+            do
+            {
+                string randomNumber = Helpers.GetRandomNumber();
+                employeeId = string.Format("{0}{1}", moniker, randomNumber);
+                employeeIdNotUnique = users.Any(x => x.EmployeeID.ToLower() == employeeId.ToLower());
+
+            } while (employeeIdNotUnique);
+
+            return employeeId;
         }
         #endregion Public methods
     }
