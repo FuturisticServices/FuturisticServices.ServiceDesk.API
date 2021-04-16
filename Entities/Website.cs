@@ -15,7 +15,7 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// A website accessible from a modern web browser.
     /// </summary>
-    public class Website : EntityBase
+    public class Website : BaseEntity
     {
         public Website() { }
 

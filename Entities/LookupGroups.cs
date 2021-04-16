@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class LookupGroupEntity: EntityBase
+    public class LookupGroupEntity: BaseEntity
     {
         /// <summary>
         /// Container parition key. *** CANNOT CHANGE VALUE (used by Cosmos DB)!!!!
@@ -34,7 +34,7 @@ namespace TangledServices.ServicePortal.API.Entities
         public IEnumerable<LookupItemEntity> Items { get; set; }
     }
 
-    public class LookupItemEntity : EntityBase
+    public class LookupItemEntity : BaseEntity
     {
         /// <summary>
         /// System value. *** SHOULD NOT CHANGE!!!!

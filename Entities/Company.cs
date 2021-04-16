@@ -13,7 +13,7 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Information related to the legal entity of a tenant.
     /// </summary>
-    public class Company : EntityBase
+    public class Company : BaseEntity
     {
         public Company() { }
 
@@ -30,8 +30,8 @@ namespace TangledServices.ServicePortal.API.Entities
             Name = model.Name;
             Address = new Address(model.Address,
                                     addressTypes.SingleOrDefault(x => x.Name == "Corporate"),
-                                    states.SingleOrDefault(x => x.Id == model.Address.StateId),
-                                    countries.SingleOrDefault(x => x.Id == model.Address.CountryId));
+                                    states.SingleOrDefault(x => x.Id == model.Address.State.Id),
+                                    countries.SingleOrDefault(x => x.Id == model.Address.Country.Id));
             PhoneNumber = new PhoneNumber(model.PhoneNumber,
                                             phoneNumberTypes.SingleOrDefault(x => x.Name == "Corporate"));
             Website = new Website(model.Website,

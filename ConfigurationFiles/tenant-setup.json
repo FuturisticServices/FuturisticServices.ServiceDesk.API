@@ -27,11 +27,11 @@
         {
           "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
           "employeeId": "0",
-          "nameFirst": "Tenant",
+          "nameFirst": "Tangled",
           "nameLast": "Admin",
           "username": "{moniker}.admin",
           "password": "password",
-          "displayName": "Tenant Admin",
+          "displayName": "Tangled Admin",
           "mustChangePasswordAtNextLogin": false,
           "enabled": true,
           "emailAddresses": [

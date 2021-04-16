@@ -14,7 +14,7 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Physical email address.
     /// </summary>
-    public class DatabaseConnection : EntityBase
+    public class DatabaseConnection : BaseEntity
     {
         public DatabaseConnection() { }
 

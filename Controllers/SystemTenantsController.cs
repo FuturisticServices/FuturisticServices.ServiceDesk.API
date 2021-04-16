@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -20,10 +21,12 @@ namespace TangledServices.ServicePortal.API.Controllers
     public class SystemTenantsController : BasePortalController
     {
         private readonly ISystemTenantsService _systemTenantService;
+        private readonly ISystemSubscriptionService _systemSubscriptionService;
         private readonly IConfiguration _configuration;
 
-        public SystemTenantsController(ISystemTenantsService systemTenantService, IConfiguration configuration)
+        public SystemTenantsController(ISystemTenantsService systemTenantService, ISystemSubscriptionService systemSubscriptionService, IConfiguration configuration)
         {
+            _systemSubscriptionService = systemSubscriptionService;
             _systemTenantService = systemTenantService;
             _configuration = configuration;
         }
@@ -47,10 +50,11 @@ namespace TangledServices.ServicePortal.API.Controllers
                 var tenant = await _systemTenantService.Get(moniker);
 
                 SystemTenant systemTenant = await _systemTenantService.Get(moniker);
-                response = new ApiResponse(HttpStatusCode.OK, string.Format("Tenant with moniker '{0}' found.", moniker), null, systemTenant);
+                SystemTenantModel model = new SystemTenantModel(systemTenant);
+                response = new ApiResponse(HttpStatusCode.OK, string.Format("Tenant with moniker '{0}' found.", moniker), null, new List<Object>() { systemTenant });
                 return Ok(new { response });
             }
-            catch (SystemTenantDoesNotExistException exception)
+            catch (SystemTenantDoesNotExistException)
             {
                 response = new ApiResponse(HttpStatusCode.BadRequest, string.Format("Tenant with moniker '{0}' not found in system DB.", moniker));
                 return BadRequest(new { response });
@@ -75,15 +79,15 @@ namespace TangledServices.ServicePortal.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] SystemTenantModel model)
+        public async Task<IActionResult> Create([FromBody] SystemTenantCreateModel model)
         {
             try
             {
-                SystemTenant systemTenant = await _systemTenantService.Create(model);
-                response = new ApiResponse(HttpStatusCode.OK, string.Format("Tenant with moniker '{0}' created in system DB.", model.Moniker));
+                SystemTenantModel systemTenantModel = await _systemTenantService.Create(model);
+                response = new ApiResponse(HttpStatusCode.OK, string.Format("Tenant with moniker '{0}' created in system DB.", model.Moniker), null, new List<Object>() { systemTenantModel });
                 return Ok(new { response });
             }
-            catch (SubscriptionNotFoundException exception)
+            catch (SubscriptionNotFoundException)
             {
                 response = new ApiResponse(HttpStatusCode.NotFound, string.Format("Subscription with ID '{0}' not found in system DB.", model.SubscriptionId));
                 return BadRequest(new { response });

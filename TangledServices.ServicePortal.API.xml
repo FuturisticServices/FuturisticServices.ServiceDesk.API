@@ -281,7 +281,7 @@
             Physical email address.
             </summary>
         </member>
-        <member name="P:TangledServices.ServicePortal.API.Entities.EntityBase.Id">
+        <member name="P:TangledServices.ServicePortal.API.Entities.BaseEntity.Id">
             <summary>
             Unique identifier (GUID) of the entity.
             </summary>

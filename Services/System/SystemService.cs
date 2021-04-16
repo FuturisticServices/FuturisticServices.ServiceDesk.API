@@ -81,10 +81,10 @@ namespace TangledServices.ServicePortal.API.Services
             if (databaseResponse.StatusCode != HttpStatusCode.Created) throw new SystemDatabaseNotCreatedException();
 
             //  Create containers.
-            var systemContainersToCreate = _configuration.GetSection("system:reset:containers").Get<List<ResetContainerModel>>(); //  from system-reset.json
+            var systemContainersToCreate = _configuration.GetSection("system:reset:containers").Get<List<SystemResetModel>>(); //  from system-reset.json
 
             //  Persist data to containers.
-            foreach (ResetContainerModel container in systemContainersToCreate)
+            foreach (SystemResetModel container in systemContainersToCreate)
             {
                 var containerResponse = await createContainer(databaseResponse.Database, container);
                 var lookupGroupEntities = await createContainerLookupGroups(container);
@@ -100,7 +100,7 @@ namespace TangledServices.ServicePortal.API.Services
         /// <param name="database">The [TangledServices.ServicePortal] database object.</param>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
-        private async Task<ContainerResponse> createContainer(Database database, ResetContainerModel container)
+        private async Task<ContainerResponse> createContainer(Database database, SystemResetModel container)
         {
             ContainerResponse containerResponse = await _systemManager.CreateContainer(database, container.Name, container.PartitionKey);
             return containerResponse;
@@ -111,7 +111,7 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
-        private async Task<IEnumerable<LookupGroupEntity>> createContainerLookupGroups(ResetContainerModel container)
+        private async Task<IEnumerable<LookupGroupEntity>> createContainerLookupGroups(SystemResetModel container)
         {
             List<LookupGroupEntity> items = new List<LookupGroupEntity>();
 
@@ -132,7 +132,7 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
-        private async Task<IEnumerable<Subscription>> createContainerSubscriptions(ResetContainerModel container)
+        private async Task<IEnumerable<Subscription>> createContainerSubscriptions(SystemResetModel container)
         {
             List<Subscription> items = new List<Subscription>();
 
@@ -155,7 +155,7 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
-        private async Task<IEnumerable<Entities.User>> createContainerUsers(ResetContainerModel container)
+        private async Task<IEnumerable<Entities.User>> createContainerUsers(SystemResetModel container)
         {
             List<Entities.User> items = new List<Entities.User>();
 

@@ -11,7 +11,7 @@ using TangledServices.ServicePortal.API.Common;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class Group : EntityBase
+    public class Group : BaseEntity
     {
         /// <summary>
         /// The parent group ID this group belongs to (null ~ top level group).

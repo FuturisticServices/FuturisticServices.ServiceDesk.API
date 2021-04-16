@@ -13,7 +13,7 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Managers
 {
-    public interface ITenantManager
+    public interface ITenantsManager
     {
         Task<DatabaseResponse> DeleteDatabase();
         Task<DatabaseResponse> CreateDatabase();
@@ -21,14 +21,14 @@ namespace TangledServices.ServicePortal.API.Managers
         Task<List<string>> GetContainers(List<string> containersToOmit);
     }
 
-    public class TenantManager : TenantBaseManager, ITenantManager
+    public class TenantsManager : TenantBaseManager, ITenantsManager
     {
         private readonly ISystemTenantsManager _systemTenantsManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public TenantManager(ISystemTenantsManager systemTenantsManager, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", systemTenantsManager, httpContextAccessor, configuration, webHostEnvironment)
+        public TenantsManager(ISystemTenantsManager systemTenantsManager, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", systemTenantsManager, httpContextAccessor, configuration, webHostEnvironment)
         {
             _systemTenantsManager = systemTenantsManager;
             _httpContextAccessor = httpContextAccessor;

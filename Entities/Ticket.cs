@@ -10,7 +10,7 @@ using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class Ticket : EntityBase
+    public class Ticket : BaseEntity
     {
         [JsonConstructor]
         public Ticket() { }

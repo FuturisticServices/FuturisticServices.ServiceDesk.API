@@ -63,7 +63,7 @@ namespace TangledServices.ServicePortal.API.Controllers
                 response.status = this.StatusCode(StatusCodes.Status200OK, "No groups found.");
                 return Ok(new { response });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 dynamic response = new ExpandoObject();
                 response.items = null;
@@ -103,7 +103,7 @@ namespace TangledServices.ServicePortal.API.Controllers
                 response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("No '{0}' found.", groupName));
                 return Ok(new { response });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 dynamic response = new ExpandoObject();
                 response.items = null;

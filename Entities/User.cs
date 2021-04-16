@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class User : EntityBase
+    public class User : BaseEntity
     {
         public User() { }
 

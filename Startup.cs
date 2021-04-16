@@ -182,7 +182,6 @@ namespace TangledServices.ServicePortal.API
             services.AddSingleton<ISystemTenantsManager, SystemTenantsManager>();
 
             //  Tenant services.
-            services.AddSingleton<ITenantService, TenantService>();
             services.AddSingleton<ITenantSetupService, TenantSetupService>();
             services.AddSingleton<ITenantLookupGroupService, TenantLookupGroupService>();
             services.AddSingleton<ITenantLookupItemService, TenantLookupItemService>();
@@ -190,7 +189,7 @@ namespace TangledServices.ServicePortal.API
             services.AddSingleton<ITenantUserService, TenantUserService>();
 
             //  Tenant managers.
-            services.AddSingleton<ITenantManager, TenantManager>();
+            services.AddSingleton<ITenantsManager, TenantsManager>();
             services.AddSingleton<ITenantLookupItemManager, TenantLookupItemManager>();
             services.AddSingleton<ITenantSubscriptionsManager, TenantSubscriptionsManager>();
             services.AddSingleton<ITenantUserManager, TenantUserManager>();

@@ -10,7 +10,7 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Physical mailing address.
     /// </summary>
-    public class Address : EntityBase
+    public class Address : BaseEntity
     {
         public Address() { }
 
@@ -21,9 +21,9 @@ namespace TangledServices.ServicePortal.API.Entities
             Line1 = model.Line1;
             Line2 = string.IsNullOrEmpty(model.Line2) ? null : model.Line2;
             City = model.City;
-            State = state;
+            State = new AddressState(state);
             PostalCode = model.PostalCode;
-            Country = country;
+            Country = new AddressCountry(country);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "state")]
         [Required, JsonRequired, DisplayName("State")]
-        public LookupItemEntity State { get; set; }
+        public AddressState State { get; set; }
 
         /// <summary>
         /// Post/zip code associated to the address.
@@ -73,6 +73,6 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "country")]
         [Required, JsonRequired, DisplayName("Country")]
-        public LookupItemEntity Country { get; set; }
+        public AddressCountry Country { get; set; }
     }
 }

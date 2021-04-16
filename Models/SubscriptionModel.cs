@@ -1,41 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Entities;
 
-namespace TangledServices.ServicePortal.API.Entities
+namespace TangledServices.ServicePortal.API.Models
 {
-    public class Subscription: BaseEntity
+    public class SubscriptionModel: BaseModel
     {
-        public Subscription() { }
-
-        public Subscription(SubscriptionModel model)
+        public SubscriptionModel(Subscription entity)
         {
-            Id = model.Id;
-            Name = model.Name;
-            Description = model.Description;
-            Price = model.Price;
-            IsExpired = model.IsExpired;
-            PromotionCode = model.PromotionCode;
-            RenewalOccurrence = model.RenewalOccurrence;
-            RenewalTimeframe = model.RenewalTimeframe;
-            Highlights = model.Highlights;
-        }
-
-        public Subscription(TenantSubscriptionModel model)
-        {
-            Id = model.Id;
-            Name = model.Subscription.Name;
-            Description = model.Subscription.Description;
-            Price = model.Subscription.Price;
-            IsExpired = model.Subscription.IsExpired;
-            PromotionCode = model.Subscription.PromotionCode;
-            RenewalOccurrence = model.Subscription.RenewalOccurrence;
-            RenewalTimeframe = model.Subscription.RenewalTimeframe;
-            Highlights = model.Subscription.Highlights;
+            Id = entity.Id;
+            Name = entity.Name;
+            Description = entity.Description;
+            Price = entity.Price;
+            IsExpired = entity.IsExpired;
+            PromotionCode = entity.PromotionCode;
+            RenewalOccurrence = entity.RenewalOccurrence;
+            RenewalTimeframe = entity.RenewalTimeframe;
+            Highlights = entity.Highlights;
         }
 
         /// <summary>

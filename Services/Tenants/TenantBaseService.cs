@@ -12,7 +12,6 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public class TenantBaseService
     {
-
         public TenantBaseService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             

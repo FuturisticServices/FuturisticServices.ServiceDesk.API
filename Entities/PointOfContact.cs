@@ -13,7 +13,7 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class PointOfContact : EntityBase
+    public class PointOfContact : BaseEntity
     {
         public PointOfContact() { }
 
@@ -32,8 +32,8 @@ namespace TangledServices.ServicePortal.API.Entities
             Title = model.Title;
             Address = new Address(model.Address,
                                     addressTypes.SingleOrDefault(x => x.Name == "Work"),
-                                    states.SingleOrDefault(x => x.Id == model.Address.StateId),
-                                    countries.SingleOrDefault(x => x.Id == model.Address.CountryId));
+                                    states.SingleOrDefault(x => x.Id == model.Address.State.Id),
+                                    countries.SingleOrDefault(x => x.Id == model.Address.Country.Id));
             PhoneNumber = new PhoneNumber(model.PhoneNumber, phoneNumberTypes.SingleOrDefault(x => x.Name == "Work"));
             EmailAddress = new EmailAddress(model.EmailAddress, emailAddressTypes.SingleOrDefault(x => x.Name == "Work"));
         }
