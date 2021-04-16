@@ -9,11 +9,11 @@ using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class SystemTenant : EntityBase
+    public class SystemTenant : BaseEntity
     {
         public SystemTenant() { }
 
-        public SystemTenant(SystemTenantModel model, Subscription subscription, List<LookupGroupEntity> systemLookupItems)
+        public SystemTenant(SystemTenantCreateModel model, Subscription subscription, List<LookupGroupEntity> systemLookupItems)
         {
             DateTime registrationDatetime = DateTime.Now;
 
@@ -22,7 +22,7 @@ namespace TangledServices.ServicePortal.API.Entities
             Company = new Company(model.Company, systemLookupItems);
             PointOfContact = new PointOfContact(model.PointOfContact, systemLookupItems);
             BillingInformation = new BillingInformation(model.BillingInformation, systemLookupItems);
-            CurrentSubscription = new TenantSubscription(subscription);
+            Subscription = Subscription;
         }
 
         /// <summary>
@@ -53,11 +53,17 @@ namespace TangledServices.ServicePortal.API.Entities
         [Required]
         public BillingInformation BillingInformation { get; set; }
 
+        ///// <summary>
+        ///// Tenant active subscription currently in use.
+        ///// </summary>
+        //[JsonProperty(PropertyName = "currentSubscription", Required = Required.AllowNull)]
+        //public TenantSubscription CurrentSubscription { get; set; }
+
         /// <summary>
         /// Tenant active subscription currently in use.
         /// </summary>
-        [JsonProperty(PropertyName = "currentSubscription", Required = Required.AllowNull)]
-        public TenantSubscription CurrentSubscription { get; set; }
+        [JsonProperty(PropertyName = "subscription", Required = Required.AllowNull)]
+        public Subscription Subscription { get; set; }
 
         /// <summary>
         /// All tenant subscriptions including active and expired.

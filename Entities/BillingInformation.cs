@@ -13,7 +13,7 @@ namespace TangledServices.ServicePortal.API.Entities
     /// Contains information how the tenant will pay for registration and
     /// subscription renewals.
     /// </summary>
-    public class BillingInformation : EntityBase
+    public class BillingInformation : BaseEntity
     {
         public BillingInformation() { }
 
@@ -32,8 +32,8 @@ namespace TangledServices.ServicePortal.API.Entities
             ExpirationYear = model.ExpirationYear;
             Address = new Address(model.Address,
                                     addressTypes.SingleOrDefault(x => x.Name == "Billing"),
-                                    states.SingleOrDefault(x => x.Id == model.Address.StateId),
-                                    countries.SingleOrDefault(x => x.Id == model.Address.CountryId));
+                                    states.SingleOrDefault(x => x.Id == model.Address.State.Id),
+                                    countries.SingleOrDefault(x => x.Id == model.Address.Country.Id));
         }
 
         /// <summary>

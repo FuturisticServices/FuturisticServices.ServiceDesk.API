@@ -20,7 +20,7 @@ namespace TangledServices.ServicePortal.API.Services
         Task<SystemTenant> Get(string moniker);
         Task<bool> Exists(string moniker);
         Task<bool> NotExists(string moniker);
-        Task<SystemTenant> Create(SystemTenantModel model);
+        Task<SystemTenantModel> Create(SystemTenantCreateModel model);
     }
 
     public class SystemTenantsService : SystemBaseService, ISystemTenantsService
@@ -73,7 +73,7 @@ namespace TangledServices.ServicePortal.API.Services
             return systemTenant == null;
         }
 
-        public async Task<SystemTenant> Create(SystemTenantModel model)
+        public async Task<SystemTenantModel> Create(SystemTenantCreateModel model)
         {
             //  Cannot create tenant if it already exists in the system DB.
             if (await Exists(model.Moniker)) throw new SystemTenantAlreadyExistsException(model.Moniker);
@@ -90,9 +90,11 @@ namespace TangledServices.ServicePortal.API.Services
             SystemTenant systemTenant = new SystemTenant(model, subscription, systemLookupItems);
 
             //  Persist system tenant to DB.
-            SystemTenant results = await _systemTenantsManager.CreateItemAsync(systemTenant);
+            systemTenant = await _systemTenantsManager.CreateItemAsync(systemTenant);
 
-            return results;
+            SystemTenantModel response = new SystemTenantModel(systemTenant);
+
+            return response;
         }
         #endregion Public methods
     }

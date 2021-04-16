@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class SystemUser : EntityBase
+    public class SystemUser : BaseEntity
     {
         public SystemUser() { }
 

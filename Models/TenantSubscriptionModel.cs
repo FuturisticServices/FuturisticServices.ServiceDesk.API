@@ -1,27 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using TangledServices.ServicePortal.API.Models;
+using TangledServices.ServicePortal.API.Entities;
 
-namespace TangledServices.ServicePortal.API.Entities
+namespace TangledServices.ServicePortal.API.Models
 {
     /// <summary>
     /// A subscription is the offering a tenant signs up for.
     /// A subscription can determine the funcationality of the system.
     /// </summary>
-    public class TenantSubscription : BaseEntity
+    public class TenantSubscriptionModel : BaseModel
     {
-        public TenantSubscription(TenantSubscriptionModel model)
+        public TenantSubscriptionModel(Subscription entity)
         {
-            Id = model.Id;
-            Subscription = new Subscription(model.Subscription);
-            StartDatetime = model.StartDatetime;
-            EndDatetime = model.StartDatetime.AddYears(1);
+            DateTime registrationDatetime = DateTime.Now;
+
+            Subscription = new SubscriptionModel(entity);
+            StartDatetime = registrationDatetime;
+            EndDatetime = StartDatetime.AddYears(1);
             RenewalDate = EndDatetime.AddDays(1);
-            BillingAndPaymentTermsAgreementDate = model.BillingAndPaymentTermsAgreementDate;
-            ServiceTermsAgreementDate = model.ServiceTermsAgreementDate;
+            BillingAndPaymentTermsAgreementDate = registrationDatetime;
+            ServiceTermsAgreementDate = registrationDatetime;
         }
 
         /// <summary>
@@ -29,7 +34,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "subscription", Required = Required.Always)]
         [Required]
-        public Subscription Subscription { get; set; }
+        public SubscriptionModel Subscription { get; set; }
 
         /// <summary>
         /// The date when the subscrition is set to expire.

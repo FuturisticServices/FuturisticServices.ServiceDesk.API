@@ -4,7 +4,7 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
 {
-    public class UserModel : BaseModel
+    public class UserModel : BaseEntity
     {
         /// <summary>
         /// Unique ID associated to a user by the tenant.

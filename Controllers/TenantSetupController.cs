@@ -1,37 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 
-using Newtonsoft.Json;
-
 using TangledServices.ServicePortal.API.Entities;
-using TangledServices.ServicePortal.API.Models;
 using TangledServices.ServicePortal.API.Services;
 using TangledServices.ServicePortal.API.Common;
 
 namespace TangledServices.ServicePortal.API.Controllers
 {
-    [Route("api/tenants/{moniker}")]
-    [ApiVersion("1.0")]
-    [ApiController]
+    [Route("api/tenants/setup")]
     public class TenantSetupController : BasePortalController
     {
-        #region Members
         private readonly ISystemTenantsService _systemTenantsService;
         private readonly ITenantSetupService _tenantSetupService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        #endregion Members
 
         #region Constructors
         public TenantSetupController(ITenantSetupService tenantSetupService,
@@ -47,6 +35,15 @@ namespace TangledServices.ServicePortal.API.Controllers
         #endregion Constructors
 
         #region Public methods
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Tenant(string moniker)
+        {
+            return BadRequest("Not Authorized.");
+        }
+
         /// <summary>
         /// Creates a [TangledServices.{moniker}.ServicePortal] database.
         /// Inside the database, creates a 'LookupItems', 'Subscriptions' and 'Users' containers.
@@ -56,9 +53,10 @@ namespace TangledServices.ServicePortal.API.Controllers
         /// <returns>HttpStatus 401 ~ Unauthorized</returns>
         /// <returns>HttpStatus 200 ~ Success</returns>
         /// <returns>HttpStatus 400 ~ Bad request</returns>
-        [HttpPost("setup")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPost("{moniker}")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Setup(string moniker)
         {
             try
@@ -66,9 +64,9 @@ namespace TangledServices.ServicePortal.API.Controllers
                 if (await _systemTenantsService.NotExists(moniker)) throw new SystemTenantDoesNotExistException(moniker);
 
                 await _tenantSetupService.Setup(moniker);
-                
+
                 response = new ApiResponse(HttpStatusCode.Created, string.Format("Tenant with moniker '{0}' created successfully.", moniker));
-                return Ok( new { response });
+                return Ok(new { response });
             }
             catch (SystemTenantDoesNotExistException exception)
             {

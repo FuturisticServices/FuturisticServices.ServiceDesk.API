@@ -14,7 +14,7 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// A record/history of all actions performed to/on an object.
     /// </summary>
-    public class ObjectHistory : EntityBase
+    public class ObjectHistory : BaseEntity
     {
         public List<ObjectModification> Modifications { get; set; }
     }

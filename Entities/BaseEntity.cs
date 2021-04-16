@@ -1,17 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
-using Newtonsoft.Json;
-
-namespace TangledServices.ServicePortal.API.Models
+namespace TangledServices.ServicePortal.API.Entities
 {
-    public class BaseModel
+    public class BaseEntity
     {
-        /// <summary>
-        /// A unique GUID identifier.
-        /// </summary>
         [JsonProperty(PropertyName = "id", Required = Required.Always)]
         [Required, DisplayName("ID")]
         public string Id { get; set; }
