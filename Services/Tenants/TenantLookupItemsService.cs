@@ -16,19 +16,20 @@ using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface ITenantLookupItemService
+    public interface ITenantLookupItemsService
     {
         Task<LookupItemEntity> GetItem(string groupName, string itemName);
+        Task<LookupItemEntity> GetItem(string groupName, Guid id);
         Task<LookupGroupEntity> CreateItem(LookupGroupEntity lookupGroup);
     }
 
-    public class TenantLookupItemService : TenantBaseService, ITenantLookupItemService
+    public class TenantLookupItemsService : TenantBaseService, ITenantLookupItemsService
     {
         private readonly ITenantLookupItemManager _tenantLookupItemManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public TenantLookupItemService(ITenantLookupItemManager tenantLookupItemManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public TenantLookupItemsService(ITenantLookupItemManager tenantLookupItemManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _tenantLookupItemManager = tenantLookupItemManager;
             _configuration = configuration;
@@ -38,6 +39,12 @@ namespace TangledServices.ServicePortal.API.Services
         public async Task<LookupItemEntity> GetItem(string groupName, string itemName)
         {
             var results = await _tenantLookupItemManager.GetItemAsync(groupName, itemName);
+            return results;
+        }
+
+        public async Task<LookupItemEntity> GetItem(string groupName, Guid id)
+        {
+            var results = await _tenantLookupItemManager.GetItemAsync(groupName, id);
             return results;
         }
 

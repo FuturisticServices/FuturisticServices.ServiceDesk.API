@@ -46,7 +46,7 @@ public class TenantUserManager : TenantBaseManager, ITenantUserManager
 
         public async Task<Entities.User> CreateItemAsync(Entities.User user)
         {
-            var results = await _container.CreateItemAsync<Entities.User>(user, new PartitionKey(user.EmployeeID));
+            var results = await _container.CreateItemAsync<Entities.User>(user, new PartitionKey(user.EmployeeId));
             return results;
         }
     }

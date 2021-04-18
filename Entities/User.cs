@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos.Spatial;
+
 using Newtonsoft.Json;
 
 using TangledServices.ServicePortal.API.Models;
-using TangledServices.ServicePortal.API.Entities;
-using Microsoft.AspNetCore.Identity;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
@@ -18,12 +13,31 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public User() { }
 
+        public User(UserModel model)
+        {
+            EmployeeId = model.Id;
+            NamePrefix = model.NamePrefix;
+            NameFirst = model.NameFirst;
+            NameLast = model.NameLast;
+            NameSuffix = model.NameSuffix;
+            Username = model.Username;
+            Password = model.Password;
+            DisplayName = model.DisplayName;
+            ProfileImageUrl = model.ProfileImageUrl;
+            MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
+            PasswordExpirationDateTime = model.PasswordExpirationDateTime;
+            Enabled = model.Enabled;
+            EmailAddresses = EmailAddress.Construct(model.EmailAddresses);
+            PhoneNumbers = PhoneNumber.Construct(model.PhoneNumbers);
+            Roles = model.Roles;
+        }
+
         /// <summary>
         /// Suffix of the user.
         /// </summary>
         [JsonProperty(PropertyName = "employeeId", Required = Required.Always)]
         [Required, DisplayName("Employee ID")]
-        public string EmployeeID { get; set; }
+        public string EmployeeId { get; set; }
 
         /// <summary>
         /// Suffix of the user.

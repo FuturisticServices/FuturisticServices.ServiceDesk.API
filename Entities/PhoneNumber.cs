@@ -18,11 +18,20 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public PhoneNumber() { }
 
-        public PhoneNumber(PhoneNumberModel model, LookupItemEntity type)
+        public PhoneNumber(PhoneNumberModel model)
         {
-            Id = Guid.NewGuid().ToString();
-            Type = type;
+            Type = model.Type;
             Number = model.Number;
+        }
+
+        public static List<PhoneNumber> Construct(List<PhoneNumberModel> model)
+        {
+            List<PhoneNumber> phoneNumbers = new List<PhoneNumber>();
+            foreach (PhoneNumberModel phoneNumber in model)
+            {
+                phoneNumbers.Add(new PhoneNumber(phoneNumber));
+            }
+            return phoneNumbers;
         }
 
         /// <summary>

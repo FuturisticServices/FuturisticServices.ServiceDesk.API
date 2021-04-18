@@ -19,10 +19,11 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public Website() { }
 
-        public Website(WebsiteModel model, LookupItemEntity type)
+        //  Create entity from model.
+        public Website(WebsiteModel model)
         {
             Id = Guid.NewGuid().ToString();
-            Type = type;
+            Type = model.Type;
             Url = model.Url;
         }
 
@@ -30,14 +31,14 @@ namespace TangledServices.ServicePortal.API.Entities
         /// Purpose/usage of the website.
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
-        [Required]
+        [Required, DisplayName("Type")]
         public LookupItemEntity Type { get; set; }
 
         /// <summary>
         /// The website URL.
         /// </summary>
         [JsonProperty(PropertyName = "url", Required = Required.Always), DataType(DataType.Url)]
-        [Required]
+        [Required, DisplayName("URL")]
         public string Url { get; set; }
     }
 }

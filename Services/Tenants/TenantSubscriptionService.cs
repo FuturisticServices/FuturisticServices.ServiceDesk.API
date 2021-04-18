@@ -18,18 +18,26 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface ITenantSubscriptionService
     {
-
+        Task<TenantSubscription> CreateItem(TenantSubscription entity);
     }
 
     public class TenantSubscriptionService : TenantBaseService, ITenantSubscriptionService
     {
+        private readonly ITenantSubscriptionsManager _tenantSubscriptionsManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public TenantSubscriptionService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public TenantSubscriptionService(ITenantSubscriptionsManager tenantSubscriptionsManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
+            _tenantSubscriptionsManager = tenantSubscriptionsManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<TenantSubscription> CreateItem(TenantSubscription entity)
+        {
+            var results = await _tenantSubscriptionsManager.CreateItemAsync(entity);
+            return results;
         }
     }
 }

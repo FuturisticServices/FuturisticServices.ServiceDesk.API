@@ -1,0 +1,77 @@
+{
+  "moniker": "NAU",
+  "subscription": {
+    "id": "a3077fd5-8b87-4bc7-9f88-575092549963"
+  },
+  "company": {
+    "name": "Northern Arizona University",
+    "address": {
+        "type": {
+          "id": "5d807feb-8a68-416d-94c2-f7489cba8121"
+        },
+        "line1": "1899 S San Francisco Street",
+        "city": "Flagstaff",
+        "state": {
+          "id": "441968c5-cce6-4121-ab3e-49b72ce823e9"
+        },
+        "postalCode": "86011",
+        "country": {
+          "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
+        }
+    },
+    "phoneNumber": {
+      "type": {
+        "id": "9eb023b0-f9c2-4ea5-9d2b-46d9e75494d1"
+      },
+      "number": "9285239011"
+    },
+    "website": {
+      "type": {
+        "id": "f2cfdb8c-05b5-42d0-bb45-041086f85570"
+      },
+      "url": "nau.edu"
+    }
+  },
+  "pointOfContact": {
+    "firstName": "Steven",
+    "lastName": "Burrell",
+    "Title": "Chief Technology Officer",
+    "address": {
+        "line1": "1301 S. Knoles Drive",
+        "line2": "Building 54",
+        "city": "Flagstaff",
+        "state": {
+          "id": "441968c5-cce6-4121-ab3e-49b72ce823e9"
+        },
+        "postalCode": "86011",
+        "country": {
+          "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
+        }
+    },
+    "phoneNumber": {
+        "number": "9285233335"
+    },
+    "emailAddress": {
+        "address": "its@nau.edu"
+    }
+  },
+  "billingInformation": {
+    "nameOnCard": "Steven Burrell",
+    "cardNumber": "1111222233334444",
+    "cardSecurityValue": "123",
+    "expirationMonth": 4,
+    "expirationYear": 2020,
+    "address": {
+        "line1": "1301 S. Knoles Drive",
+        "line2": "Building 54",
+        "city": "Flagstaff",
+        "state": {
+          "id": "441968c5-cce6-4121-ab3e-49b72ce823e9"
+        },
+        "postalCode": "86011",
+        "country": {
+          "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
+        }
+    }
+  }
+}

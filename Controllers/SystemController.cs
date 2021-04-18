@@ -25,12 +25,12 @@ namespace TangledServices.ServicePortal.API.Controllers
     public class SystemController : BasePortalController
     {
         private readonly ISystemService _systemService;
-        private readonly ISystemLookupItemService _systemLookupItemService;
+        private readonly ISystemLookupItemsService _systemLookupItemService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public SystemController(ISystemService systemService,
-                                ISystemLookupItemService systemLookupItemService,
+                                ISystemLookupItemsService systemLookupItemService,
                                 IConfiguration configuration,
                                 IWebHostEnvironment webHostEnvironment)
         {

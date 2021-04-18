@@ -13,16 +13,17 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public SystemTenant() { }
 
-        public SystemTenant(SystemTenantCreateModel model, Subscription subscription, List<LookupGroupEntity> systemLookupItems)
+        //  Create entity from model.
+        public SystemTenant(SystemTenantCreateModel model)
         {
             DateTime registrationDatetime = DateTime.Now;
 
             Id = Guid.NewGuid().ToString();
             Moniker = model.Moniker;
-            Company = new Company(model.Company, systemLookupItems);
-            PointOfContact = new PointOfContact(model.PointOfContact, systemLookupItems);
-            BillingInformation = new BillingInformation(model.BillingInformation, systemLookupItems);
-            Subscription = Subscription;
+            Subscription = new Subscription(model.Subscription);
+            Company = new Company(model.Company);
+            PointOfContact = new PointOfContact(model.PointOfContact);
+            BillingInformation = new BillingInformation(model.BillingInformation);
         }
 
         /// <summary>

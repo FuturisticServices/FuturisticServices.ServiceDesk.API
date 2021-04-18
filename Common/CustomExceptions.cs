@@ -91,9 +91,27 @@ namespace TangledServices.ServicePortal.API.Common
 
         public MonikerDoesNotExistException(string moniker) : base(string.Format("Moniker '{0}' does NOT exist.", moniker)) { }
     }
+
+    [Serializable]
+    public class MonikerIsRequiredException : Exception
+    {
+        public MonikerIsRequiredException() : base("Moniker is required.") { }
+    }
     #endregion Moniker
 
     #region Subscription
+    [Serializable]
+    public class SubscriptionIdIsRequiredException : Exception
+    {
+        public SubscriptionIdIsRequiredException() : base("Subscription ID is required.") { }
+    }
+
+    [Serializable]
+    public class SubscriptionIsRequiredException : Exception
+    {
+        public SubscriptionIsRequiredException() : base("Subscription is required.") { }
+    }
+
     [Serializable]
     public class SubscriptionNotFoundException : Exception
     {
@@ -101,4 +119,156 @@ namespace TangledServices.ServicePortal.API.Common
         public SubscriptionNotFoundException(string id, bool sourceIsSystemDatabase = false) : base(string.Format("Subscription with ID '{0}' not found{1}.", id, sourceIsSystemDatabase ? " in system DB" : string.Empty)) { }
     }
     #endregion Subscription
+
+    #region Billing information
+    [Serializable]
+    public class BillingInformationNameOnCardIsRequiredException : Exception
+    {
+        public BillingInformationNameOnCardIsRequiredException() : base("Billing information name on card is required.") { }
+    }
+
+    [Serializable]
+    public class BillingInformationCardNumberIsRequiredException : Exception
+    {
+        public BillingInformationCardNumberIsRequiredException() : base("Billing information card number is required.") { }
+    }
+
+    [Serializable]
+    public class BillingInformationCardNumberIsInvalidException : Exception
+    {
+        public BillingInformationCardNumberIsInvalidException() : base("Billing information card number is invalid.") { }
+    }
+
+    [Serializable]
+    public class BillingInformationCardSecurityNumberIsRequiredException : Exception
+    {
+        public BillingInformationCardSecurityNumberIsRequiredException() : base("Billing information card security value (CSV) is required.") { }
+    }
+
+    [Serializable]
+    public class BillingInformationCardSecurityNumberIsInvalidException : Exception
+    {
+        public BillingInformationCardSecurityNumberIsInvalidException() : base("Billing information card security value (CSV) is invalid.") { }
+    }
+
+    [Serializable]
+    public class BillingInformationExpirationMonthIsRequiredException : Exception
+    {
+        public BillingInformationExpirationMonthIsRequiredException() : base("Billing information expiration month is required.") { }
+    }
+
+    [Serializable]
+    public class BillingInformationExpirationMonthIsInvalidException : Exception
+    {
+        public BillingInformationExpirationMonthIsInvalidException() : base("Billing information expiration month invalid is required.") { }
+    }
+
+    [Serializable]
+    public class BillingInformationExpirationYearIsRequiredException : Exception
+    {
+        public BillingInformationExpirationYearIsRequiredException() : base("Billing information expiration year is required.") { }
+    }
+
+    [Serializable]
+    public class BillingInformationExpirationYearIsInvalidException : Exception
+    {
+        public BillingInformationExpirationYearIsInvalidException() : base("Billing information expiration year invalid is required.") { }
+    }
+    #endregion Billing information
+
+    #region Company
+    [Serializable]
+    public class CompanyNameIsRequiredException : Exception
+    {
+        public CompanyNameIsRequiredException() : base("Company name is required.") { }
+    }
+    #endregion Company
+
+    #region Address
+    [Serializable]
+    public class AddressTypeIdIsRequiredException : Exception
+    {
+        public AddressTypeIdIsRequiredException() : base("Address type ID is required.") { }
+    }
+
+    [Serializable]
+    public class AddressLine1IsRequiredException : Exception
+    {
+        public AddressLine1IsRequiredException() : base("Address line 1 is required.") { }
+    }
+
+    [Serializable]
+    public class AddressCityIsRequiredException : Exception
+    {
+        public AddressCityIsRequiredException() : base("Address city is required.") { }
+    }
+
+    [Serializable]
+    public class AddressStateIdIsRequiredException : Exception
+    {
+        public AddressStateIdIsRequiredException() : base("Address state ID is required.") { }
+    }
+
+    [Serializable]
+    public class AddressPostalCodeIsRequiredException : Exception
+    {
+        public AddressPostalCodeIsRequiredException() : base("Address postal code is required.") { }
+    }
+
+    [Serializable]
+    public class AddressPostalCodeIsInvalidException : Exception
+    {
+        public AddressPostalCodeIsInvalidException() : base("Address postal code is invalid.") { }
+    }
+
+    [Serializable]
+    public class AddressCountryIdIsRequiredException : Exception
+    {
+        public AddressCountryIdIsRequiredException() : base("Address country ID is required.") { }
+    }
+    #endregion Address
+
+    #region Phone number
+    [Serializable]
+    public class PhoneNumberIsRequiredException : Exception
+    {
+        public PhoneNumberIsRequiredException() : base("Phone number is required.") { }
+    }
+    #endregion Address
+
+    #region Email address
+    [Serializable]
+    public class EmailAddressIsRequiredException : Exception
+    {
+        public EmailAddressIsRequiredException() : base("Email address is required.") { }
+    }
+    #endregion Email address
+
+    #region Website
+    [Serializable]
+    public class WebsiteUrlIsRequiredException : Exception
+    {
+        public WebsiteUrlIsRequiredException() : base("Website URL is required.") { }
+    }
+    #endregion Website
+
+    #region Point of contact
+    [Serializable]
+    public class PointOfContactFirstNameIsRequiredException : Exception
+    {
+        public PointOfContactFirstNameIsRequiredException() : base("Point of contact first name is required.") { }
+    }
+
+    [Serializable]
+    public class PointOfContactLastNameIsRequiredException : Exception
+    {
+        public PointOfContactLastNameIsRequiredException() : base("Point of contact last name is required.") { }
+    }
+
+    [Serializable]
+    public class PointOfContactTitleIsRequiredException : Exception
+    {
+        public PointOfContactTitleIsRequiredException() : base("Point of contact title is required.") { }
+    }
+    #endregion Point of contact
 }

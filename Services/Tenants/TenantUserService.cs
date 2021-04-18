@@ -51,7 +51,7 @@ namespace TangledServices.ServicePortal.API.Services
         public async Task<Entities.User> GetItem(string employeeId)
         {
             var results = await _tenantUserManager.GetItemsAsync();
-            var user = results.ToList().SingleOrDefault(x => x.EmployeeID.ToLower() == employeeId.ToLower());
+            var user = results.ToList().SingleOrDefault(x => x.EmployeeId.ToLower() == employeeId.ToLower());
             return user;
         }
 
@@ -65,7 +65,7 @@ namespace TangledServices.ServicePortal.API.Services
             {
                 string randomNumber = Helpers.GetRandomNumber();
                 employeeId = string.Format("{0}{1}", moniker, randomNumber);
-                employeeIdNotUnique = users.Any(x => x.EmployeeID.ToLower() == employeeId.ToLower());
+                employeeIdNotUnique = users.Any(x => x.EmployeeId.ToLower() == employeeId.ToLower());
 
             } while (employeeIdNotUnique);
 

@@ -18,6 +18,7 @@ namespace TangledServices.ServicePortal.API.Managers
     {
         Task<LookupGroupEntity> GetItemAsync(string groupName);
         Task<LookupItemEntity> GetItemAsync(string groupName, string itemName);
+        Task<LookupItemEntity> GetItemAsync(string groupName, Guid id);
         Task<IEnumerable<LookupGroupEntity>> GetItemsAsync();
         Task<LookupGroupEntity> CreateItemAsync(LookupGroupEntity lookupGroup);
 
@@ -73,6 +74,15 @@ public class TenantLookupItemManager : TenantBaseManager, ITenantLookupItemManag
             var query = _container.GetItemLinqQueryable<LookupGroupEntity>(true);
             LookupGroupEntity lookupItems = query.Where<LookupGroupEntity>(x => x.Group == groupName).AsEnumerable().FirstOrDefault();
             LookupItemEntity lookupItem = lookupItems.Items.SingleOrDefault(x => string.Equals(x.Name, itemName, StringComparison.OrdinalIgnoreCase));
+
+            return lookupItem;
+        }
+
+        public async Task<LookupItemEntity> GetItemAsync(string groupName, Guid id)
+        {
+            var query = _container.GetItemLinqQueryable<LookupGroupEntity>(true);
+            LookupGroupEntity lookupItems = query.Where<LookupGroupEntity>(x => x.Group == groupName).AsEnumerable().FirstOrDefault();
+            LookupItemEntity lookupItem = lookupItems.Items.SingleOrDefault(x => string.Equals(x.Id, id.ToString(), StringComparison.OrdinalIgnoreCase));
 
             return lookupItem;
         }

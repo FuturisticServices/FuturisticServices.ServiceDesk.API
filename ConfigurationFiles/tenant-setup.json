@@ -10,7 +10,7 @@
           },
           {
             "name": "Subscriptions",
-            "partitionKey": "name",
+            "partitionKey": "subscription/name",
             "cloneItems": false
           },
           {
@@ -23,35 +23,31 @@
       "lookupGroups": {
         "omit": ["Database Platforms", "Subscription Renewal Timeframes"]
       },
+      "subscriptionId": "06f6f8a2-3438-482b-b435-633bdeaff620",
       "users": [
         {
           "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
-          "employeeId": "0",
+          "employeeId": "{moniker}000000",
           "nameFirst": "Tangled",
           "nameLast": "Admin",
-          "username": "{moniker}.admin",
+          "username": "tangled.admin",
           "password": "password",
           "displayName": "Tangled Admin",
           "mustChangePasswordAtNextLogin": false,
           "enabled": true,
           "emailAddresses": [
             {
-                "id": "ea768bca-7d22-4a21-9753-4770eea4f3e9",
-                "type": {
-                    "name": "work"
-                },
+                "typeId": "efc8bc9c-305c-4c04-8903-7a46967fa28d",
                 "address": "{moniker}.admin@tangled.services"
             }
           ],
           "phoneNumbers": [
             {
-              "id": "eed6e23c-178c-4ea1-9866-b3b9e4f51537",
-              "type": {
-                "name": "work"
-              },
+              "typeId": "153dc534-1c04-4df9-bd4d-35450d8f9e3e",
               "number": "6023732559"
             }
-          ]
+          ],
+          "roles": [ "root" ]
         }
       ]
     }

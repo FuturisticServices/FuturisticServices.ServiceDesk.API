@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Services
 {
@@ -20,9 +21,11 @@ namespace TangledServices.ServicePortal.API.Services
     public class TenantSetupService : TenantBaseService, ITenantSetupService
     {
         #region Members
+        private readonly ITenantSubscriptionService _tenantSubscriptionService;
+        private readonly ISystemSubscriptionService _systemSubscriptionService;
         private readonly ISystemTenantsService _systemTenantService;
-        private readonly ISystemLookupItemService _systemLookupItemService;
-        private readonly ITenantLookupItemService _tenantLookupItemService;
+        private readonly ISystemLookupItemsService _systemLookupItemService;
+        private readonly ITenantLookupItemsService _tenantLookupItemService;
         private readonly ITenantUserService _tenantUserService;
         private readonly IHashingService _hashingService;
         private readonly ICosmosDbService _cosmosDbService;
@@ -31,8 +34,10 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Members
 
         #region Constructors
-        public TenantSetupService(ISystemTenantsService systemTenantService, ISystemLookupItemService systemLookupItemService, ITenantLookupItemService tenantLookupItemService, ITenantUserService tenantUserService, IHashingService hashingService, ICosmosDbService cosmosDbService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public TenantSetupService(ITenantSubscriptionService tenantSubscriptionService, ISystemSubscriptionService systemSubscriptionService, ISystemTenantsService systemTenantService, ISystemLookupItemsService systemLookupItemService, ITenantLookupItemsService tenantLookupItemService, ITenantUserService tenantUserService, IHashingService hashingService, ICosmosDbService cosmosDbService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
+            _tenantSubscriptionService = tenantSubscriptionService;
+            _systemSubscriptionService = systemSubscriptionService;
             _systemTenantService = systemTenantService;
             _systemLookupItemService = systemLookupItemService;
             _tenantLookupItemService = tenantLookupItemService;
@@ -82,32 +87,41 @@ namespace TangledServices.ServicePortal.API.Services
                 }
             }
 
-            //  Retrieve tenant users to create.
-            var users = _configuration.GetSection("tenant:setup:users").Get<List<Entities.User>>(); //  from tenant-setup.json
+            //  Create tenant subscription.
+            var subscriptionId = _configuration.GetSection("tenant:setup:subscriptionId").Get<string>(); //  from tenant-setup.json
+            Subscription systemSubscription = await _systemSubscriptionService.GetItem(subscriptionId);
+            TenantSubscriptionModel tenantSubscriptionModel = new TenantSubscriptionModel(systemSubscription, DateTime.Now) { IsActive = true };
+            TenantSubscription tenantSubscription = new TenantSubscription(tenantSubscriptionModel);
+            tenantSubscription = await _tenantSubscriptionService.CreateItem(tenantSubscription);
+
+            //  Create tenant users. 
+            var users = _configuration.GetSection("tenant:setup:users").Get<List<UserModel>>(); //  from tenant-setup.json
 
             //  Persist tenant users.
-            foreach (Entities.User user in users)
+            foreach (UserModel user in users)
             {
                 user.Id = Guid.NewGuid().ToString();
-                user.EmployeeID = await _tenantUserService.GetUniqueEmployeeId(moniker);
+                user.EmployeeId = user.Username == "tangled.admin" ? user.EmployeeId.Replace("{moniker}", moniker) : await _tenantUserService.GetUniqueEmployeeId(moniker);
                 user.Username = user.Username.Replace("{moniker}", moniker);
                 user.Password = _hashingService.EncryptString(user.Password);
 
                 //  Complete each email address.
-                foreach (EmailAddress emailAddress in user.EmailAddresses)
+                foreach (EmailAddressModel emailAddress in user.EmailAddresses)
                 {
                     emailAddress.Address = emailAddress.Address.Replace("{moniker}", moniker);
-                    emailAddress.Type = await _tenantLookupItemService.GetItem("Email Address Types", emailAddress.Type.Name);
+                    emailAddress.Type = await _tenantLookupItemService.GetItem("Email Address Types", emailAddress.Type.Id);
                 }
 
                 //  Complete each phone number.
-                foreach (PhoneNumber phoneNumber in user.PhoneNumbers)
+                foreach (PhoneNumberModel phoneNumber in user.PhoneNumbers)
                 {
-                    phoneNumber.Type = await _tenantLookupItemService.GetItem("Phone Number Types", phoneNumber.Type.Name);
+                    phoneNumber.Type = await _tenantLookupItemService.GetItem("Phone Number Types", phoneNumber.Type.Id);
                 }
 
+                Entities.User userEntity = new Entities.User(user);
+
                 //  Persist item.
-                await _tenantUserService.CreateItem(user);
+                await _tenantUserService.CreateItem(userEntity);
             }
         }
         #endregion Public methods

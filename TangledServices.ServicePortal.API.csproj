@@ -47,7 +47,7 @@
     <Compile Remove="Managers\SystemService.cs" />
     <Compile Remove="Managers\System\SystemLookupGroupManager.cs" />
     <Compile Remove="Managers\System\SystemTokensService.cs" />
-    <Compile Remove="Managers\Tenant\z_TenantService.cs" />
+    <Compile Remove="Managers\Tenants\z_TenantService.cs" />
     <Compile Remove="Managers\zTenantUserService.cs" />
     <Compile Remove="Managers\zTicketsService.cs" />
     <Compile Remove="Services\System\SystemLookupGroupService.cs" />

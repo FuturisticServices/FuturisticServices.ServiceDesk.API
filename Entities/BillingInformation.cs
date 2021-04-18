@@ -17,23 +17,16 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public BillingInformation() { }
 
-        public BillingInformation(BillingInformationModel model, List<LookupGroupEntity> systemLookupItems)
+        //  Create entity from model.
+        public BillingInformation(BillingInformationModel model)
         {
-            //  Get all lookup items.
-            List<LookupItemEntity> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItemEntity> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItemEntity> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-
             Id = Guid.NewGuid().ToString();
             NameOnCard = model.NameOnCard;
             CardNumber = model.CardNumber;
             CardSecurityValue = model.CardSecurityValue;
             ExpirationMonth = model.ExpirationMonth;
             ExpirationYear = model.ExpirationYear;
-            Address = new Address(model.Address,
-                                    addressTypes.SingleOrDefault(x => x.Name == "Billing"),
-                                    states.SingleOrDefault(x => x.Id == model.Address.State.Id),
-                                    countries.SingleOrDefault(x => x.Id == model.Address.Country.Id));
+            Address = new Address(model.Address);
         }
 
         /// <summary>

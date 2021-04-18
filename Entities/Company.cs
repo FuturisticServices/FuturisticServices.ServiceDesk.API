@@ -17,25 +17,14 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public Company() { }
 
-        public Company(CompanyModel model, List<LookupGroupEntity> systemLookupItems)
+        //  Create entity from model.
+        public Company(CompanyModel model)
         {
-            //  Get all lookup items.
-            List<LookupItemEntity> addressTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.AddressTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItemEntity> phoneNumberTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.PhoneNumberTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItemEntity> websiteTypes = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.WebsiteTypes.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItemEntity> states = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.States.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-            List<LookupItemEntity> countries = systemLookupItems.Where(x => x.Group == Enums.LookupGroups.Countries.GetDescription().ToTitleCase()).SelectMany(x => x.Items).ToList();
-
             Id = Guid.NewGuid().ToString();
             Name = model.Name;
-            Address = new Address(model.Address,
-                                    addressTypes.SingleOrDefault(x => x.Name == "Corporate"),
-                                    states.SingleOrDefault(x => x.Id == model.Address.State.Id),
-                                    countries.SingleOrDefault(x => x.Id == model.Address.Country.Id));
-            PhoneNumber = new PhoneNumber(model.PhoneNumber,
-                                            phoneNumberTypes.SingleOrDefault(x => x.Name == "Corporate"));
-            Website = new Website(model.Website,
-                                    websiteTypes.SingleOrDefault(x => x.Name == "Corporate"));
+            Address = new Address(model.Address);
+            PhoneNumber = new PhoneNumber(model.PhoneNumber);
+            Website = new Website(model.Website);
         }
 
         /// <summary>

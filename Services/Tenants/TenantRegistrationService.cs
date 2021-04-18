@@ -23,7 +23,7 @@ namespace TangledServices.ServicePortal.API.Services
     public class TenantRegistrationService : TenantBaseService, ITenantRegistrationService
     {
         #region Members
-        private readonly ISystemLookupItemService _systemLookupItemService;
+        private readonly ISystemLookupItemsService _systemLookupItemService;
         private readonly ISystemSubscriptionService _systemSubscriptionService;
         private readonly ISystemTenantsService _systemTenantService;
         private readonly IConfiguration _configuration;
@@ -31,7 +31,7 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Members
 
         #region Public methods
-        public TenantRegistrationService(ISystemLookupItemService systemLookupItemService, ISystemSubscriptionService systemSubscriptionService, ISystemTenantsService systemTenantService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public TenantRegistrationService(ISystemLookupItemsService systemLookupItemService, ISystemSubscriptionService systemSubscriptionService, ISystemTenantsService systemTenantService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemLookupItemService = systemLookupItemService;
             _systemSubscriptionService = systemSubscriptionService;
