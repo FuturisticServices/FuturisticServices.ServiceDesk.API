@@ -18,6 +18,13 @@ namespace TangledServices.ServicePortal.API.Models
             Abbreviation = entity.Abbreviation;
         }
 
+        public AddressStateModel(LookupItemEntity entity)
+        {
+            Id = entity.Id;
+            Name = entity.Name;
+            Abbreviation = entity.Abbreviation;
+        }
+
         public string Name { get; set; }
         public string Abbreviation { get; set; }
     }

@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.IO;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
 
 namespace TangledServices.ServicePortal.API.Extensions
 {
@@ -97,6 +91,18 @@ namespace TangledServices.ServicePortal.API.Extensions
                 expandoDict[propertyName] = propertyValue;
             else
                 expandoDict.Add(propertyName, propertyValue);
+        }
+
+        public static bool IsCreditCardNumberValid(string creditCardNumber)
+        {
+            //Strip any non-numeric values
+            creditCardNumber = Regex.Replace(creditCardNumber, @"[^\d]", "");
+
+            //Build your Regular Expression
+            Regex expression = new Regex(@"^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$");
+
+            //Return if it was a match or not
+            return expression.IsMatch(creditCardNumber);
         }
     }
 }

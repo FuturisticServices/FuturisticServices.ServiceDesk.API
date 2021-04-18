@@ -87,9 +87,9 @@ namespace TangledServices.ServicePortal.API.Controllers
                 response = new ApiResponse(HttpStatusCode.OK, string.Format("Tenant with moniker '{0}' created in system DB.", model.Moniker), null, new List<Object>() { systemTenantModel });
                 return Ok(new { response });
             }
-            catch (SubscriptionNotFoundException)
+            catch (SubscriptionNotFoundException exception)
             {
-                response = new ApiResponse(HttpStatusCode.NotFound, string.Format("Subscription with ID '{0}' not found in system DB.", model.SubscriptionId));
+                response = new ApiResponse(HttpStatusCode.NotFound, exception.Message, model.Subscription.Id);
                 return BadRequest(new { response });
             }
             catch (Exception exception)

@@ -14,16 +14,17 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public Address() { }
 
-        public Address(AddressModel model, LookupItemEntity addressType, LookupItemEntity state, LookupItemEntity country)
+        //  Create entity from model.
+        public Address(AddressModel model)
         {
-            Id = Guid.NewGuid().ToString();
-            Type = addressType;
+            Id = model.Id;
+            Type = model.Type;
             Line1 = model.Line1;
-            Line2 = string.IsNullOrEmpty(model.Line2) ? null : model.Line2;
+            Line2 = model.Line2;
             City = model.City;
-            State = new AddressState(state);
+            State = new AddressState(model.State);
             PostalCode = model.PostalCode;
-            Country = new AddressCountry(country);
+            Country = new AddressCountry(model.Country);
         }
 
         /// <summary>

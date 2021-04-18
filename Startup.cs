@@ -170,9 +170,15 @@ namespace TangledServices.ServicePortal.API
             services.AddSingleton<ISystemService, SystemService>();
             services.AddSingleton<ISystemTenantsService, SystemTenantsService>();
             //services.AddSingleton<ISystemTenantRegistrationService, SystemTenantRegistrationService>();
-            services.AddSingleton<ISystemLookupItemService, SystemLookupItemService>();
+            services.AddSingleton<ISystemLookupItemsService, SystemLookupItemsService>();
             services.AddSingleton<ISystemSubscriptionService, SystemSubscriptionService>();
             services.AddSingleton<ISystemUsersService, SystemUsersService>();
+            services.AddSingleton<ICompanyService, CompanyService>();
+            services.AddSingleton<IAddressService, AddressService>();
+            services.AddSingleton<IPhoneNumberService, PhoneNumberService>();
+            services.AddSingleton<IEmailAddressService, EmailAddressService>();
+            services.AddSingleton<IWebsiteService, WebsiteService>();
+            services.AddSingleton<IBillingInformationService, BillingInformationService>();
 
             //  System managers.
             services.AddSingleton<ISystemManager, SystemManager>();
@@ -184,7 +190,7 @@ namespace TangledServices.ServicePortal.API
             //  Tenant services.
             services.AddSingleton<ITenantSetupService, TenantSetupService>();
             services.AddSingleton<ITenantLookupGroupService, TenantLookupGroupService>();
-            services.AddSingleton<ITenantLookupItemService, TenantLookupItemService>();
+            services.AddSingleton<ITenantLookupItemsService, TenantLookupItemsService>();
             services.AddSingleton<ITenantSubscriptionService, TenantSubscriptionService>();
             services.AddSingleton<ITenantUserService, TenantUserService>();
 

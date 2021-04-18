@@ -16,7 +16,7 @@ using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface ISystemLookupItemService
+    public interface ISystemLookupItemsService
     {
         Task<LookupGroupEntity> GetItem(string groupName);
         Task<LookupItemEntity> GetItem(string groupName, string id);
@@ -25,17 +25,24 @@ namespace TangledServices.ServicePortal.API.Services
         Task<LookupGroupEntity> UpdateGroup(LookupGroupEntity model);
     }
 
-    public class SystemLookupItemService : SystemBaseService, ISystemLookupItemService
+    public class SystemLookupItemsService : SystemBaseService, ISystemLookupItemsService
     {
         private readonly ISystemLookupItemManager _systemLookupItemManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupItemService(ISystemLookupItemManager systemLookupItemManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemLookupItemsService(ISystemLookupItemManager systemLookupItemManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemLookupItemManager = systemLookupItemManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<CompanyModel> Validate(CompanyModel model) 
+        {
+            if (model.Name == string.Empty) throw new SystemTenantAlreadyExistsException();
+
+            return model;
         }
 
         public async Task<LookupGroupEntity> GetItem(string groupName)

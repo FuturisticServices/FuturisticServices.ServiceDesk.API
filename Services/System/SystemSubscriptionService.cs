@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Models;
 using TangledServices.ServicePortal.API.Managers;
 using TangledServices.ServicePortal.API.Models;
 
@@ -22,6 +23,7 @@ namespace TangledServices.ServicePortal.API.Services
         Task<IEnumerable<Subscription>> GetItems();
         Task<IEnumerable<Subscription>> GetItems(bool includeSubscriptionsWithPromotionCode = false);
         Task<Subscription> GetItemByPromotionCode(string promotionCode);
+        Task<SubscriptionModel> Validate(SubscriptionModel model);
     }
 
     public class SystemSubscriptionService : SystemBaseService, ISystemSubscriptionService
@@ -63,6 +65,20 @@ namespace TangledServices.ServicePortal.API.Services
             Subscription results = await _systemSubscriptionManager.GetItemByPromotionCodeAsync(promotionCode);
 
             return results;
+        }
+
+        public async Task<SubscriptionModel> Validate(SubscriptionModel model)
+        {
+            if (model.Id == string.Empty) throw new SubscriptionIsRequiredException();
+
+            //  Get subscription.
+            Subscription subscription = await GetItem(model.Id);
+            if (subscription == null) throw new SubscriptionNotFoundException(model.Id, true);
+
+            //  Populate model with subscription.
+            model = new SubscriptionModel(subscription);
+
+            return model;
         }
     }
 }

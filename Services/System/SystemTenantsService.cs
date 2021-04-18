@@ -26,7 +26,10 @@ namespace TangledServices.ServicePortal.API.Services
     public class SystemTenantsService : SystemBaseService, ISystemTenantsService
     {
         #region Members
-        private readonly ISystemLookupItemService _systemLookupItemService;
+        private readonly ICompanyService _companyService;
+        private readonly IPointOfContactService _pointOfContactService;
+        private readonly IBillingInformationService _billingInformationService;
+        private readonly ISystemLookupItemsService _systemLookupItemService;
         private readonly ISystemSubscriptionService _systemSubscriptionService;
         private readonly ISystemTenantsManager _systemTenantsManager;
         private readonly IConfiguration _configuration;
@@ -34,8 +37,11 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Members
 
         #region Constructors
-        public SystemTenantsService(ISystemSubscriptionService systemSubscriptionService, ISystemLookupItemService systemLookupItemService, ISystemTenantsManager systemTenantsManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemTenantsService(ICompanyService companyService, IPointOfContactService pointOfContactService, IBillingInformationService billingInformationService, ISystemSubscriptionService systemSubscriptionService, ISystemLookupItemsService systemLookupItemService, ISystemTenantsManager systemTenantsManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
+            _companyService = companyService;
+            _pointOfContactService = pointOfContactService;
+            _billingInformationService = billingInformationService;
             _systemLookupItemService = systemLookupItemService;
             _systemSubscriptionService = systemSubscriptionService;
             _systemTenantsManager = systemTenantsManager;
@@ -75,19 +81,10 @@ namespace TangledServices.ServicePortal.API.Services
 
         public async Task<SystemTenantModel> Create(SystemTenantCreateModel model)
         {
-            //  Cannot create tenant if it already exists in the system DB.
-            if (await Exists(model.Moniker)) throw new SystemTenantAlreadyExistsException(model.Moniker);
-
-            //  Get subscription.
-            Subscription subscription = await _systemSubscriptionService.GetItem(model.SubscriptionId);
-            if (subscription == null) throw new SubscriptionNotFoundException(model.SubscriptionId, true);
-
-            //  Get list of system lookup items.
-            List<LookupGroupEntity> systemLookupItems = (await _systemLookupItemService.GetItems()).ToList();
-            if (systemLookupItems == null) throw new LookupItemsNotFoundException(true);
+            model = await Validate(model);
 
             //  Instantiate system tenant entity object.
-            SystemTenant systemTenant = new SystemTenant(model, subscription, systemLookupItems);
+            SystemTenant systemTenant = new SystemTenant(model);
 
             //  Persist system tenant to DB.
             systemTenant = await _systemTenantsManager.CreateItemAsync(systemTenant);
@@ -95,6 +92,21 @@ namespace TangledServices.ServicePortal.API.Services
             SystemTenantModel response = new SystemTenantModel(systemTenant);
 
             return response;
+        }
+
+        internal async Task<SystemTenantCreateModel> Validate(SystemTenantCreateModel model)
+        {
+            model.Id = Guid.NewGuid().ToString();
+
+            if (model.Moniker == null || model.Moniker == string.Empty) throw new MonikerIsRequiredException();
+            if (await Exists(model.Moniker)) throw new MonikerAlreadyExistsException();
+
+            model.Subscription = await _systemSubscriptionService.Validate(model.Subscription);
+            model.Company = await _companyService.Validate(model.Company);
+            model.PointOfContact = await _pointOfContactService.Validate(model.PointOfContact);
+            model.BillingInformation = await _billingInformationService.Validate(model.BillingInformation);
+
+            return model;
         }
         #endregion Public methods
     }

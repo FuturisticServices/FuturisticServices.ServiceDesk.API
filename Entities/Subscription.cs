@@ -12,6 +12,7 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public Subscription() { }
 
+        //  Create entity from model.
         public Subscription(SubscriptionModel model)
         {
             Id = model.Id;
@@ -25,6 +26,7 @@ namespace TangledServices.ServicePortal.API.Entities
             Highlights = model.Highlights;
         }
 
+        //  Create entity from model.
         public Subscription(TenantSubscriptionModel model)
         {
             Id = model.Id;

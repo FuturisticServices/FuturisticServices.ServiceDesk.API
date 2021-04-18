@@ -21,13 +21,13 @@ namespace TangledServices.ServicePortal.API.Controllers
     [ApiController]
     public class SystemLookupItemsController : ControllerBase
     {
-        private readonly ISystemLookupItemService _systemService;
+        private readonly ISystemLookupItemsService _systemService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         private readonly dynamic _response = new ExpandoObject();
 
-        public SystemLookupItemsController(ISystemLookupItemService systemService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public SystemLookupItemsController(ISystemLookupItemsService systemService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             _systemService = systemService;
             _configuration = configuration;

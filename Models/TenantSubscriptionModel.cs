@@ -17,10 +17,11 @@ namespace TangledServices.ServicePortal.API.Models
     /// </summary>
     public class TenantSubscriptionModel : BaseModel
     {
-        public TenantSubscriptionModel(Subscription entity)
+        public TenantSubscriptionModel(Subscription entity, DateTime registrationDatetime)
         {
-            DateTime registrationDatetime = DateTime.Now;
+            if (registrationDatetime == null) registrationDatetime = DateTime.Now;
 
+            Id = Guid.NewGuid().ToString();
             Subscription = new SubscriptionModel(entity);
             StartDatetime = registrationDatetime;
             EndDatetime = StartDatetime.AddYears(1);
@@ -53,6 +54,13 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "renewalDate", Required = Required.AllowNull)]
         public DateTime RenewalDate { get; set; }
+
+        /// <summary>
+        /// The date when the subscription is set to automatically renew
+        /// </summary>
+        [JsonProperty(PropertyName = "isActive", Required = Required.Always)]
+        [Required]
+        public bool IsActive { get; set; }
 
         /// <summary>
         /// Datetime of tenant agreeing to the 'Billing and Payment Terms' legal agreement

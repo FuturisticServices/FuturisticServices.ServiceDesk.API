@@ -13,6 +13,8 @@ namespace TangledServices.ServicePortal.API.Entities
     /// </summary>
     public class TenantSubscription : BaseEntity
     {
+        public TenantSubscription() { }
+
         public TenantSubscription(TenantSubscriptionModel model)
         {
             Id = model.Id;
@@ -20,6 +22,7 @@ namespace TangledServices.ServicePortal.API.Entities
             StartDatetime = model.StartDatetime;
             EndDatetime = model.StartDatetime.AddYears(1);
             RenewalDate = EndDatetime.AddDays(1);
+            IsActive = model.IsActive;
             BillingAndPaymentTermsAgreementDate = model.BillingAndPaymentTermsAgreementDate;
             ServiceTermsAgreementDate = model.ServiceTermsAgreementDate;
         }
@@ -48,6 +51,13 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "renewalDate", Required = Required.AllowNull)]
         public DateTime RenewalDate { get; set; }
+
+        /// <summary>
+        /// The date when the subscription is set to automatically renew
+        /// </summary>
+        [JsonProperty(PropertyName = "isActive", Required = Required.Always)]
+        [Required]
+        public bool IsActive { get; set; }
 
         /// <summary>
         /// Datetime of tenant agreeing to the 'Billing and Payment Terms' legal agreement

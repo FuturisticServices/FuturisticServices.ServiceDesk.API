@@ -36,7 +36,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "subscription", Required = Required.Default)]
         [Required, DisplayName("Subscription")]
-        public Subscription Subscription { get; set; }
+        public SubscriptionModel Subscription { get; set; }
 
         /// <summary>
         /// Contains information related to the tenant's legal business entity.
@@ -77,9 +77,9 @@ namespace TangledServices.ServicePortal.API.Models
         /// <summary>
         /// The selected subscription ID.
         /// </summary>
-        [JsonProperty(PropertyName = "subscriptionId", Required = Required.Default)]
-        [Required, DisplayName("Subscription ID")]
-        public string SubscriptionId { get; set; }
+        [JsonProperty(PropertyName = "subscription", Required = Required.Default)]
+        [Required, DisplayName("Subscription")]
+        public SubscriptionModel Subscription { get; set; }
 
         /// <summary>
         /// Contains information related to the tenant's legal business entity.

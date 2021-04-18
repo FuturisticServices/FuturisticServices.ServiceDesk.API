@@ -20,6 +20,7 @@ namespace TangledServices.ServicePortal.API.Models
             Country = new AddressCountryModel(entity.Country);
         }
 
+        public LookupItemEntity Type { get; set; }
         public string Line1 { get; set; }
         public string Line2 { get; set; }
         public string City { get; set; }

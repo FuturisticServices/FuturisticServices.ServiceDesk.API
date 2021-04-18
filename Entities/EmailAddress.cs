@@ -18,11 +18,21 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public EmailAddress() { }
 
-        public EmailAddress(EmailAddressModel model, LookupItemEntity type)
+        public EmailAddress(EmailAddressModel model)
         {
             Id = Guid.NewGuid().ToString();
-            Type = type;
+            Type = model.Type;
             Address = model.Address;
+        }
+
+        public static List<EmailAddress> Construct(List<EmailAddressModel> model)
+        {
+            List<EmailAddress> emailAddresses = new List<EmailAddress>();
+            foreach (EmailAddressModel emailAddress in model)
+            {
+                emailAddresses.Add(new EmailAddress(emailAddress));
+            }
+            return emailAddresses;
         }
 
         /// <summary>
