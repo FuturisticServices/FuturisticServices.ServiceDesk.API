@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
+using Newtonsoft.Json;
 using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
@@ -11,21 +10,18 @@ namespace TangledServices.ServicePortal.API.Models
     {
         public AddressCountryModel() { }
 
+        //  Create model from entity.
         public AddressCountryModel(AddressCountry entity)
         {
             Id = entity.Id;
-            Name = entity.Name;
-            Abbreviation = entity.Abbreviation;
+            Type = entity.Type;
         }
 
-        public AddressCountryModel(LookupItemEntity entity)
-        {
-            Id = entity.Id;
-            Name = entity.Name;
-            Abbreviation = entity.Abbreviation;
-        }
-
-        public string Name { get; set; }
-        public string Abbreviation { get; set; }
+        /// <summary>
+        /// Associated LookupItemEntity object of country.
+        /// </summary>
+        [JsonProperty(PropertyName = "type")]
+        [Required, DisplayName("Type")]
+        public LookupItemEntity Type { get; set; }
     }
 }

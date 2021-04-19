@@ -13,14 +13,13 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class PointOfContact : BaseEntity
+    public class PointOfContact
     {
         public PointOfContact() { }
 
         //  Create entity from model.
         public PointOfContact(PointOfContactModel model)
         {
-            Id = Guid.NewGuid().ToString();
             FirstName = model.FirstName;
             LastName = model.LastName;
             Title = model.Title;

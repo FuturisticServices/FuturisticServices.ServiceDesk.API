@@ -17,10 +17,14 @@ namespace TangledServices.ServicePortal.API.Services
     public interface ISystemTenantsService
     {
         Task<IEnumerable<SystemTenant>> Get();
+        Task<SystemTenant> Get(Guid id);
         Task<SystemTenant> Get(string moniker);
+        Task<bool> NotExists(Guid id);
         Task<bool> Exists(string moniker);
         Task<bool> NotExists(string moniker);
-        Task<SystemTenantModel> Create(SystemTenantCreateModel model);
+        Task<bool> Exists(Guid id);
+        Task<SystemTenantModel> Create(SystemTenantModel model);
+        Task<SystemTenantModel> Update(SystemTenantModel model);
     }
 
     public class SystemTenantsService : SystemBaseService, ISystemTenantsService
@@ -58,6 +62,15 @@ namespace TangledServices.ServicePortal.API.Services
             return results;
         }
 
+        public async Task<SystemTenant> Get(Guid id)
+        {
+            SystemTenant systemTenant = await _systemTenantsManager.GetItemAsync(id);
+
+            if (systemTenant == null) throw new SystemTenantDoesNotExistException();
+
+            return systemTenant;
+        }
+
         public async Task<SystemTenant> Get(string moniker)
         {
             SystemTenant systemTenant = await _systemTenantsManager.GetItemAsync(moniker);
@@ -79,12 +92,25 @@ namespace TangledServices.ServicePortal.API.Services
             return systemTenant == null;
         }
 
-        public async Task<SystemTenantModel> Create(SystemTenantCreateModel model)
+        public async Task<bool> Exists(Guid id)
+        {
+            SystemTenant systemTenant = await _systemTenantsManager.GetItemAsync(id);
+            return systemTenant != null;
+        }
+
+        public async Task<bool> NotExists(Guid id)
+        {
+            SystemTenant systemTenant = await _systemTenantsManager.GetItemAsync(id);
+            return systemTenant == null;
+        }
+
+        public async Task<SystemTenantModel> Create(SystemTenantModel model)
         {
             model = await Validate(model);
 
-            //  Instantiate system tenant entity object.
+            //  Create SystemTenant entity object.
             SystemTenant systemTenant = new SystemTenant(model);
+            systemTenant.Id = Guid.NewGuid().ToString();
 
             //  Persist system tenant to DB.
             systemTenant = await _systemTenantsManager.CreateItemAsync(systemTenant);
@@ -94,12 +120,38 @@ namespace TangledServices.ServicePortal.API.Services
             return response;
         }
 
-        internal async Task<SystemTenantCreateModel> Validate(SystemTenantCreateModel model)
+        public async Task<SystemTenantModel> Update(SystemTenantModel model)
         {
-            model.Id = Guid.NewGuid().ToString();
+            model = await Validate(model);
 
+            //  Get SystemTenant entity to update.
+            SystemTenant systemTenant = await Get(new Guid(model.Id));
+
+            //  Update SystemTenant entity object with modifications from model.
+            systemTenant = new SystemTenant(model);
+
+            //  Persist system tenant to DB.
+            systemTenant = await _systemTenantsManager.UpserItemAsync(systemTenant);
+
+            SystemTenantModel response = new SystemTenantModel(systemTenant);
+
+            return response;
+        }
+        #endregion Public methods
+
+        #region Private methods
+        private async Task<SystemTenantModel> Validate(SystemTenantModel model)
+        {
             if (model.Moniker == null || model.Moniker == string.Empty) throw new MonikerIsRequiredException();
-            if (await Exists(model.Moniker)) throw new MonikerAlreadyExistsException();
+
+            if (model.Id == null)
+            {
+                if (await Exists(model.Moniker)) throw new MonikerAlreadyExistsException();
+            }
+            else
+            {
+                if (await NotExists(new Guid(model.Id))) throw new SystemTenantDoesNotExistException();
+            }
 
             model.Subscription = await _systemSubscriptionService.Validate(model.Subscription);
             model.Company = await _companyService.Validate(model.Company);
@@ -108,6 +160,6 @@ namespace TangledServices.ServicePortal.API.Services
 
             return model;
         }
-        #endregion Public methods
+        #endregion Private methods
     }
 }

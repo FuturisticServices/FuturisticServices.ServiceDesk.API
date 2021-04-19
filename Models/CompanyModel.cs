@@ -7,10 +7,11 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
 {
-    public class CompanyModel : BaseModel
+    public class CompanyModel
     {
         public CompanyModel() { }
 
+        //  Create model from entity.
         public CompanyModel(Company entity)
         {
             Name = entity.Name;
@@ -24,15 +25,15 @@ namespace TangledServices.ServicePortal.API.Models
         public string Name { get; set; }
 
         [JsonProperty(PropertyName = "address", Required = Required.Always)]
-        [Required, DisplayName("Address")]
+        [DisplayName("Address")]
         public AddressModel Address { get; set; }
 
         [JsonProperty(PropertyName = "phoneNumber", Required = Required.Always)]
-        [Required, DisplayName("PhoneNumber")]
+        [DisplayName("PhoneNumber")]
         public PhoneNumberModel PhoneNumber { get; set; }
 
         [JsonProperty(PropertyName = "website", Required = Required.Always)]
-        [Required, DisplayName("Website")]
+        [DisplayName("Website")]
         public WebsiteModel Website { get; set; }
     }
 }

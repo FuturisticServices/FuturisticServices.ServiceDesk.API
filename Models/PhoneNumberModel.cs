@@ -14,7 +14,6 @@ namespace TangledServices.ServicePortal.API.Models
 
         public PhoneNumberModel(PhoneNumber entity)
         {
-            Id = entity.Id;
             Number = entity.Number;
         }
 

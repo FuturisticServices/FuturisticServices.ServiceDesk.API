@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
@@ -10,21 +9,20 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Physical mailing address.
     /// </summary>
-    public class Address : BaseEntity
+    public class Address
     {
         public Address() { }
 
         //  Create entity from model.
         public Address(AddressModel model)
         {
-            Id = model.Id;
             Type = model.Type;
             Line1 = model.Line1;
             Line2 = model.Line2;
             City = model.City;
-            State = new AddressState(model.State);
+            State = model.State;
             PostalCode = model.PostalCode;
-            Country = new AddressCountry(model.Country);
+            Country = model.Country;
         }
 
         /// <summary>
@@ -60,7 +58,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "state")]
         [Required, JsonRequired, DisplayName("State")]
-        public AddressState State { get; set; }
+        public LookupItemEntity State { get; set; }
 
         /// <summary>
         /// Post/zip code associated to the address.
@@ -74,6 +72,6 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "country")]
         [Required, JsonRequired, DisplayName("Country")]
-        public AddressCountry Country { get; set; }
+        public LookupItemEntity Country { get; set; }
     }
 }

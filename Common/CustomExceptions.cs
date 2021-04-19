@@ -97,6 +97,13 @@ namespace TangledServices.ServicePortal.API.Common
     {
         public MonikerIsRequiredException() : base("Moniker is required.") { }
     }
+
+    [Serializable]
+    public class MonikerDoesNotMatchTenantIdException : Exception
+    {
+        public MonikerDoesNotMatchTenantIdException() : base("Moniker does not match") { }
+        public MonikerDoesNotMatchTenantIdException(string moniker) : base(string.Format("Moniker '{0}' does not match.", moniker)) { }
+    }
     #endregion Moniker
 
     #region Subscription

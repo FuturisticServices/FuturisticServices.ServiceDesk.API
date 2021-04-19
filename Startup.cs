@@ -169,11 +169,11 @@ namespace TangledServices.ServicePortal.API
             //  System services.
             services.AddSingleton<ISystemService, SystemService>();
             services.AddSingleton<ISystemTenantsService, SystemTenantsService>();
-            //services.AddSingleton<ISystemTenantRegistrationService, SystemTenantRegistrationService>();
             services.AddSingleton<ISystemLookupItemsService, SystemLookupItemsService>();
             services.AddSingleton<ISystemSubscriptionService, SystemSubscriptionService>();
             services.AddSingleton<ISystemUsersService, SystemUsersService>();
             services.AddSingleton<ICompanyService, CompanyService>();
+            services.AddSingleton<IPointOfContactService, PointOfContactService>();
             services.AddSingleton<IAddressService, AddressService>();
             services.AddSingleton<IPhoneNumberService, PhoneNumberService>();
             services.AddSingleton<IEmailAddressService, EmailAddressService>();

@@ -10,21 +10,17 @@ namespace TangledServices.ServicePortal.API.Entities
     public class AddressCountry : BaseEntity
     {
         public AddressCountry() { }
+
+        //  Create entity from model.
         public AddressCountry(AddressCountryModel model)
         {
             Id = model.Id;
-            Name = model.Name;
-            Abbreviation = model.Abbreviation;
+            Type = model.Type;
         }
 
-        public AddressCountry(LookupItemEntity entity)
-        {
-            Id = entity.Id;
-            Name = entity.Name;
-            Abbreviation = entity.Abbreviation;
-        }
-
-        public string Name { get; set; }
-        public string Abbreviation { get; set; }
+        /// <summary>
+        /// Associated LookupItemEntity object of country.
+        /// </summary>
+        public LookupItemEntity Type { get; set; }
     }
 }

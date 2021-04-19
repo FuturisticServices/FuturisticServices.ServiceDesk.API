@@ -11,6 +11,8 @@ namespace TangledServices.ServicePortal.API.Entities
 {
     public class LookupGroupEntity: BaseEntity
     {
+        public LookupGroupEntity() { }
+
         /// <summary>
         /// Container parition key. *** CANNOT CHANGE VALUE (used by Cosmos DB)!!!!
         /// Group this setting is associated with.
@@ -36,6 +38,8 @@ namespace TangledServices.ServicePortal.API.Entities
 
     public class LookupItemEntity : BaseEntity
     {
+        public LookupItemEntity() { }
+
         /// <summary>
         /// System value. *** SHOULD NOT CHANGE!!!!
         /// </summary>

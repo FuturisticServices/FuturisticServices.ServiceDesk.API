@@ -7,13 +7,13 @@ using Newtonsoft.Json;
 
 namespace TangledServices.ServicePortal.API.Models
 {
-    public class BaseModel
+    public abstract class BaseModel
     {
         /// <summary>
         /// A unique GUID identifier.
         /// </summary>
-        [JsonProperty(PropertyName = "id", Required = Required.Always)]
-        [Required, DisplayName("ID")]
+        [JsonProperty(PropertyName = "id", Required = Required.AllowNull)]
+        [DisplayName("ID")]
         public string Id { get; set; }
     }
 }

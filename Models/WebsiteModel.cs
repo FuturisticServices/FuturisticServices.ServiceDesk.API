@@ -14,7 +14,6 @@ namespace TangledServices.ServicePortal.API.Models
 
         public WebsiteModel (Website entity)
         {
-            Id = entity.Id;
             Url = entity.Url;
         }
 

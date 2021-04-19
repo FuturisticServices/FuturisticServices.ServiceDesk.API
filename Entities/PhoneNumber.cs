@@ -14,7 +14,7 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Physical phone number.
     /// </summary>
-    public class PhoneNumber : BaseEntity
+    public class PhoneNumber
     {
         public PhoneNumber() { }
 

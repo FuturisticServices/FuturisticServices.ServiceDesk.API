@@ -44,15 +44,15 @@ namespace TangledServices.ServicePortal.API.Services
             if (model.City == string.Empty) throw new AddressCityIsRequiredException();
 
             if (model.State.Id == string.Empty) throw new AddressStateIdIsRequiredException();
-            model.State = new AddressStateModel(await _systemLookupItemService.GetItem("States", model.State.Id));
+            model.State = await _systemLookupItemService.GetItem("States", model.State.Id);
 
             if (model.PostalCode == string.Empty) throw new AddressPostalCodeIsRequiredException();
             var code = model.PostalCode.Split('_');
-            if (code[0] != null && !int.TryParse(code[0], out int code1)) throw new AddressPostalCodeIsInvalidException();
-            if (code[1] != null && !int.TryParse(code[1], out int code2)) throw new AddressPostalCodeIsInvalidException();
+            if (code.Length - 1 >= 0 && code[0] != null && !int.TryParse(code[0], out int code1)) throw new AddressPostalCodeIsInvalidException();
+            if (code.Length - 1 >= 1 && code[1] != null && !int.TryParse(code[1], out int code2)) throw new AddressPostalCodeIsInvalidException();
 
             if (model.Country.Id == string.Empty) throw new AddressCountryIdIsRequiredException();
-            model.Country = new AddressCountryModel(await _systemLookupItemService.GetItem("Countries", model.Country.Id));
+            model.Country = await _systemLookupItemService.GetItem("Countries", model.Country.Id);
 
             return model;
         }

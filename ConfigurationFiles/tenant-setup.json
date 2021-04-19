@@ -37,13 +37,17 @@
           "enabled": true,
           "emailAddresses": [
             {
-                "typeId": "efc8bc9c-305c-4c04-8903-7a46967fa28d",
-                "address": "{moniker}.admin@tangled.services"
+              "type": {
+                  "id": "a7eb3ee7-aeac-4689-98b7-8ce70ce868d8"
+              },
+              "address": "{moniker}.admin@tangled.services"
             }
           ],
           "phoneNumbers": [
             {
-              "typeId": "153dc534-1c04-4df9-bd4d-35450d8f9e3e",
+              "type": {
+                "id": "153dc534-1c04-4df9-bd4d-35450d8f9e3e"
+              },
               "number": "6023732559"
             }
           ],

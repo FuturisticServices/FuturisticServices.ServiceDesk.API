@@ -14,7 +14,6 @@ namespace TangledServices.ServicePortal.API.Models
 
         public EmailAddressModel(EmailAddress entity)
         {
-            Id = entity.Id;
             Address = entity.Address;
         }
 
