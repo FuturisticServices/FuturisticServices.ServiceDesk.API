@@ -14,13 +14,12 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Physical email address.
     /// </summary>
-    public class EmailAddress : BaseEntity
+    public class EmailAddress
     {
         public EmailAddress() { }
 
         public EmailAddress(EmailAddressModel model)
         {
-            Id = Guid.NewGuid().ToString();
             Type = model.Type;
             Address = model.Address;
         }

@@ -11,8 +11,10 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
 {
-    public class SubscriptionModel: BaseModel
+    public class SubscriptionModel : BaseModel
     {
+        public SubscriptionModel() {}
+
         public SubscriptionModel(Subscription entity)
         {
             Id = entity.Id;
@@ -64,13 +66,6 @@ namespace TangledServices.ServicePortal.API.Models
         [JsonProperty(PropertyName = "renewalOccurence", Required = Required.Always)]
         [Required, DisplayName("Renewal occurence")]
         public int RenewalOccurrence { get; set; }
-
-        ///// <summary>
-        ///// Name of the subscription.
-        ///// </summary>
-        //[JsonProperty(PropertyName = "renewalTimeframeId", Required = Required.Default)]
-        //[DisplayName("Renewal timeframe ID")]
-        //public string RenewalTimeframeId { get; set; }
 
         /// <summary>
         /// Name of the subscription.

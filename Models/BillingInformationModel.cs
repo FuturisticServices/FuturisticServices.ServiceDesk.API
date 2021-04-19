@@ -7,7 +7,7 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
 {
-    public class BillingInformationModel : BaseModel
+    public class BillingInformationModel
     {
         public BillingInformationModel() { }
 

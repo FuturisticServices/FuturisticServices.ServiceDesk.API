@@ -15,14 +15,13 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// A website accessible from a modern web browser.
     /// </summary>
-    public class Website : BaseEntity
+    public class Website
     {
         public Website() { }
 
         //  Create entity from model.
         public Website(WebsiteModel model)
         {
-            Id = Guid.NewGuid().ToString();
             Type = model.Type;
             Url = model.Url;
         }

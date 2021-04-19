@@ -1,4 +1,5 @@
 {
+  "id": null,
   "moniker": "NAU",
   "subscription": {
     "id": "a3077fd5-8b87-4bc7-9f88-575092549963"
@@ -10,6 +11,7 @@
           "id": "5d807feb-8a68-416d-94c2-f7489cba8121"
         },
         "line1": "1899 S San Francisco Street",
+        "line2": "Floor 2",
         "city": "Flagstaff",
         "state": {
           "id": "441968c5-cce6-4121-ab3e-49b72ce823e9"
@@ -37,41 +39,53 @@
     "lastName": "Burrell",
     "Title": "Chief Technology Officer",
     "address": {
-        "line1": "1301 S. Knoles Drive",
-        "line2": "Building 54",
-        "city": "Flagstaff",
-        "state": {
-          "id": "441968c5-cce6-4121-ab3e-49b72ce823e9"
-        },
-        "postalCode": "86011",
-        "country": {
-          "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
-        }
+      "type": {
+        "id": "fffbd205-2158-42f6-9ea9-273b5bd31483"
+      },
+      "line1": "1301 S. Knoles Drive",
+      "line2": "Building 54",
+      "city": "Flagstaff",
+      "state": {
+        "id": "441968c5-cce6-4121-ab3e-49b72ce823e9"
+      },
+      "postalCode": "86011",
+      "country": {
+        "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
+      }
     },
     "phoneNumber": {
-        "number": "9285233335"
+      "type": {
+        "id": "706ec856-1a32-4ec3-970b-ad67c6485d68"
+      },
+      "number": "9285233335"
     },
     "emailAddress": {
-        "address": "its@nau.edu"
+      "type": {
+        "id": "36e8cc77-805b-4214-a53d-fdb4be9aa75c"
+      },
+      "address": "its@nau.edu"
     }
   },
   "billingInformation": {
     "nameOnCard": "Steven Burrell",
-    "cardNumber": "1111222233334444",
+    "cardNumber": "4111111111111111",
     "cardSecurityValue": "123",
     "expirationMonth": 4,
     "expirationYear": 2020,
     "address": {
-        "line1": "1301 S. Knoles Drive",
-        "line2": "Building 54",
-        "city": "Flagstaff",
-        "state": {
-          "id": "441968c5-cce6-4121-ab3e-49b72ce823e9"
-        },
-        "postalCode": "86011",
-        "country": {
-          "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
-        }
+      "type": {
+        "id": "8208da3a-8e62-4365-8b19-06a51e174402"
+      },
+      "line1": "1301 S. Knoles Drive",
+      "line2": "Building 54",
+      "city": "Flagstaff",
+      "state": {
+        "id": "441968c5-cce6-4121-ab3e-49b72ce823e9"
+      },
+      "postalCode": "86011",
+      "country": {
+        "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e"
+      }
     }
   }
 }

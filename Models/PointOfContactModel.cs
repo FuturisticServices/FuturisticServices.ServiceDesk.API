@@ -7,13 +7,12 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
 {
-    public class PointOfContactModel : BaseModel
+    public class PointOfContactModel
     {
         public PointOfContactModel() { }
 
         public PointOfContactModel(PointOfContact entity)
         {
-            Id = entity.Id;
             FirstName = entity.FirstName;
             LastName = entity.LastName;
             Title = entity.Title;

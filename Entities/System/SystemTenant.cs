@@ -14,11 +14,9 @@ namespace TangledServices.ServicePortal.API.Entities
         public SystemTenant() { }
 
         //  Create entity from model.
-        public SystemTenant(SystemTenantCreateModel model)
+        public SystemTenant(SystemTenantModel model)
         {
-            DateTime registrationDatetime = DateTime.Now;
-
-            Id = Guid.NewGuid().ToString();
+            Id = model.Id;
             Moniker = model.Moniker;
             Subscription = new Subscription(model.Subscription);
             Company = new Company(model.Company);

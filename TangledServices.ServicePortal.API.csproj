@@ -18,12 +18,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ConfigurationFiles\API json\**" />
     <Compile Remove="Entities\z\**" />
     <Compile Remove="Models\z\**" />
+    <Content Remove="ConfigurationFiles\API json\**" />
     <Content Remove="Entities\z\**" />
     <Content Remove="Models\z\**" />
+    <EmbeddedResource Remove="ConfigurationFiles\API json\**" />
     <EmbeddedResource Remove="Entities\z\**" />
     <EmbeddedResource Remove="Models\z\**" />
+    <None Remove="ConfigurationFiles\API json\**" />
     <None Remove="Entities\z\**" />
     <None Remove="Models\z\**" />
   </ItemGroup>
@@ -35,6 +39,8 @@
     <Compile Remove="Controllers\TokenController.cs" />
     <Compile Remove="Controllers\zTenantUserController.cs" />
     <Compile Remove="Controllers\zTicketsController.cs" />
+    <Compile Remove="Entities\AddressCountry.cs" />
+    <Compile Remove="Entities\AddressState.cs" />
     <Compile Remove="Entities\AppSettings.cs" />
     <Compile Remove="Entities\ConfigProjectVolumeTickets.cs" />
     <Compile Remove="Entities\CustomerLookupItem.cs" />
@@ -50,6 +56,8 @@
     <Compile Remove="Managers\Tenants\z_TenantService.cs" />
     <Compile Remove="Managers\zTenantUserService.cs" />
     <Compile Remove="Managers\zTicketsService.cs" />
+    <Compile Remove="Models\AddressCountryModel.cs" />
+    <Compile Remove="Models\AddressStateModel.cs" />
     <Compile Remove="Services\System\SystemLookupGroupService.cs" />
     <Compile Remove="Services\System\SystemTenantRegistrationService.cs" />
   </ItemGroup>
@@ -76,7 +84,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ConfigurationFiles\API json\" />
     <Folder Include="Models\Reset\" />
     <Folder Include="PostmanCollections\" />
     <Folder Include="Resources\" />

@@ -9,7 +9,7 @@ namespace TangledServices.ServicePortal.API.Entities
     public class BaseEntity
     {
         [JsonProperty(PropertyName = "id", Required = Required.Always)]
-        [Required, DisplayName("ID")]
+        [DisplayName("ID")]
         public string Id { get; set; }
     }
 }

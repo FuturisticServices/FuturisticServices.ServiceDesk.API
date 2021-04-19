@@ -13,14 +13,13 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Information related to the legal entity of a tenant.
     /// </summary>
-    public class Company : BaseEntity
+    public class Company
     {
         public Company() { }
 
         //  Create entity from model.
         public Company(CompanyModel model)
         {
-            Id = Guid.NewGuid().ToString();
             Name = model.Name;
             Address = new Address(model.Address);
             PhoneNumber = new PhoneNumber(model.PhoneNumber);
