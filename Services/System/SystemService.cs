@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Managers;
+using TangledServices.ServicePortal.API.Managers;
 using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Services
@@ -23,6 +24,10 @@ namespace TangledServices.ServicePortal.API.Services
     public interface ISystemService
     {
         Task Reset();
+        Task<ContainerProperties> GetContainerProperties(string name);
+        Task<IEnumerable<Container>> GetContainers();
+        Container GetContainer(string name);
+        bool ContainerExists(string name);
     }
 
     /// <summary>
@@ -34,10 +39,11 @@ namespace TangledServices.ServicePortal.API.Services
         private readonly ISystemUsersService _systemUsersService;
         private readonly ICosmosDbManager _cosmosDbManager;
         private readonly ISystemManager _systemManager;
-        private readonly ISystemLookupItemManager _systemLookupItemManager;
-        private readonly ISystemSubscriptionManager _systemSubscriptionsManager;
+        private readonly ISystemLookupItemsService _systemLookupItemsService;
+        private readonly ISystemLookupItemsManager _systemLookupItemsManager;
+        private readonly ISystemSubscriptionsManager _systemSubscriptionsManager;
         private readonly ISystemUsersManager _systemUsersManager;
-        private readonly ISystemTenantsManager _systemTenantsManager;
+        private readonly ICustomersManager _systemTenantsManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -47,19 +53,20 @@ namespace TangledServices.ServicePortal.API.Services
         /// <param name="hashingService">Service for security encryption/decryption.</param>
         /// <param name="cosmosDbManager">Manager to Cosmos DB.</param>
         /// <param name="systemManager">Manager to [TangledServices.ServicePortal] database.</param>
-        /// <param name="systemLookupItemManager">Manager to [FuturustucServices.ServicePortal].[LookupItems] container from a 'item' perspective.</param>
+        /// <param name="systemLookupItemsManager">Manager to [FuturustucServices.ServicePortal].[LookupItems] container from a 'item' perspective.</param>
         /// <param name="systemSubscriptionManager">Manager to [TangledServices.ServicePortal].[Subscriptions] container.</param>
         /// <param name="systemUsersManager">Manager to [TangledServices.ServicePortal].[Users] container.</param>
         /// <param name="systemTenantsManager">Manager to [TangledServices.ServicePortal].[Tenants] container.</param>
         /// <param name="configuration">Manager to file-based, in-memory and environment variables.</param>
         /// <param name="webHostEnvironment">Manager to the web hosting environment the application is running in.</param>
-        public SystemService(ISystemUsersService systemUsersService, IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupItemManager systemLookupItemManager, ISystemSubscriptionManager systemSubscriptionManager, ISystemUsersManager systemUsersManager, ISystemTenantsManager systemTenantsManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemService(ISystemUsersService systemUsersService, IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupItemsService systemLookupItemsService, ISystemLookupItemsManager systemLookupItemsManager, ISystemSubscriptionsManager systemSubscriptionManager, ISystemUsersManager systemUsersManager, ICustomersManager systemTenantsManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemUsersService = systemUsersService;
             _hashingService = hashingService;
             _cosmosDbManager = cosmosDbManager;
             _systemManager = systemManager;
-            _systemLookupItemManager = systemLookupItemManager;
+            _systemLookupItemsService = systemLookupItemsService;
+            _systemLookupItemsManager = systemLookupItemsManager;
             _systemSubscriptionsManager = systemSubscriptionManager;
             _systemUsersManager = systemUsersManager;
             _systemTenantsManager = systemTenantsManager;
@@ -81,16 +88,40 @@ namespace TangledServices.ServicePortal.API.Services
             if (databaseResponse.StatusCode != HttpStatusCode.Created) throw new SystemDatabaseNotCreatedException();
 
             //  Create containers.
-            var systemContainersToCreate = _configuration.GetSection("system:reset:containers").Get<List<SystemResetModel>>(); //  from system-reset.json
+            var containers = _configuration.GetSection("system:reset:containers").Get<List<SystemResetModel>>(); //  from system-reset.json
 
             //  Persist data to containers.
-            foreach (SystemResetModel container in systemContainersToCreate)
+            foreach (SystemResetModel container in containers)
             {
-                var containerResponse = await createContainer(databaseResponse.Database, container);
-                var lookupGroupEntities = await createContainerLookupGroups(container);
-                var subscriptions = await createContainerSubscriptions(container);
-                var users = await createContainerUsers(container);
+                var containerResponse = await createContainer(container);
+                await createContainerLookupItems(container);
+                await createContainerSubscriptions(container);
+                await createContainerUsers(container);
             }
+        }
+
+        public async Task<ContainerProperties> GetContainerProperties(string name)
+        {
+            var response = await _systemManager.GetContainerProperties(name);
+            return response;
+        }
+
+        public async Task<IEnumerable<Container>> GetContainers()
+        {
+            var response = await _systemManager.GetContainers();
+            return response;
+        }
+
+        public Container GetContainer(string name)
+        {
+            Container response = _systemManager.GetContainer(name);
+            return response;
+        }
+
+        public bool ContainerExists(string name)
+        {
+            Container container = _systemManager.GetContainer(name);
+            return container != null;
         }
 
         #region Private methods
@@ -100,9 +131,9 @@ namespace TangledServices.ServicePortal.API.Services
         /// <param name="database">The [TangledServices.ServicePortal] database object.</param>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
-        private async Task<ContainerResponse> createContainer(Database database, SystemResetModel container)
+        private async Task<ContainerResponse> createContainer(SystemResetModel container)
         {
-            ContainerResponse containerResponse = await _systemManager.CreateContainer(database, container.Name, container.PartitionKey);
+            ContainerResponse containerResponse = await _systemManager.CreateContainer(container.Name, container.PartitionKey);
             return containerResponse;
         }
 
@@ -111,20 +142,16 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
-        private async Task<IEnumerable<LookupGroupEntity>> createContainerLookupGroups(SystemResetModel container)
+        private async Task createContainerLookupItems(SystemResetModel container)
         {
-            List<LookupGroupEntity> items = new List<LookupGroupEntity>();
-
-            if (container.Groups != null)
+            if (container.Items != null)
             {
-                foreach (LookupGroupEntity group in container.Groups)
+                foreach (LookupItemModel model in container.Items)
                 {
-                    var item = await _systemLookupItemManager.CreateItemAsync(group);
-                    items.Add(item);
+                    LookupItem entity = new LookupItem(model);
+                    await _systemLookupItemsManager.CreateItemAsync(entity);
                 }
             }
-
-            return items;
         }
 
         /// <summary>
@@ -132,22 +159,18 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
-        private async Task<IEnumerable<Subscription>> createContainerSubscriptions(SystemResetModel container)
+        private async Task createContainerSubscriptions(SystemResetModel container)
         {
-            List<Subscription> items = new List<Subscription>();
-
             if (container.Subscriptions != null)
             {
-                foreach (Subscription subscription in container.Subscriptions)
+                foreach (SubscriptionModel model in container.Subscriptions)
                 {
                     //  If a renewal timeframe exists, retrieve it. Otherwise, make it null.
-                    subscription.RenewalTimeframe = subscription.RenewalTimeframe == null ? null : await _systemLookupItemManager.GetItemAsync("Subscription Renewal Timeframes", subscription.RenewalTimeframe.Id);
-                    var item = await _systemSubscriptionsManager.CreateItemAsync(subscription);
-                    items.Add(item);
+                    model.RenewalTimeframe = model.RenewalTimeframe == null ? null : await _systemLookupItemsManager.GetItemAsync("Subscription Renewal Timeframes", model.RenewalTimeframe.Id);
+                    var entity = new Subscription(model);
+                    await _systemSubscriptionsManager.CreateItemAsync(entity);
                 }
             }
-
-            return items;
         }
 
         /// <summary>
@@ -155,42 +178,35 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
-        private async Task<IEnumerable<Entities.User>> createContainerUsers(SystemResetModel container)
+        private async Task createContainerUsers(SystemResetModel container)
         {
-            List<Entities.User> items = new List<Entities.User>();
-
             if (container.Users != null)
             {
-                foreach (Entities.User user in container.Users)
+                foreach (SystemUserModel model in container.Users)
                 {
-                    foreach (EmailAddress userEmailAddress in user.EmailAddresses)
+                    foreach (EmailAddressModel emailAddressModel in model.EmailAddresses)
                     {
-                        //  Retrieve email address 'type' lookup item.
-                        LookupGroupEntity emailAddressesGroup = await _systemLookupItemManager.GetItemAsync(Enums.LookupGroups.EmailAddressTypes.GetDescription());
-                        LookupItemEntity emailAddressType = emailAddressesGroup.Items.SingleOrDefault(x => x.Name == userEmailAddress.Type.Name.ToString().ToTitleCase());
-                        userEmailAddress.Type = emailAddressType;
+                        emailAddressModel.Id = Guid.NewGuid().ToString();
+                        var emailAddress = await _systemLookupItemsService.GetItem(Enums.LookupItems.EmailAddressTypes.GetDescription().ToTitleCase(), emailAddressModel.Type.Id);
+                        emailAddressModel.Type = new LookupItemValueModel(emailAddress);
                     }
 
-                    foreach (PhoneNumber userPhoneNumber in user.PhoneNumbers)
+                    foreach (PhoneNumberModel phoneNumberModel in model.PhoneNumbers)
                     {
-                        //  Retrieve email address 'type' lookup item.
-                        LookupGroupEntity phoneNumberGroup = await _systemLookupItemManager.GetItemAsync(Enums.LookupGroups.PhoneNumberTypes.GetDescription());
-                        LookupItemEntity phoneNumberType = phoneNumberGroup.Items.SingleOrDefault(x => x.Name == userPhoneNumber.Type.Name.ToString().ToTitleCase());
-                        userPhoneNumber.Type = phoneNumberType;
+                        phoneNumberModel.Id = Guid.NewGuid().ToString();
+                        var phoneNumber = await _systemLookupItemsService.GetItem(Enums.LookupItems.PhoneNumberTypes.GetDescription().ToTitleCase(), phoneNumberModel.Type.Id);
+                        phoneNumberModel.Type = new LookupItemValueModel(phoneNumber);
                     }
 
                     //  Encrypt password.
-                    user.Password = _hashingService.EncryptString(user.Password);
+                    model.Password = _hashingService.EncryptString(model.Password);
+
+                    SystemUser entity = new SystemUser(model);
 
                     //  Persist item.
-                    var item = await _systemUsersManager.CreateItemAsync(user);
-
-                    //  Add status to _response.
-                    items.Add(item);
+                    var item = await _systemUsersManager.CreateItemAsync(entity);
                 }
             }
-
-            return items;
         }
 
         private async Task<bool> UsernameNotUnique(string username)

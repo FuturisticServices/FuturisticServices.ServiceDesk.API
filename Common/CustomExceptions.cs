@@ -15,27 +15,43 @@ namespace TangledServices.ServicePortal.API.Common
     }
     #endregion LookupItems
 
-    #region SystemTenant
+    #region Customers
     [Serializable]
-    public class SystemTenantDoesNotExistException : Exception
+    public class CustomerNotActiveException : Exception
     {
-        public SystemTenantDoesNotExistException() { }
+        public CustomerNotActiveException() { }
 
-        public SystemTenantDoesNotExistException(string moniker) : base(string.Format("Tenant '{0}' does not exist in system DB.", moniker)) { }
+        public CustomerNotActiveException(string name) : base(string.Format("Customer '{0}' in the system database is NOT active.", name)) { }
 
     }
 
     [Serializable]
-    public class SystemTenantAlreadyExistsException : Exception
+    public class CustomerNotFoundException : Exception
     {
-        public SystemTenantAlreadyExistsException() { }
+        public CustomerNotFoundException() { }
 
-        public SystemTenantAlreadyExistsException(string moniker) : base(string.Format("Tenant '{0}' already exists in system DB.", moniker)) { }
+        public CustomerNotFoundException(string name) : base(string.Format("Customer '{0}' not found in the system database.", name)) { }
 
     }
-    #endregion SystemTenants
 
-    #region SystemDatabase
+    [Serializable]
+    public class CustomerAlreadyExistsException : Exception
+    {
+        public CustomerAlreadyExistsException() { }
+
+        public CustomerAlreadyExistsException(string name) : base(string.Format("Customer '{0}' already exists in the system .", name)) { }
+
+    }
+
+    [Serializable]
+    public class EntityNameIsRequiredException : Exception
+    {
+        public EntityNameIsRequiredException() { }
+        public EntityNameIsRequiredException(string name) : base("Entity name is required.") { }
+    }
+    #endregion Customers
+
+    #region System
     [Serializable]
     public class SystemDatabaseNotCreatedException : Exception
     {
@@ -43,35 +59,53 @@ namespace TangledServices.ServicePortal.API.Common
 
         public SystemDatabaseNotCreatedException(string moniker) : base("System database failed to create.") { }
     }
-    #endregion SystemDatabase
+    #endregion System
+
+    #region Admin
+    [Serializable]
+    public class AdminDatabaseNotCreatedException : Exception
+    {
+        public AdminDatabaseNotCreatedException() { }
+
+        public AdminDatabaseNotCreatedException(string databaseName) : base(string.Format("Admin database '{0}' failed to create.", databaseName)) { }
+    }
+
+    [Serializable]
+    public class AdminContainerNotCreatedException : Exception
+    {
+        public AdminContainerNotCreatedException() { }
+
+        public AdminContainerNotCreatedException(string containerName) : base(string.Format("Admin container '{0}' failed to create.", containerName)) { }
+    }
+    #endregion Admin
 
     #region Tenant
     [Serializable]
-    public class TenantSetupNoContainersFoundToCreateException : Exception
+    public class TenantRegistrationNoContainersFoundToCreateException : Exception
     {
-        public TenantSetupNoContainersFoundToCreateException() : base(string.Format("No 'create' containers found in config file '{0}'.", "tenantSetup.json")) { }
+        public TenantRegistrationNoContainersFoundToCreateException() : base(string.Format("No 'create' containers found in config file '{0}'.", "tenantRegistration.json")) { }
     }
 
     [Serializable]
-    public class TenantSetupCreateContainerFailedException : Exception
+    public class TenantRegistrationCreateContainerFailedException : Exception
     {
-        public TenantSetupCreateContainerFailedException(string containerName) : base(string.Format("Tenant container '{0}' failed to create.", containerName)) { }
+        public TenantRegistrationCreateContainerFailedException(string containerName) : base(string.Format("Tenant container '{0}' failed to create.", containerName)) { }
     }
 
     [Serializable]
-    public class TenantSetupDatabaseCouldNotBeCreatedException : Exception
+    public class TenantRegistrationDatabaseCouldNotBeCreatedException : Exception
     {
-        public TenantSetupDatabaseCouldNotBeCreatedException() { }
+        public TenantRegistrationDatabaseCouldNotBeCreatedException() { }
 
-        public TenantSetupDatabaseCouldNotBeCreatedException(string moniker) : base(string.Format("Database for tenant '{0}' could not be created.", moniker)) { }
+        public TenantRegistrationDatabaseCouldNotBeCreatedException(string moniker) : base(string.Format("Database for tenant '{0}' could not be created.", moniker)) { }
     }
 
     [Serializable]
-    public class TenantDoesNotExistException : Exception
+    public class TenantNotFoundException : Exception
     {
-        public TenantDoesNotExistException() { }
+        public TenantNotFoundException() { }
 
-        public TenantDoesNotExistException(string moniker) : base(string.Format("Tenant '{0}' does NOT exist in system DB.", moniker)) { }
+        public TenantNotFoundException(string moniker) : base(string.Format("Tenant '{0}' NOT found in system DB.", moniker)) { }
     }
     #endregion Tenant
 
@@ -85,11 +119,11 @@ namespace TangledServices.ServicePortal.API.Common
     }
 
     [Serializable]
-    public class MonikerDoesNotExistException : Exception
+    public class MonikerNotFoundException : Exception
     {
-        public MonikerDoesNotExistException() { }
+        public MonikerNotFoundException() { }
 
-        public MonikerDoesNotExistException(string moniker) : base(string.Format("Moniker '{0}' does NOT exist.", moniker)) { }
+        public MonikerNotFoundException(string moniker) : base(string.Format("Moniker '{0}' NOT found.", moniker)) { }
     }
 
     [Serializable]
@@ -278,4 +312,13 @@ namespace TangledServices.ServicePortal.API.Common
         public PointOfContactTitleIsRequiredException() : base("Point of contact title is required.") { }
     }
     #endregion Point of contact
+
+    #region Fields
+    [Serializable]
+    public class NameIsRequiredException : Exception
+    {
+        public NameIsRequiredException() { }
+        public NameIsRequiredException(string name) : base("Name is required.") { }
+    }
+    #endregion Fields
 }

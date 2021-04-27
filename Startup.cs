@@ -32,6 +32,7 @@ namespace TangledServices.ServicePortal.API
             .SetBasePath(webHostEnvironment.ContentRootPath + @"\ConfigurationFiles")
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddJsonFile("system-reset.json", optional: true)
+            .AddJsonFile("admin-setup.json", optional: true)
             .AddJsonFile("tenant-setup.json", optional: true)
             .AddEnvironmentVariables();
 
@@ -45,12 +46,12 @@ namespace TangledServices.ServicePortal.API
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddSwaggerGen((options) => {
-            //    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Futuristic Service Desk API", Version = "v1" });
+            //    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tangled Services Service Portal API", Version = "v1" });
             //});
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v3", new OpenApiInfo { Title = "Futuristic API Library", Version = "v3" });
+                c.SwaggerDoc("v3", new OpenApiInfo { Title = "Tangled Services Service Portal API Library", Version = "v3" });
                 c.UseInlineDefinitionsForEnums();
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -168,37 +169,48 @@ namespace TangledServices.ServicePortal.API
 
             //  System services.
             services.AddSingleton<ISystemService, SystemService>();
-            services.AddSingleton<ISystemTenantsService, SystemTenantsService>();
+            services.AddSingleton<ICustomerService, CustomerService>();
             services.AddSingleton<ISystemLookupItemsService, SystemLookupItemsService>();
-            services.AddSingleton<ISystemSubscriptionService, SystemSubscriptionService>();
+            services.AddSingleton<ISystemSubscriptionsService, SystemSubscriptionsService>();
             services.AddSingleton<ISystemUsersService, SystemUsersService>();
             services.AddSingleton<ICompanyService, CompanyService>();
             services.AddSingleton<IPointOfContactService, PointOfContactService>();
-            services.AddSingleton<IAddressService, AddressService>();
-            services.AddSingleton<IPhoneNumberService, PhoneNumberService>();
+            services.AddSingleton<IAddressesService, AddressesService>();
+            services.AddSingleton<IPhoneNumbersService, PhoneNumbersService>();
             services.AddSingleton<IEmailAddressService, EmailAddressService>();
-            services.AddSingleton<IWebsiteService, WebsiteService>();
+            services.AddSingleton<IWebsitesService, WebsitesService>();
             services.AddSingleton<IBillingInformationService, BillingInformationService>();
 
             //  System managers.
             services.AddSingleton<ISystemManager, SystemManager>();
-            services.AddSingleton<ISystemLookupItemManager, SystemLookupItemManager>();
-            services.AddSingleton<ISystemSubscriptionManager, SystemSubscriptionManager>();
+            services.AddSingleton<ISystemLookupItemsManager, SystemLookupItemsManager>();
+            services.AddSingleton<ISystemSubscriptionsManager, SystemSubscriptionsManager>();
             services.AddSingleton<ISystemUsersManager, SystemUsersManager>();
-            services.AddSingleton<ISystemTenantsManager, SystemTenantsManager>();
+            services.AddSingleton<ICustomersManager, CustomersManager>();
 
-            //  Tenant services.
-            services.AddSingleton<ITenantSetupService, TenantSetupService>();
-            services.AddSingleton<ITenantLookupGroupService, TenantLookupGroupService>();
-            services.AddSingleton<ITenantLookupItemsService, TenantLookupItemsService>();
-            services.AddSingleton<ITenantSubscriptionService, TenantSubscriptionService>();
-            services.AddSingleton<ITenantUserService, TenantUserService>();
+            //  Admin services.
+            services.AddSingleton<IAdminService, AdminService>();
+            services.AddSingleton<IAdminLookupItemsService, AdminLookupItemsService>();
+            services.AddSingleton<IAdminLookupItemsService, AdminLookupItemsService>();
+            services.AddSingleton<IAdminUserManager, AdminUserManager>();
 
-            //  Tenant managers.
-            services.AddSingleton<ITenantsManager, TenantsManager>();
-            services.AddSingleton<ITenantLookupItemManager, TenantLookupItemManager>();
-            services.AddSingleton<ITenantSubscriptionsManager, TenantSubscriptionsManager>();
-            services.AddSingleton<ITenantUserManager, TenantUserManager>();
+            //  Admin managers.
+            services.AddSingleton<IAdminManager, AdminManager>();
+            services.AddSingleton<IAdminLookupItemsManager, AdminLookupItemsManager>();
+            services.AddSingleton<IAdminUserManager, AdminUserManager>();
+
+            ////  Tenant services.
+            //services.AddSingleton<ITenantRegistrationService, TenantRegistrationService>();
+            //services.AddSingleton<ITenantLookupGroupService, TenantLookupGroupService>();
+            //services.AddSingleton<ITenantLookupItemsService, TenantLookupItemsService>();
+            //services.AddSingleton<ITenantSubscriptionService, TenantSubscriptionService>();
+            //services.AddSingleton<ITenantUserService, TenantUserService>();
+
+            ////  Tenant managers.
+            //services.AddSingleton<ITenantsManager, TenantsManager>();
+            //services.AddSingleton<ITenantLookupItemManager, TenantLookupItemManager>();
+            //services.AddSingleton<ITenantSubscriptionsManager, TenantSubscriptionsManager>();
+            //services.AddSingleton<ITenantUserManager, TenantUserManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

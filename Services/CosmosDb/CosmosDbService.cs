@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Managers;
-using TangledServices.ServicePortal.API.Models;
-using TangledServices.ServicePortal.API.Services;
 
 namespace TangledServices.ServicePortal.API.Services
 {
     public interface ICosmosDbService {
-        Task<DatabaseResponse> CreateDatabase(SystemTenant systemTenant);
+        Task<DatabaseResponse> CreateDatabase(CustomerEntity systemTenant);
         Task<ContainerResponse> CreateContainer(Database database, string containerName, string partitionKeyName);
+        Task<List<string>> GetContainers(Database database);
         Container GetContainer(Database database, string containerName);
+        bool Exists(Database database, string containerName);
     }
 
     public class CosmosDbService : CosmosDbBaseService, ICosmosDbService
@@ -41,7 +37,7 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Constructors
 
         #region Public methods
-        public async Task<DatabaseResponse> CreateDatabase(SystemTenant systemTenant)
+        public async Task<DatabaseResponse> CreateDatabase(CustomerEntity systemTenant)
         {
             DatabaseResponse response = await _cosmosDbManager.CreateDatabaseAsync(systemTenant);
             return response;
@@ -49,8 +45,16 @@ namespace TangledServices.ServicePortal.API.Services
 
         public async Task<ContainerResponse> CreateContainer(Database database, string containerName, string partitionKeyName)
         {
-            ContainerResponse response = await _cosmosDbManager.CreateContainerIfNotExistsAsync(database, containerName, partitionKeyName);
+            ContainerResponse response = await _cosmosDbManager.CreateContainerIfNotExistAsync(database, containerName, partitionKeyName);
             return response;
+        }
+
+        public async Task<List<string>> GetContainers(Database database)
+        {
+            FeedIterator<ContainerProperties> iterator = database.GetContainerQueryIterator<ContainerProperties>();
+            FeedResponse<ContainerProperties> containers = await iterator.ReadNextAsync().ConfigureAwait(false);
+
+            return containers.ToList().Select(x => x.Id).ToList();
         }
 
         public Container GetContainer(Database database, string containerName)

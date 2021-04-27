@@ -23,28 +23,28 @@ namespace TangledServices.ServicePortal.API.Models
         /// Line 1 associated to address.
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
-        [DisplayName("Type")]
-        public LookupItemEntity Type { get; set; }
+        [Required, DisplayName("Type")]
+        public LookupItemValue Type { get; set; }
 
         /// <summary>
         /// Line 1 associated to address.
         /// </summary>
         [JsonProperty(PropertyName = "line1", Required = Required.Always)]
-        [Required, MaxLength(50), DisplayName("Line 1")]
+        [Required, StringLength(50, ErrorMessage = "Line 1 cannot exceed {1} characters."), DisplayName("Line 1")]
         public string Line1 { get; set; }
 
         /// <summary>
         /// Line 1 associated to address.
         /// </summary>
         [JsonProperty(PropertyName = "line2", Required = Required.Default)]
-        [Required, MaxLength(50), DisplayName("Line 2")]
+        [StringLength(50, ErrorMessage = "Line 2 cannot exceed {1} characters."), DisplayName("Line 2")]
         public string Line2 { get; set; }
 
         /// <summary>
         /// Line 1 associated to address.
         /// </summary>
         [JsonProperty(PropertyName = "city", Required = Required.Always)]
-        [MaxLength(50), DisplayName("City")]
+        [Required, StringLength(50, ErrorMessage = "City cannot exceed {1} characters."), DisplayName("City")]
         public string City { get; set; }
 
         /// <summary>
@@ -52,13 +52,13 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "state")]
         [Required, DisplayName("State")]
-        public LookupItemEntity State { get; set; }
+        public LookupItemValue State { get; set; }
 
         /// <summary>
         /// Line 1 associated to address.
         /// </summary>
         [JsonProperty(PropertyName = "postalCode", Required = Required.Always)]
-        [MaxLength(9), DisplayName("Postal code")]
+        [Required, RegularExpression(@"\d{5}([ \-]\d{4})?",  ErrorMessage = "Postal code is invalid.")]
         public string PostalCode { get; set; }
 
         /// <summary>
@@ -66,6 +66,6 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "country")]
         [DisplayName("Country")]
-        public LookupItemEntity Country { get; set; }
+        public LookupItemValue Country { get; set; }
     }
 }

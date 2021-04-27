@@ -91,7 +91,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "renewalTimeframe", Required = Required.AllowNull)]
         [DisplayName("Renewal timeframe")]
-        public LookupItemEntity RenewalTimeframe { get; set; }
+        public LookupItemValue RenewalTimeframe { get; set; }
 
         /// <summary>
         /// Name of the subscription.

@@ -20,7 +20,7 @@ namespace TangledServices.ServicePortal.API.Entities
 
         public EmailAddress(EmailAddressModel model)
         {
-            Type = model.Type;
+            Type = new LookupItemValue(model.Type);
             Address = model.Address;
         }
 
@@ -39,7 +39,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required]
-        public LookupItemEntity Type { get; set; }
+        public LookupItemValue Type { get; set; }
 
         /// <summary>
         /// Physical email address.

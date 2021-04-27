@@ -16,6 +16,7 @@ namespace TangledServices.ServicePortal.API.Managers
         public string _primaryKey;
 
         public string _databaseName;
+        public Database _database;
         public CosmosClient _dbClient;
         public Container _container;
 
@@ -25,10 +26,10 @@ namespace TangledServices.ServicePortal.API.Managers
 
             if (!string.IsNullOrEmpty(_uri) && !string.IsNullOrEmpty(_primaryKey))
             {
-
                 CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
                 _dbClient = clientBuilder.WithConnectionModeDirect().Build();
                 _container = _dbClient.GetContainer(_databaseName, containerName);
+                _database = _dbClient.GetDatabase(_databaseName);
             }
         }
 

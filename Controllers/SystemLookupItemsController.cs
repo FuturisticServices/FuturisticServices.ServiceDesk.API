@@ -95,7 +95,7 @@ namespace TangledServices.ServicePortal.API.Controllers
 
                 if (group != null)
                 {
-                    response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("{0} '{1}' retrieved.", group.Items.Count(), groupName));
+                    response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("{0} '{1}' retrieved.", group.Values.Count(), groupName));
                     response.data = group;
                     return Ok(new { response });
                 }
@@ -126,7 +126,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] LookupGroupPostModel model)
+        public async Task<IActionResult> Post([FromBody] LookupItemModel model)
         {
             try
             {
@@ -134,18 +134,18 @@ namespace TangledServices.ServicePortal.API.Controllers
 
                 if (existingGroup != null)
                 {
-                    _response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("LookupItem group '{0}' created.", model.Group));
+                    _response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("LookupItem group '{0}' created.", model.Name));
                     _response.model = model;
                     return Ok(new { _response });
                 }
 
-                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("LookupItem group '{0}' already exists.", model.Group));
+                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("LookupItem group '{0}' already exists.", model.Name));
                 return BadRequest(new { _response });
             }
             catch (Exception ex)
             {
                 _response.group = null;
-                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("Error creating LookupItem '{0}'. Error: {1}", model.Group, ex.Message));
+                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("Error creating LookupItem '{0}'. Error: {1}", model.Name, ex.Message));
                 return BadRequest(new { _response });
             }
         }
@@ -163,7 +163,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromBody] LookupGroupEntity group)
+        public async Task<IActionResult> Put([FromBody] LookupItem group)
         {
             try
             {
@@ -171,18 +171,18 @@ namespace TangledServices.ServicePortal.API.Controllers
 
                 if (group != null)
                 {
-                    _response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("LookupItem group '{0}' updated.", group.Group));
+                    _response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("LookupItem group '{0}' updated.", group.Name));
                     _response.data = group;
                     return Ok(new { _response });
                 }
 
-                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("LookupItem group '{0}' does not exist.", group.Group));
+                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("LookupItem group '{0}' does not exist.", group.Name));
                 return BadRequest(new { _response });
             }
             catch (Exception ex)
             {
                 _response.group = null;
-                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("Error updating LookupItem '{0}'. Error: {1}", group.Group, ex.Message));
+                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("Error updating LookupItem '{0}'. Error: {1}", group.Name, ex.Message));
                 return BadRequest(new { _response });
             }
         }

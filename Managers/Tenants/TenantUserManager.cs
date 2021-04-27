@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.Cosmos;
@@ -9,9 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServicePortal.API.Common;
-using TangledServices.ServicePortal.API.Entities;
-using TangledServices.ServicePortal.API.Managers;
+using TangledServices.ServicePortal.API.Managers.System;
 
 namespace TangledServices.ServicePortal.API.Managers
 {
@@ -24,12 +20,12 @@ namespace TangledServices.ServicePortal.API.Managers
 
 public class TenantUserManager : TenantBaseManager, ITenantUserManager
     {
-        internal ISystemTenantsManager _systemTenantsService;
+        internal ICustomerManager _systemTenantsService;
         internal IHttpContextAccessor _httpContextAccessor;
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public TenantUserManager(ISystemTenantsManager systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", systemTenantsService, httpContextAccessor, configuration, webHostEnvironment)
+        public TenantUserManager(ICustomerManager systemTenantsService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", systemTenantsService, httpContextAccessor, configuration, webHostEnvironment)
         {
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;

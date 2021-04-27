@@ -93,7 +93,7 @@
             <returns>HTTPStatus 200 OK ~ success</returns>
             <returns>HTTPStatus 400 BadRequest ~ failure</returns>
         </member>
-        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantSetupController.Setup(System.String)">
+        <member name="M:TangledServices.ServicePortal.API.Controllers.TenantRegistrationController.Setup(System.String)">
             <summary>
                 Creates a [TangledServices.{moniker}.ServicePortal] database.
                 Inside the database, creates a 'LookupItems', 'Subscriptions' and 'Users' containers.

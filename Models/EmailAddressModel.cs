@@ -10,7 +10,9 @@ namespace TangledServices.ServicePortal.API.Models
 {
     public class EmailAddressModel : BaseModel
     {
-        public EmailAddressModel() { }
+        public EmailAddressModel() {
+            Type = new LookupItemValueModel();
+        }
 
         public EmailAddressModel(EmailAddress entity)
         {
@@ -32,13 +34,13 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required, DisplayName("Type")]
-        public LookupItemEntity Type { get; set; }
+        public LookupItemValueModel Type { get; set; }
 
         /// <summary>
         /// Email address.
         /// </summary>
         [JsonProperty(PropertyName = "address", Required = Required.Always)]
-        [Required, DisplayName("Address")]
+        [Required, DataType(DataType.EmailAddress), DisplayName("Address")]
         public string Address { get; set; }
     }
 }

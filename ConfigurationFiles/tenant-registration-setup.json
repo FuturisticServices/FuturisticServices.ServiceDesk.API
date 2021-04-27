@@ -1,0 +1,58 @@
+{
+  "tenant": {
+    "setup": {
+      "containers": {
+        "create": [
+          {
+            "name": "LookupItems",
+            "partitionKey": "group",
+            "cloneItems": true
+          },
+          {
+            "name": "Subscriptions",
+            "partitionKey": "subscription/name",
+            "cloneItems": false
+          },
+          {
+            "name": "Users",
+            "partitionKey": "employeeId",
+            "cloneItems": false
+          }
+        ]
+      },
+      "lookupGroups": {
+        "omit": ["Database Platforms", "Subscription Renewal Timeframes"]
+      },
+      "users": [
+        {
+          "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
+          "employeeId": "{moniker}000000",
+          "nameFirst": "Tangled",
+          "nameLast": "Admin",
+          "username": "tangled.admin",
+          "password": "password",
+          "displayName": "Tangled Admin",
+          "mustChangePasswordAtNextLogin": false,
+          "enabled": true,
+          "emailAddresses": [
+            {
+              "type": {
+                  "id": "a7eb3ee7-aeac-4689-98b7-8ce70ce868d8"
+              },
+              "address": "{moniker}.admin@tangled.services"
+            }
+          ],
+          "phoneNumbers": [
+            {
+              "type": {
+                "id": "153dc534-1c04-4df9-bd4d-35450d8f9e3e"
+              },
+              "number": "6023732559"
+            }
+          ],
+          "roles": [ "root" ]
+        }
+      ]
+    }
+  }
+}

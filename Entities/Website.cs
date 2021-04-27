@@ -31,7 +31,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required, DisplayName("Type")]
-        public LookupItemEntity Type { get; set; }
+        public LookupItemValue Type { get; set; }
 
         /// <summary>
         /// The website URL.
