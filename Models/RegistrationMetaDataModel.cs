@@ -11,12 +11,12 @@ namespace TangledServices.ServicePortal.API.Models
         /// <summary>
         /// List of states.
         /// </summary>
-        public List<LookupItemEntity> States { get; set; }
+        public List<LookupItem> States { get; set; }
 
         /// <summary>
         /// List of countries.
         /// </summary>
-        public List<LookupItemEntity> Countries { get; set; }
+        public List<LookupItem> Countries { get; set; }
 
         /// <summary>
         /// List of subscriptions.

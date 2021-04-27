@@ -22,9 +22,9 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required, DisplayName("Type")]
-        public LookupItemEntity Type { get; set; }
+        public LookupItemValue Type { get; set; }
 
-        [Required, MaxLength(50)]
+        [Required, DataType(DataType.Url)]
         public string Url { get; set; }
     }
 }

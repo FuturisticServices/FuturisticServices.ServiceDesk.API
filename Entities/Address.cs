@@ -30,7 +30,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type")]
         [Required, JsonRequired]
-        public LookupItemEntity Type { get; set; }
+        public LookupItemValue Type { get; set; }
 
         /// <summary>
         /// Line 1 associated to the address.
@@ -58,7 +58,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "state")]
         [Required, JsonRequired, DisplayName("State")]
-        public LookupItemEntity State { get; set; }
+        public LookupItemValue State { get; set; }
 
         /// <summary>
         /// Post/zip code associated to the address.
@@ -72,6 +72,6 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "country")]
         [Required, JsonRequired, DisplayName("Country")]
-        public LookupItemEntity Country { get; set; }
+        public LookupItemValue Country { get; set; }
     }
 }

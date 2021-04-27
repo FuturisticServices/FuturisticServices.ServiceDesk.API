@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 using TangledServices.ServicePortal.API.Entities;
-using TangledServices.ServicePortal.API.Managers;
+using TangledServices.ServicePortal.API.Services;
 using Microsoft.AspNetCore.Http;
 
 namespace TangledServices.ServicePortal.API.Controllers
@@ -18,13 +18,13 @@ namespace TangledServices.ServicePortal.API.Controllers
     [Route("api/{moniker}/[controller]")]
     public class UserController : Controller
     {
-        private readonly ISystemTenantsManager _systemTenantsService;
+        private readonly ICustomerService _customersService;
         private readonly IConfiguration _configuration;
-        private SystemTenant _systemTenant;
+        private CustomerEntity _systemTenant;
 
-        public UserController(ISystemTenantsManager customerService, IConfiguration configuration)
+        public UserController(ICustomerService customersService, IConfiguration configuration)
         {
-            _systemTenantsService = customerService;
+            _customersService = customersService;
             _configuration = configuration;
         }
 
@@ -40,7 +40,7 @@ namespace TangledServices.ServicePortal.API.Controllers
             
             try
             {
-                var _systemTenant = _systemTenantsService.GetItem(moniker);
+                var _systemTenant = _customersService.Get(moniker);
 
                 var header = Request.Headers["Authorization"];
                 if (header.ToString().StartsWith("Basic"))
@@ -60,8 +60,8 @@ namespace TangledServices.ServicePortal.API.Controllers
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
                         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
                         var jwtSecurityToken = new JwtSecurityToken(
-                            issuer: "futuristic.service",
-                            audience: "futuristic.service",
+                            issuer: "tangled.services",
+                            audience: "tangled.services",
                             expires: DateTime.Now.AddDays(365),
                             claims: claimsData,
                             signingCredentials: credentials

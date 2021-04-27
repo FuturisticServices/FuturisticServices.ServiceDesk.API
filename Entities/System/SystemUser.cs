@@ -5,18 +5,40 @@ using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
+using TangledServices.ServicePortal.API.Models;
+
 namespace TangledServices.ServicePortal.API.Entities
 {
     public class SystemUser : BaseEntity
     {
         public SystemUser() { }
 
+        public SystemUser(SystemUserModel model)
+        {
+            Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
+            EmployeeId = model.EmployeeId;
+            NamePrefix = model.NamePrefix;
+            NameFirst = model.NameFirst;
+            NameLast = model.NameLast;
+            NameSuffix = model.NameSuffix;
+            Username = model.Username;
+            Password = model.Password;
+            DisplayName = model.DisplayName;
+            ProfileImageUrl = model.ProfileImageUrl;
+            MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
+            PasswordExpirationDateTime = model.PasswordExpirationDateTime;
+            Enabled = model.Enabled;
+            EmailAddresses = EmailAddress.Construct(model.EmailAddresses);
+            PhoneNumbers = PhoneNumber.Construct(model.PhoneNumbers);
+            Roles = model.Roles;
+        }
+
         /// <summary>
         /// Suffix of the user.
         /// </summary>
         [JsonProperty(PropertyName = "employeeId", Required = Required.Always)]
         [Required, DisplayName("Employee ID")]
-        public string EmployeeID { get; set; }
+        public string EmployeeId { get; set; }
 
         /// <summary>
         /// Suffix of the user.
@@ -92,8 +114,15 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// Controls whether this user can attempt to login.
         /// </summary>
+        [JsonProperty(PropertyName = "cloneToAdminDatabase", Required = Required.Default)]
+        [DefaultValue(false), DisplayName("Clone to admin database")]
+        public bool CloneToAdminDatabase { get; set; }
+
+        /// <summary>
+        /// Controls whether this user can attempt to login.
+        /// </summary>
         [JsonProperty(PropertyName = "enabled", Required = Required.Always)]
-        [Required, DisplayName("Enabled")]
+        [Required, DefaultValue(true), DisplayName("Enabled")]
         public bool Enabled { get; set; }
 
         /// <summary>
@@ -116,12 +145,5 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "roles", Required = Required.Default)]
         [DisplayName("Roles")]
         public List<string> Roles { get; set; }
-
-        /// <summary>
-        /// Group(s) the user is associated with.
-        /// </summary>
-        [JsonProperty(PropertyName = "groups", Required = Required.Default)]
-        [DisplayName("Groups")]
-        public List<Group> Groups { get; set; }
     }
 }

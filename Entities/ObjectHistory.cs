@@ -26,7 +26,7 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public string UserId { get; set; }
         public DateTime DateTime { get; set; }
-        public LookupItemEntity Action { get; set; }
+        public LookupItem Action { get; set; }
         public string BeforeModification { get; set; }
         public string AfterModification { get; set; }
     }

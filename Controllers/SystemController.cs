@@ -22,7 +22,7 @@ namespace TangledServices.ServicePortal.API.Controllers
     [Route("api/system")]
     [ApiVersion("1.0")]
     [ApiController]
-    public class SystemController : BasePortalController
+    public class SystemController : BaseController
     {
         private readonly ISystemService _systemService;
         private readonly ISystemLookupItemsService _systemLookupItemService;
@@ -40,7 +40,9 @@ namespace TangledServices.ServicePortal.API.Controllers
         }
 
         /// <summary>
-        /// Deletes and creates the [TangledServices.ServicePortal] system database.  ** USE WITH CAUTION - NOT TURNING BACK! **
+        /// Deletes (if exists) and creates the [TangledServices.ServicePortal] system database.  ** USE WITH CAUTION - NOT TURNING BACK! **
+        /// Utilizes json data from configurationFiles/system-reset.json.
+        /// Utilizes hardcoded GUIDs so item IDs remain the same each time a reset is performed.
         /// </summary>
         /// <returns></returns>
         [HttpGet("reset")]
@@ -54,12 +56,13 @@ namespace TangledServices.ServicePortal.API.Controllers
             {
                 await _systemService.Reset();
 
-                response = new ApiResponse(HttpStatusCode.OK, "System DB reset successfully.");
+                var response = new ApiResponse(HttpStatusCode.OK, "System DB reset successfully.", null);
                 return Ok(new { response });
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                return BadRequest("Error resetting system database/containers. Error: " + ex.Message);
+                var response = new ApiResponse(HttpStatusCode.BadRequest, "System DB reset was unsuccessful.", exception, null);
+                return BadRequest(new { response });
             }
         }
     }

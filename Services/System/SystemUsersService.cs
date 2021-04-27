@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -8,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -20,6 +18,7 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface ISystemUsersService
     {
+        Task<IEnumerable<SystemUser>> GetItems();
         Task<string> GetUsernameAsync(string basicAuthHeader);
         Task<string> GetPasswordAsync(string basicAuthHeader);
         Task<SystemUser> AuthenticateAsync(string basicAuthHeader);
@@ -43,6 +42,11 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Public methods
+        public Task<IEnumerable<SystemUser>> GetItems()
+        {
+            return _systemUsersManager.GetItemsAsync();
+        }
+
         public async Task<string> GetUsernameAsync(string basicAuthHeader)
         {
             if (basicAuthHeader.ToString().StartsWith("Basic"))
@@ -98,7 +102,7 @@ namespace TangledServices.ServicePortal.API.Services
             {
                 string randomNumber = Helpers.GetRandomNumber();
                 employeeId = string.Format("{0}{1}", moniker, randomNumber);
-                employeeIdNotUnique = users.Any(x => x.EmployeeID.ToLower() == employeeId.ToLower());
+                employeeIdNotUnique = users.Any(x => x.EmployeeId.ToLower() == employeeId.ToLower());
 
             } while (employeeIdNotUnique);
 

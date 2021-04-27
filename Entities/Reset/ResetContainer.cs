@@ -32,7 +32,7 @@ namespace TangledServices.ServicePortal.API.Entities
 
         [JsonProperty(PropertyName = "groups", Required = Required.Default)]
         [DisplayName("Groups")]
-        public List<LookupGroupEntity> Groups { get; set; }
+        public List<LookupItem> Groups { get; set; }
 
         [JsonProperty(PropertyName = "subscriptions", Required = Required.Default)]
         [DisplayName("Subscriptions")]

@@ -10,8 +10,8 @@ namespace TangledServices.ServicePortal.API.Common
 {
     public static class Enums
     {
-        [Description("Lookup groups")]
-        public enum LookupGroups
+        [Description("Lookup items")]
+        public enum LookupItems
         {
             [Description("Subscription renewal timeframes")]
             SubscriptionRenewalTimeframes,
@@ -41,7 +41,7 @@ namespace TangledServices.ServicePortal.API.Common
             DatabasePlatforms,
         }
 
-        [Description("Subscription Renewal Timeframes")]
+        [Description("Subscription renewal timeframes")]
         public enum SubscriptionRenewalTimeframes
         {
             [Description("Monthly Recurring")]

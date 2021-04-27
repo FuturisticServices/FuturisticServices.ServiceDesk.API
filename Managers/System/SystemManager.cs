@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Azure.Cosmos;
@@ -16,8 +17,10 @@ namespace TangledServices.ServicePortal.API.Managers
     {
         Task<DatabaseResponse> DeleteDatabase();
         Task<DatabaseResponse> CreateDatabase();
-        Task<ContainerResponse> CreateContainer(Database database, string containerName, string partitionKeyName);
-        Task<List<string>> GetContainers(List<string> containersToOmit);
+        Task<ContainerResponse> CreateContainer(string containerName, string partitionKeyName);
+        Task<ContainerProperties> GetContainerProperties(string name);
+        Task<IEnumerable<Container>> GetContainers();
+        Container GetContainer(string name);
     }
 
     public class SystemManager : SystemBaseManager, ISystemManager
@@ -36,9 +39,9 @@ namespace TangledServices.ServicePortal.API.Managers
             _databaseName = _webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:SystemDatabaseName"] : _configuration["cosmosDb.Localhost:SystemDatabaseName"];
 
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
-            CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
-            Database database = client.GetDatabase(_databaseName);
-            DatabaseResponse response = await database.DeleteAsync();
+            _dbClient = clientBuilder.WithConnectionModeDirect().Build();
+            _database = _dbClient.GetDatabase(_databaseName);
+            DatabaseResponse response = await _database.DeleteAsync();
 
             return response;
         }
@@ -48,24 +51,26 @@ namespace TangledServices.ServicePortal.API.Managers
             _databaseName = _webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:SystemDatabaseName"] : _configuration["cosmosDb.Localhost:SystemDatabaseName"];
 
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
-            CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
-            DatabaseResponse response = await client.CreateDatabaseIfNotExistsAsync(_databaseName);
+            _dbClient = clientBuilder.WithConnectionModeDirect().Build();
+            DatabaseResponse response = await _dbClient.CreateDatabaseIfNotExistsAsync(_databaseName);
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 response = await DeleteDatabase();
-                response = await client.CreateDatabaseAsync(_databaseName);
+                response = await _dbClient.CreateDatabaseAsync(_databaseName);
             }
+
+            _database = response.Database;
 
             return response;
         }
 
-        public async Task<ContainerResponse> CreateContainer(Database database, string containerName, string partitionKeyName)
+        public async Task<ContainerResponse> CreateContainer(string containerName, string partitionKeyPath)
         {
             ContainerProperties containerProperties = new ContainerProperties()
             {
                 Id = containerName,
-                PartitionKeyPath = string.Format("/{0}", partitionKeyName),
+                PartitionKeyPath = partitionKeyPath,
                 IndexingPolicy = new IndexingPolicy()
                 {
                     Automatic = false,
@@ -73,26 +78,50 @@ namespace TangledServices.ServicePortal.API.Managers
                 }
             };
 
-            ContainerResponse response = await database.CreateContainerIfNotExistsAsync(containerProperties);
+            ContainerResponse response = await _database.CreateContainerIfNotExistsAsync(containerProperties);
 
             return response;
         }
 
-        public async Task<List<string>> GetContainers(List<string> lookupGroupsToClone)
+        public async Task<ContainerProperties> GetContainerProperties(string name)
         {
-            List<string> containers = new List<string>();
-
             Database database = _dbClient.GetDatabase(_databaseName);
             FeedIterator<ContainerProperties> iterator = database.GetContainerQueryIterator<ContainerProperties>();
-            FeedResponse<ContainerProperties> systemContainers = await iterator.ReadNextAsync().ConfigureAwait(false);
+            FeedResponse<ContainerProperties> dbContainers = await iterator.ReadNextAsync().ConfigureAwait(false);
 
-            foreach (var systemContainer in systemContainers) {
-                if (lookupGroupsToClone.Contains(systemContainer.Id)) {
-                    containers.Add(systemContainer.Id);
-                }
+            ContainerProperties containerProperties = new ContainerProperties();
+            foreach (var dbContainer in dbContainers)
+            {
+                if (string.Compare(dbContainer.Id, name, true) != 0) continue;
+
+                containerProperties = dbContainer;
+                break;
+            }
+
+            return containerProperties;
+        }
+
+        public async Task<IEnumerable<Container>> GetContainers()
+        {
+            Database database = _dbClient.GetDatabase(_databaseName);
+            FeedIterator<ContainerProperties> iterator = database.GetContainerQueryIterator<ContainerProperties>();
+            FeedResponse<ContainerProperties> dbContainers = await iterator.ReadNextAsync().ConfigureAwait(false);
+
+            List<Container> containers = new List<Container>();
+            foreach (var containerProperties in dbContainers)
+            {
+                Container container = GetContainer(containerProperties.Id);
+                containers.Add(container);
             }
 
             return containers;
+        }
+
+        public Container GetContainer(string name)
+        {
+            Database database = _dbClient.GetDatabase(_databaseName);
+            Container response = database.GetContainer(name);
+            return response;
         }
     }
 }

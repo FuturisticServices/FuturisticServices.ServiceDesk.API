@@ -19,7 +19,7 @@ namespace TangledServices.ServicePortal.API.Managers
     {
         Task<SystemUser> GetItemAsync(string username);
         Task<IEnumerable<SystemUser>> GetItemsAsync();
-        Task<Entities.User> CreateItemAsync(Entities.User user);
+        Task<SystemUser> CreateItemAsync(SystemUser user);
 }
 
 public class SystemUsersManager : SystemBaseManager, ISystemUsersManager
@@ -49,9 +49,9 @@ public class SystemUsersManager : SystemBaseManager, ISystemUsersManager
             return result;
         }
 
-        public async Task<Entities.User> CreateItemAsync(Entities.User user)
+        public async Task<SystemUser> CreateItemAsync(SystemUser user)
         {
-            var results = await _container.CreateItemAsync<Entities.User>(user, new PartitionKey(user.EmployeeId));
+            var results = await _container.CreateItemAsync<SystemUser>(user, new PartitionKey(user.EmployeeId));
             return results;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace TangledServices.ServicePortal.API.Extensions
@@ -72,6 +73,21 @@ namespace TangledServices.ServicePortal.API.Extensions
                 if (char.IsUpper(the_string[i])) result += " ";
                 result += the_string[i];
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts a string to title case.
+        /// </summary>
+        /// <param name="the_string"></param>
+        /// <returns></returns>
+        public static string ToTitleCase(this string the_string)
+        {
+            // Creates a TextInfo based on the "en-US" culture.
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+
+            var result = textInfo.ToTitleCase(the_string);
 
             return result;
         }

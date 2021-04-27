@@ -18,7 +18,7 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public DatabaseConnection() { }
 
-        public DatabaseConnection(LookupItemEntity databasePlatform, string databaseName, string uri, string primaryKey)
+        public DatabaseConnection(LookupItem databasePlatform, string databaseName, string uri, string primaryKey)
         {
             Id = Guid.NewGuid().ToString();
             DatabasePlatform = databasePlatform;
@@ -32,7 +32,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "databasePlatform", Required = Required.Always)]
         [Required]
-        public LookupItemEntity DatabasePlatform { get; set; }
+        public LookupItem DatabasePlatform { get; set; }
 
         /// <summary>
         /// Database name.

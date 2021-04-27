@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Hosting;
@@ -12,8 +13,10 @@ namespace TangledServices.ServicePortal.API.Managers
 {
     public interface ICosmosDbManager
     {
-        Task<DatabaseResponse> CreateDatabaseAsync(SystemTenant systemTenant);
-        Task<ContainerResponse> CreateContainerIfNotExistsAsync(Database database, string containerName, string partitionKeyName);
+        Task<DatabaseResponse> CreateDatabaseAsync(CustomerEntity systemTenant);
+        Task<ContainerResponse> CreateContainerIfNotExistAsync(Database database, string containerName, string partitionKeyName);
+        bool Exists(Database database, string containerName);
+        Task<List<string>> GetContainers(Database database);
         Container GetContainer(Database database, string containerName);
         Task<ContainerResponse> DeleteContainer(Database database, string containerName);
     }
@@ -44,9 +47,9 @@ namespace TangledServices.ServicePortal.API.Managers
         /// </summary>
         /// <param name="tenant">Tenant entity</param>
         /// <returns></returns>
-        public async Task<DatabaseResponse> CreateDatabaseAsync(SystemTenant systemTenant)
+        public async Task<DatabaseResponse> CreateDatabaseAsync(CustomerEntity entity)
         {
-            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], systemTenant.Moniker.ToUpper());
+            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], "changeme".ToUpper());
 
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
             CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();
@@ -61,12 +64,12 @@ namespace TangledServices.ServicePortal.API.Managers
             return response;
         }
 
-        public async Task<ContainerResponse> CreateContainerIfNotExistsAsync(Database database, string containerName, string partitionKeyName)
+        public async Task<ContainerResponse> CreateContainerIfNotExistAsync(Database database, string containerName, string partitionKeyPath)
         {
             ContainerProperties containerProperties = new ContainerProperties()
             {
                 Id = containerName,
-                PartitionKeyPath = string.Format("/{0}", partitionKeyName),
+                PartitionKeyPath = partitionKeyPath,
                 IndexingPolicy = new IndexingPolicy()
                 {
                     Automatic = false,
@@ -77,6 +80,20 @@ namespace TangledServices.ServicePortal.API.Managers
             ContainerResponse response = await database.CreateContainerIfNotExistsAsync(containerProperties);
 
             return response;
+        }
+
+        public bool Exists(Database database, string containerName)
+        {
+            Container container = GetContainer(database, containerName);
+            return container == null ? false : true;
+        }
+
+        public async Task<List<string>> GetContainers(Database database)
+        {
+            FeedIterator<ContainerProperties> iterator = database.GetContainerQueryIterator<ContainerProperties>();
+            FeedResponse<ContainerProperties> containers = await iterator.ReadNextAsync().ConfigureAwait(false);
+
+            return containers.ToList().Select(x => x.Id).ToList();
         }
 
         public Container GetContainer(Database database, string containerName)
@@ -94,9 +111,9 @@ namespace TangledServices.ServicePortal.API.Managers
         #endregion Public methods
 
         #region Private methods
-        private async Task<DatabaseResponse> DeleteDatabaseAsync(SystemTenant systemTenant)
+        private async Task<DatabaseResponse> DeleteDatabaseAsync(CustomerEntity systemTenant)
         {
-            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], systemTenant.Moniker.ToUpper());
+            _databaseName = string.Format(_webHostEnvironment.EnvironmentName == "Production" ? _configuration["cosmosDb.Production:TenantDatabaseName"] : _configuration["cosmosDb.Localhost:TenantDatabaseName"], "changeme".ToUpper());
 
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
             CosmosClient client = clientBuilder.WithConnectionModeDirect().Build();

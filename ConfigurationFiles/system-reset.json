@@ -4,13 +4,14 @@
       "containers": [
         {
           "name": "LookupItems",
-          "partitionKey": "group",
-          "groups": [
+          "partitionKey": "/name",
+          "items": [
             {
               "id": "7b8c8afe-e071-41b4-a12b-d538f2d8b31f",
-              "group": "Address Types",
-              "label": "Address types",
-              "items": [
+              "name": "Address Types",
+              "displayAs": "Address types",
+              "cloneToAdminDatabase": true,
+              "values": [
                 {
                   "id": "5d807feb-8a68-416d-94c2-f7489cba8121",
                   "name": "Corporate"
@@ -31,9 +32,10 @@
             },
             {
               "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
-              "group": "Phone Number Types",
-              "label": "Phone number types",
-              "items": [
+              "name": "Phone Number Types",
+              "displayAs": "Phone number types",
+              "cloneToAdminDatabase": true,
+              "values": [
                 {
                   "id": "9eb023b0-f9c2-4ea5-9d2b-46d9e75494d1",
                   "name": "Corporate"
@@ -54,9 +56,10 @@
             },
             {
               "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
-              "group": "Countries",
-              "label": "Countries",
-              "items": [
+              "name": "Countries",
+              "displayAs": "Countries",
+              "cloneToAdminDatabase": true,
+              "values": [
                 {
                   "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e",
                   "name": "United States of America",
@@ -76,9 +79,10 @@
             },
             {
               "id": "fb3369c9-3e67-46ea-823b-2b73d07dcf52",
-              "group": "Email Address Types",
-              "label": "Email address types",
-              "items": [
+              "name": "Email Address Types",
+              "displayAs": "Email address types",
+              "cloneToAdminDatabase": true,
+              "values": [
                 {
                   "id": "f013121f-5daa-48b8-8e3d-eabd7166b82c",
                   "name": "Corporate"
@@ -99,9 +103,10 @@
             },
             {
               "id": "7b630eb4-7cbb-417b-8749-96667eb3aa7c",
-              "group": "Website Types",
-              "label": "Website types",
-              "items": [
+              "name": "Website Types",
+              "displayAs": "Website types",
+              "cloneToAdminDatabase": true,
+              "values": [
                 {
                   "id": "f2cfdb8c-05b5-42d0-bb45-041086f85570",
                   "name": "Corporate"
@@ -122,9 +127,10 @@
             },
             {
               "id": "97106d33-68c4-48b0-b39c-21eaf84f29e6",
-              "group": "States",
-              "label": "States",
-              "items": [
+              "name": "States",
+              "displayAs": "States",
+              "cloneToAdminDatabase": true,
+              "values": [
                 {
                   "id": "5c891d37-339e-4011-ac3c-e81f2b15a0c6",
                   "name": "Alabama",
@@ -423,85 +429,11 @@
               ]
             },
             {
-              "id": "2610f1bd-d698-4742-a748-eb0fc4a0b868",
-              "group": "Departments",
-              "label": "Departments",
-              "items": [
-                {
-                  "id": "884e771d-327e-49a6-a567-ddadac1b8761",
-                  "name": "Accounting",
-                  "abbreviation": "ACCT",
-                  "items": [
-                    {
-                      "id": "545605e2-3510-411f-9322-d2c3d8e24bae",
-                      "name": "Accounts Receivable",
-                      "abbreviation": "ACCT-AR"
-                    },
-                    {
-                      "id": "faa49b4d-246f-4b26-beec-aead2912b1e9",
-                      "name": "Accounts Payable",
-                      "abbreviation": "ACCT-AP"
-                    }
-                  ]
-                },
-                {
-                  "id": "cbc96690-3e1a-4c36-be7c-8c9656e7802a",
-                  "name": "Information Technology",
-                  "abbreviation": "IT",
-                  "items": [
-                    {
-                      "id": "eed5beea-5062-4f7a-9dbd-2e4572c6d110",
-                      "name": "Interface Development",
-                      "abbreviation": "IT-WD",
-                      "items": [
-                        {
-                          "id": "1d0d5ca5-73de-44e2-8d21-24485fd5688e",
-                          "name": "Mobile Device Development",
-                          "abbreviation": "IT-WD-MDD"
-                        },
-                        {
-                          "id": "0efa68dc-d4ea-494a-ab9c-55e80ef2473f",
-                          "name": "Web Browser Development",
-                          "abbreviation": "IT-WD-WBD"
-                        }
-                      ]
-                    },
-                    {
-                      "id": "b18d945e-1588-44bd-8754-9de1f098ca3a",
-                      "name": "API Development",
-                      "abbreviation": "IT-API"
-                    },
-                    {
-                      "id": "9dcbde50-4d59-415c-88c9-c9cb1e3e4d24",
-                      "name": "Database Development",
-                      "abbreviation": "IT-DB"
-                    }
-                  ]
-                },
-                {
-                  "id": "b29bf150-df46-4ded-86a6-2c51e0912d8f",
-                  "name": "Operations",
-                  "abbreviation": "OPS",
-                  "items": [
-                    {
-                      "id": "8e1861fc-c408-4802-9955-f191884b573f",
-                      "name": "Human Resources",
-                      "abbreviation": "OPS-HR"
-                    },
-                    {
-                      "id": "9c29b2ff-fa23-4b0c-9454-c704f9478d92",
-                      "name": "Janatorial",
-                      "abbreviation": "OPS-JAN"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
               "id": "24f1c565-c184-4cdb-8698-6493bc2ea089",
-              "group": "Database Platforms",
-              "label": "Database platforms",
-              "items": [
+              "name": "Database Platforms",
+              "displayAs": "Database platforms",
+              "cloneToAdminDatabase": false,
+              "values": [
                 {
                   "id": "c74b3920-f1ab-4c23-b2cd-808775b25d21",
                   "name": "Azure Cosmos DB"
@@ -514,19 +446,20 @@
             },
             {
               "id": "9261271b-e63c-4ee7-97cf-fef2cf73dba4",
-              "group": "Subscription Renewal Timeframes",
-              "label": "Subscription renewal timeframes",
-              "items": [
+              "name": "Subscription Renewal Timeframes",
+              "displayAs": "Subscription renewal timeframes",
+              "cloneToAdminDatabase": false,
+              "values": [
                 {
                   "name": "Monthly",
                   "abbreviation": null,
-                  "items": null,
+                  "values": null,
                   "id": "62e18556-c8a8-4483-b122-306adacb4f13"
                 },
                 {
                   "name": "Yearly",
                   "abbreviation": null,
-                  "items": null,
+                  "values": null,
                   "id": "74fe7a37-545b-401f-9b70-eb4e665f05ce"
                 }
               ]
@@ -535,7 +468,7 @@
         },
         {
           "name": "Subscriptions",
-          "partitionKey": "name",
+          "partitionKey": "/name",
           "subscriptions": [
             {
               "id": "06f6f8a2-3438-482b-b435-633bdeaff620",
@@ -616,32 +549,31 @@
         },
         {
           "name": "Users",
-          "partitionKey": "employeeId",
+          "partitionKey": "/employeeId",
           "users": [
             {
               "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
               "employeeId": "tang000000",
-              "nameFirst": "System",
+              "nameFirst": "System2",
               "nameLast": "Admin",
               "username": "system.admin",
               "password": "password",
               "displayName": "System Admin",
               "mustChangePasswordAtNextLogin": false,
+              "cloneToAdminDatabase": true,
               "enabled": true,
               "emailAddresses": [
                 {
-                  "id": "ea768bca-7d22-4a21-9753-4770eea4f3e9",
                   "type": {
-                    "name": "work"
+                    "id": "36e8cc77-805b-4214-a53d-fdb4be9aa75c"
                   },
                   "address": "system.admin@tangled.services"
                 }
               ],
               "phoneNumbers": [
                 {
-                  "id": "eed6e23c-178c-4ea1-9866-b3b9e4f51537",
                   "type": {
-                    "name": "work"
+                    "id": "706ec856-1a32-4ec3-970b-ad67c6485d68"
                   },
                   "number": "1112223333"
                 }
@@ -651,8 +583,8 @@
           ]
         },
         {
-          "name": "Tenants",
-          "partitionKey": "company/name"
+          "name": "Customers",
+          "partitionKey": "/legalName"
         }
       ]
     }

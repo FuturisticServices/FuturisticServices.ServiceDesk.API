@@ -32,13 +32,13 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required, DisplayName("Type")]
-        public LookupItemEntity Type { get; set; }
+        public LookupItemValueModel Type { get; set; }
 
         /// <summary>
         /// Phone number.
         /// </summary>
         [JsonProperty(PropertyName = "number", Required = Required.Always)]
-        [Required, MinLength(10), MaxLength(10), DisplayName("Number")]
+        [Required, DataType(DataType.PhoneNumber), DisplayName("Number")]
         public string Number { get; set; }
     }
 }

@@ -8,8 +8,7 @@ using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using TangledServices.ServicePortal.API.Common;
-using TangledServices.ServicePortal.API.Entities;
+using TangledServices.ServicePortal.API.Managers.System;
 
 namespace TangledServices.ServicePortal.API.Managers
 {
@@ -23,14 +22,14 @@ namespace TangledServices.ServicePortal.API.Managers
 
     public class TenantsManager : TenantBaseManager, ITenantsManager
     {
-        private readonly ISystemTenantsManager _systemTenantsManager;
+        private readonly ICustomerManager _customerManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public TenantsManager(ISystemTenantsManager systemTenantsManager, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", systemTenantsManager, httpContextAccessor, configuration, webHostEnvironment)
+        public TenantsManager(ICustomerManager customerManager, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Subscriptions", customerManager, httpContextAccessor, configuration, webHostEnvironment)
         {
-            _systemTenantsManager = systemTenantsManager;
+            _customerManager = customerManager;
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;

@@ -12,12 +12,6 @@ namespace TangledServices.ServicePortal.API.Models
     {
         public SystemResetModel() { }
 
-        public SystemResetModel(string name, string partitionKey)
-        {
-            Name = name;
-            PartitionKey = partitionKey;
-        }
-
         /// <summary>
         /// Container name.
         /// </summary>
@@ -32,16 +26,16 @@ namespace TangledServices.ServicePortal.API.Models
         [Required, DisplayName("Partition key")]
         public string PartitionKey { get; set; }
 
-        [JsonProperty(PropertyName = "groups", Required = Required.Default)]
-        [DisplayName("Groups")]
-        public List<LookupGroupEntity> Groups { get; set; }
+        [JsonProperty(PropertyName = "items", Required = Required.Default)]
+        [DisplayName("Items")]
+        public List<LookupItemModel> Items { get; set; }
 
         [JsonProperty(PropertyName = "subscriptions", Required = Required.Default)]
         [DisplayName("Subscriptions")]
-        public List<Subscription> Subscriptions { get; set; }
+        public List<SubscriptionModel> Subscriptions { get; set; }
 
         [JsonProperty(PropertyName = "users", Required = Required.Default)]
         [DisplayName("Users")]
-        public List<Entities.User> Users { get; set; }
+        public List<SystemUserModel> Users { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace TangledServices.ServicePortal.API.Models
     /// <summary>
     /// Model to register a tenant.
     /// </summary>
-    public class TenantModels
+    public class TenantModel
     {
         /// <summary>
         /// A unique abbreviation that identifies the tenant in the system.
@@ -36,7 +36,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "company", Required = Required.Always)]
         [Required, DisplayName("Company")]
-        public CompanyModel Company { get; set; }
+        public CustomerModel Company { get; set; }
 
         /// <summary>
         /// Contains information related to tenant's primary contact.
@@ -51,5 +51,24 @@ namespace TangledServices.ServicePortal.API.Models
         [JsonProperty(PropertyName = "billingInformation", Required = Required.Always)]
         [Required, DisplayName("Billing information")]
         public BillingInformationModel BillingInformation { get; set; }
+    }
+
+    public class TenantRegistrationModel
+    {
+        /// <summary>
+        /// A unique abbreviation that identifies the tenant in the system.
+        /// Included in each and every API request to identify which
+        /// database the system will interact with.
+        /// </summary>
+        [JsonProperty(PropertyName = "moniker", Required = Required.Always)]
+        [Required, DisplayName("Moniker")]
+        public string Moniker { get; set; }
+
+        /// <summary>
+        /// Selected subscription ID.
+        /// </summary>
+        [JsonProperty(PropertyName = "systemTenant", Required = Required.Always)]
+        [Required, DisplayName("System tenant")]
+        public CustomerModel SystemTenant { get; set; }
     }
 }

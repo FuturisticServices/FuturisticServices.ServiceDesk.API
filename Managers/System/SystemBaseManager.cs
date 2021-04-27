@@ -26,9 +26,9 @@ namespace TangledServices.ServicePortal.API.Managers
 
             if (!string.IsNullOrEmpty(_uri) && !string.IsNullOrEmpty(_primaryKey))
             {
-
                 CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
                 _dbClient = clientBuilder.WithConnectionModeDirect().Build();
+                _database = _dbClient.GetDatabase(_databaseName);
             }
         }
 
@@ -38,18 +38,11 @@ namespace TangledServices.ServicePortal.API.Managers
 
             if (!string.IsNullOrEmpty(_uri) && !string.IsNullOrEmpty(_primaryKey))
             {
-
                 CosmosClientBuilder clientBuilder = new CosmosClientBuilder(_uri, _primaryKey);
                 _dbClient = clientBuilder.WithConnectionModeDirect().Build();
                 _container = _dbClient.GetContainer(_databaseName, containerName);
                 _database = _container.Database;
             }
-        }
-
-        public async Task SetDatabaseAsync(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
-        {
-            SetConnectionParameters(configuration, webHostEnvironment);
-            _database = _dbClient.GetDatabase(_databaseName);
         }
 
         public void SetConnectionParameters(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)

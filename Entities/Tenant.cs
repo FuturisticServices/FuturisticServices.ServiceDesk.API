@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 
 using Newtonsoft.Json;
 
-using TangledServices.ServicePortal.API.Entities;
-
-namespace TangledServices.ServicePortal.API.Models
+namespace TangledServices.ServicePortal.API.Entities
 {
     /// <summary>
     /// Model to register a tenant.
@@ -31,25 +29,25 @@ namespace TangledServices.ServicePortal.API.Models
         [Required, DisplayName("Subscription ID")]
         public string SubscriptionId { get; set; }
 
-        /// <summary>
-        /// Contains information related to the tenant's legal business entity.
-        /// </summary>
-        [JsonProperty(PropertyName = "company", Required = Required.Always)]
-        [Required, DisplayName("Company")]
-        public CompanyModel Company { get; set; }
+        ///// <summary>
+        ///// Contains information related to the tenant's legal business entity.
+        ///// </summary>
+        //[JsonProperty(PropertyName = "company", Required = Required.Always)]
+        //[Required, DisplayName("Company")]
+        //public CustomerModel Company { get; set; }
 
-        /// <summary>
-        /// Contains information related to tenant's primary contact.
-        /// </summary>
-        [JsonProperty(PropertyName = "pointOfContact", Required = Required.Always)]
-        [Required, DisplayName("Point of Contact")]
-        public PointOfContactModel PointOfContact { get; set; }
+        ///// <summary>
+        ///// Contains information related to tenant's primary contact.
+        ///// </summary>
+        //[JsonProperty(PropertyName = "pointOfContact", Required = Required.Always)]
+        //[Required, DisplayName("Point of Contact")]
+        //public PointOfContactModel PointOfContact { get; set; }
 
-        /// <summary>
-        /// Contains information to charge the tenant for subscription feees.
-        /// </summary>
-        [JsonProperty(PropertyName = "billingInformation", Required = Required.Always)]
-        [Required, DisplayName("Billing information")]
-        public BillingInformationModel BillingInformation { get; set; }
+        ///// <summary>
+        ///// Contains information to charge the tenant for subscription feees.
+        ///// </summary>
+        //[JsonProperty(PropertyName = "billingInformation", Required = Required.Always)]
+        //[Required, DisplayName("Billing information")]
+        //public BillingInformationModel BillingInformation { get; set; }
     }
 }

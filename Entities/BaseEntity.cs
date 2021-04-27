@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
         [JsonProperty(PropertyName = "id", Required = Required.Always)]
         [DisplayName("ID")]
