@@ -16,7 +16,7 @@ namespace TangledServices.ServicePortal.API.Entities
         //  Create entity from model.
         public CustomerEntity(CustomerModel model)
         {
-            Id = model.Id;
+            Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
             LegalName = model.LegalName;
             Name = model.Name;
             AdminMoniker = model.AdminMoniker;

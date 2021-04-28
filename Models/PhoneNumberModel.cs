@@ -15,6 +15,7 @@ namespace TangledServices.ServicePortal.API.Models
         public PhoneNumberModel(PhoneNumber entity)
         {
             Number = entity.Number;
+            Type = new LookupItemValueModel(entity.Type);
         }
 
         public static List<PhoneNumberModel> Construct(List<PhoneNumber> entities)

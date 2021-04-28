@@ -5,11 +5,33 @@ using System.ComponentModel.DataAnnotations;
 
 using Newtonsoft.Json;
 
+using TangledServices.ServicePortal.API.Models;
+
 namespace TangledServices.ServicePortal.API.Entities
 {
     public class AdminUser : BaseEntity
     {
         public AdminUser() { }
+
+        public AdminUser(AdminUserModel model)
+        {
+            Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
+            EmployeeId = model.EmployeeId;
+            NameFirst = model.NameFirst;
+            NameLast = model.NameLast;
+            NameSuffix = model.NameSuffix;
+            Username = model.Username;
+            Password = model.Password;
+            DisplayName = model.DisplayName;
+            ProfileImageUrl = model.ProfileImageUrl;
+            MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
+            PasswordExpirationDateTime = model.PasswordExpirationDateTime;
+            CloneToATenantDatabase = model.CloneToATenantDatabase;
+            Enabled = model.Enabled;
+            EmailAddresses = EmailAddress.Construct(model.EmailAddresses);
+            PhoneNumbers = PhoneNumber.Construct(model.PhoneNumbers);
+            Roles = model.Roles;
+        }
 
         /// <summary>
         /// Suffix of the user.
@@ -92,9 +114,9 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// Controls whether this user can attempt to login.
         /// </summary>
-        [JsonProperty(PropertyName = "cloneToAdminDatabase", Required = Required.Default)]
-        [DefaultValue(false), DisplayName("Clone to admin database")]
-        public bool CloneToAdminDatabase { get; set; }
+        [JsonProperty(PropertyName = "cloneToATenantDatabase", Required = Required.Default)]
+        [DefaultValue(false), DisplayName("Clone to tenant database")]
+        public bool CloneToATenantDatabase { get; set; }
 
         /// <summary>
         /// Controls whether this user can attempt to login.

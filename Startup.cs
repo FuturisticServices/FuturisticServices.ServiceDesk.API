@@ -192,12 +192,12 @@ namespace TangledServices.ServicePortal.API
             services.AddSingleton<IAdminService, AdminService>();
             services.AddSingleton<IAdminLookupItemsService, AdminLookupItemsService>();
             services.AddSingleton<IAdminLookupItemsService, AdminLookupItemsService>();
-            services.AddSingleton<IAdminUserManager, AdminUserManager>();
+            services.AddSingleton<IAdminUsersService, AdminUsersService>();
 
             //  Admin managers.
             services.AddSingleton<IAdminManager, AdminManager>();
             services.AddSingleton<IAdminLookupItemsManager, AdminLookupItemsManager>();
-            services.AddSingleton<IAdminUserManager, AdminUserManager>();
+            services.AddSingleton<IAdminUsersManager, AdminUsersManager>();
 
             ////  Tenant services.
             //services.AddSingleton<ITenantRegistrationService, TenantRegistrationService>();

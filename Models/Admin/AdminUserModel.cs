@@ -15,6 +15,7 @@ namespace TangledServices.ServicePortal.API.Models
 
         public AdminUserModel(AdminUser entity)
         {
+            Id = entity.Id;
             EmployeeId = entity.EmployeeId;
             NamePrefix = entity.NamePrefix;
             NameFirst = entity.NameFirst;
@@ -26,6 +27,28 @@ namespace TangledServices.ServicePortal.API.Models
             ProfileImageUrl = entity.ProfileImageUrl;
             MustChangePasswordAtNextLogin = entity.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = entity.PasswordExpirationDateTime;
+            CloneToATenantDatabase = entity.CloneToATenantDatabase;
+            Enabled = entity.Enabled;
+            EmailAddresses = EmailAddressModel.Construct(entity.EmailAddresses);
+            PhoneNumbers = PhoneNumberModel.Construct(entity.PhoneNumbers);
+            Roles = entity.Roles;
+        }
+
+        public AdminUserModel(SystemUser entity)
+        {
+            Id = entity.Id;
+            EmployeeId = entity.EmployeeId;
+            NamePrefix = entity.NamePrefix;
+            NameFirst = entity.NameFirst;
+            NameLast = entity.NameLast;
+            NameSuffix = entity.NameSuffix;
+            Username = entity.Username;
+            Password = entity.Password;
+            DisplayName = entity.DisplayName;
+            ProfileImageUrl = entity.ProfileImageUrl;
+            MustChangePasswordAtNextLogin = entity.MustChangePasswordAtNextLogin;
+            PasswordExpirationDateTime = entity.PasswordExpirationDateTime;
+            CloneToATenantDatabase = entity.CloneToAdminDatabase;
             Enabled = entity.Enabled;
             EmailAddresses = EmailAddressModel.Construct(entity.EmailAddresses);
             PhoneNumbers = PhoneNumberModel.Construct(entity.PhoneNumbers);
@@ -109,6 +132,13 @@ namespace TangledServices.ServicePortal.API.Models
         [JsonProperty(PropertyName = "passwordExpirationDateTime", Required = Required.Default)]
         [DisplayName("Password expiration date and time")]
         public DateTime? PasswordExpirationDateTime { get; set; }
+
+        /// <summary>
+        /// Controls whether this user can attempt to login.
+        /// </summary>
+        [JsonProperty(PropertyName = "cloneToATenantDatabase", Required = Required.Default)]
+        [DefaultValue(false), DisplayName("Clone to tenant database")]
+        public bool CloneToATenantDatabase { get; set; }
 
         /// <summary>
         /// Controls whether this user can attempt to login.

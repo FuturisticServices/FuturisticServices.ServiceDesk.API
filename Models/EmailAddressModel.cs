@@ -10,13 +10,12 @@ namespace TangledServices.ServicePortal.API.Models
 {
     public class EmailAddressModel : BaseModel
     {
-        public EmailAddressModel() {
-            Type = new LookupItemValueModel();
-        }
+        public EmailAddressModel() { }
 
         public EmailAddressModel(EmailAddress entity)
         {
             Address = entity.Address;
+            Type = new LookupItemValueModel(entity.Type);
         }
 
         public static List<EmailAddressModel> Construct(List<EmailAddress> entities)

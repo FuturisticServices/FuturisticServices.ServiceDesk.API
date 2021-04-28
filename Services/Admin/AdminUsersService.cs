@@ -12,45 +12,47 @@ using Microsoft.IdentityModel.Tokens;
 
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Extensions;
+using TangledServices.ServicePortal.API.Models;
 using TangledServices.ServicePortal.API.Managers;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface ISystemUsersService
+    public interface IAdminUsersService
     {
-        Task CreateItem(SystemUser systemUser);
-        Task<IEnumerable<SystemUser>> GetItems();
+        Task<AdminUser> CreateItem(AdminUserModel model);
+        Task<IEnumerable<AdminUser>> GetItems();
         Task<string> GetUsernameAsync(string basicAuthHeader);
         Task<string> GetPasswordAsync(string basicAuthHeader);
-        Task<SystemUser> AuthenticateAsync(string basicAuthHeader);
-        Task<string> GenerateJwtToken(SystemUser user);
+        Task<AdminUser> AuthenticateAsync(string basicAuthHeader);
+        Task<string> GenerateJwtToken(AdminUser user);
         Task<string> GetUniqueEmployeeId(string moniker);
     }
 
-    public class SystemUsersService : SystemBaseService, ISystemUsersService
+    public class AdminUsersService : AdminBaseService, IAdminUsersService
     {
         private readonly IHashingService _hashingService;
-        private readonly ISystemUsersManager _systemUsersManager;
+        private readonly IAdminUsersManager _adminUsersManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemUsersService(IHashingService hashingService, ISystemUsersManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public AdminUsersService(IHashingService hashingService, IAdminUsersManager adminUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _hashingService = hashingService;
-            _systemUsersManager = systemUsersManager;
+            _adminUsersManager = adminUsersManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
 
         #region Public methods
-        public async Task CreateItem(SystemUser systemUser)
+        public Task<AdminUser> CreateItem(AdminUserModel model)
         {
-            await _systemUsersManager.CreateItemAsync(systemUser);
+            AdminUser entity = new AdminUser(model);
+            return _adminUsersManager.CreateItemAsync(entity);
         }
 
-        public Task<IEnumerable<SystemUser>> GetItems()
+        public Task<IEnumerable<AdminUser>> GetItems()
         {
-            return _systemUsersManager.GetItemsAsync();
+            return _adminUsersManager.GetItemsAsync();
         }
 
         public async Task<string> GetUsernameAsync(string basicAuthHeader)
@@ -77,7 +79,7 @@ namespace TangledServices.ServicePortal.API.Services
             return string.Empty;
         }
 
-        public async Task<SystemUser> AuthenticateAsync(string basicAuthHeader)
+        public async Task<AdminUser> AuthenticateAsync(string basicAuthHeader)
         {
             if (basicAuthHeader.ToString().StartsWith("Basic"))
             {
@@ -86,7 +88,7 @@ namespace TangledServices.ServicePortal.API.Services
 
                 if (!string.IsNullOrEmpty(loginUsername) && !string.IsNullOrEmpty(loginPassword))
                 {
-                    var user = await _systemUsersManager.GetItemAsync(loginUsername);
+                    var user = await _adminUsersManager.GetItemAsync(loginUsername);
                     if (user != null)
                     {
                         var password = _hashingService.DecryptString(user.Password);
@@ -100,7 +102,7 @@ namespace TangledServices.ServicePortal.API.Services
 
         public async Task<string> GetUniqueEmployeeId(string moniker)
         {
-            var users = await _systemUsersManager.GetItemsAsync();
+            var users = await _adminUsersManager.GetItemsAsync();
             string employeeId = string.Empty;
             bool employeeIdNotUnique = true;
 
@@ -117,7 +119,7 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Public methods
 
         #region Private methods
-        public async Task<string> GenerateJwtToken(SystemUser user)
+        public async Task<string> GenerateJwtToken(AdminUser user)
         {
             string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value; //  from appsettings.json
 
@@ -131,7 +133,7 @@ namespace TangledServices.ServicePortal.API.Services
             {
                 authClaims.Add(new Claim(ClaimTypes.Role, role));
             }
-            
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
             var jwtSecurityToken = new JwtSecurityToken(
