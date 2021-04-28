@@ -33,18 +33,18 @@ namespace TangledServices.ServicePortal.API.Services
         private readonly ICosmosDbManager _cosmosDbManager;
         private readonly IAdminManager _adminManager;
         private readonly IAdminLookupItemsManager _adminLookupItemsManager;
-        private readonly IAdminUserManager _customerAdminUserManager;
+        private readonly IAdminUsersManager _customerAdminUsersManager;
         private readonly IHashingService _hashingService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AdminService(ISystemLookupItemsService systemLookupItemService, ICosmosDbManager cosmosDbManager, IAdminManager adminManager, IAdminLookupItemsManager adminLookupItemsManager, IAdminUserManager customerUserAdminManager, IHashingService hashingService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public AdminService(ISystemLookupItemsService systemLookupItemService, ICosmosDbManager cosmosDbManager, IAdminManager adminManager, IAdminLookupItemsManager adminLookupItemsManager, IAdminUsersManager customerUserAdminsManager, IHashingService hashingService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemLookupItemService = systemLookupItemService;
             _cosmosDbManager = cosmosDbManager;
             _adminManager = adminManager;
             _adminLookupItemsManager = adminLookupItemsManager;
-            _customerAdminUserManager = customerUserAdminManager;
+            _customerAdminUsersManager = customerUserAdminsManager;
             _hashingService = hashingService;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;

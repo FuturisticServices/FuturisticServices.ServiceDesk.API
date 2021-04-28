@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Managers;
-using TangledServices.ServicePortal.API.Managers;
 using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Services
@@ -37,39 +36,34 @@ namespace TangledServices.ServicePortal.API.Services
     {
         private readonly IHashingService _hashingService;
         private readonly ISystemUsersService _systemUsersService;
-        private readonly ICosmosDbManager _cosmosDbManager;
-        private readonly ISystemManager _systemManager;
         private readonly ISystemLookupItemsService _systemLookupItemsService;
-        private readonly ISystemLookupItemsManager _systemLookupItemsManager;
-        private readonly ISystemSubscriptionsManager _systemSubscriptionsManager;
+
+
+        private readonly ISystemSubscriptionsService _systemSubscriptionsService;
+        private readonly ISystemManager _systemManager;
         private readonly ISystemUsersManager _systemUsersManager;
-        private readonly ICustomersManager _systemTenantsManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         /// <summary>
-        /// Constructor w/ DI for SystemService endpoints.
+        /// Constructor
         /// </summary>
-        /// <param name="hashingService">Service for security encryption/decryption.</param>
-        /// <param name="cosmosDbManager">Manager to Cosmos DB.</param>
-        /// <param name="systemManager">Manager to [TangledServices.ServicePortal] database.</param>
-        /// <param name="systemLookupItemsManager">Manager to [FuturustucServices.ServicePortal].[LookupItems] container from a 'item' perspective.</param>
-        /// <param name="systemSubscriptionManager">Manager to [TangledServices.ServicePortal].[Subscriptions] container.</param>
-        /// <param name="systemUsersManager">Manager to [TangledServices.ServicePortal].[Users] container.</param>
-        /// <param name="systemTenantsManager">Manager to [TangledServices.ServicePortal].[Tenants] container.</param>
-        /// <param name="configuration">Manager to file-based, in-memory and environment variables.</param>
-        /// <param name="webHostEnvironment">Manager to the web hosting environment the application is running in.</param>
-        public SystemService(ISystemUsersService systemUsersService, IHashingService hashingService, ICosmosDbManager cosmosDbManager, ISystemManager systemManager, ISystemLookupItemsService systemLookupItemsService, ISystemLookupItemsManager systemLookupItemsManager, ISystemSubscriptionsManager systemSubscriptionManager, ISystemUsersManager systemUsersManager, ICustomersManager systemTenantsManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        /// <param name="systemUsersService"></param>
+        /// <param name="hashingService"></param>
+        /// <param name="systemManager"></param>
+        /// <param name="systemLookupItemsService"></param>
+        /// <param name="systemSubscriptionsService"></param>
+        /// <param name="systemUsersManager"></param>
+        /// <param name="configuration"></param>
+        /// <param name="webHostEnvironment"></param>
+        public SystemService(ISystemUsersService systemUsersService, IHashingService hashingService, ISystemManager systemManager, ISystemLookupItemsService systemLookupItemsService, ISystemSubscriptionsService systemSubscriptionsService, ISystemUsersManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemUsersService = systemUsersService;
             _hashingService = hashingService;
-            _cosmosDbManager = cosmosDbManager;
             _systemManager = systemManager;
             _systemLookupItemsService = systemLookupItemsService;
-            _systemLookupItemsManager = systemLookupItemsManager;
-            _systemSubscriptionsManager = systemSubscriptionManager;
+            _systemSubscriptionsService = systemSubscriptionsService;
             _systemUsersManager = systemUsersManager;
-            _systemTenantsManager = systemTenantsManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -148,8 +142,7 @@ namespace TangledServices.ServicePortal.API.Services
             {
                 foreach (LookupItemModel model in container.Items)
                 {
-                    LookupItem entity = new LookupItem(model);
-                    await _systemLookupItemsManager.CreateItemAsync(entity);
+                    await _systemLookupItemsService.CreateItem(model);
                 }
             }
         }
@@ -166,9 +159,9 @@ namespace TangledServices.ServicePortal.API.Services
                 foreach (SubscriptionModel model in container.Subscriptions)
                 {
                     //  If a renewal timeframe exists, retrieve it. Otherwise, make it null.
-                    model.RenewalTimeframe = model.RenewalTimeframe == null ? null : await _systemLookupItemsManager.GetItemAsync("Subscription Renewal Timeframes", model.RenewalTimeframe.Id);
+                    model.RenewalTimeframe = model.RenewalTimeframe == null ? null : await _systemLookupItemsService.GetItem("Subscription Renewal Timeframes", model.RenewalTimeframe.Id);
                     var entity = new Subscription(model);
-                    await _systemSubscriptionsManager.CreateItemAsync(entity);
+                    await _systemSubscriptionsService.CreateItem(entity);
                 }
             }
         }
@@ -188,6 +181,7 @@ namespace TangledServices.ServicePortal.API.Services
                     {
                         emailAddressModel.Id = Guid.NewGuid().ToString();
                         var emailAddress = await _systemLookupItemsService.GetItem(Enums.LookupItems.EmailAddressTypes.GetDescription().ToTitleCase(), emailAddressModel.Type.Id);
+                        //  TODO: Throw exception if emailAddress == null
                         emailAddressModel.Type = new LookupItemValueModel(emailAddress);
                     }
 
@@ -201,10 +195,11 @@ namespace TangledServices.ServicePortal.API.Services
                     //  Encrypt password.
                     model.Password = _hashingService.EncryptString(model.Password);
 
+                    //  Create entity from model.
                     SystemUser entity = new SystemUser(model);
 
                     //  Persist item.
-                    var item = await _systemUsersManager.CreateItemAsync(entity);
+                    await _systemUsersService.CreateItem(entity);
                 }
             }
         }

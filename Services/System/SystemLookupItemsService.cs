@@ -69,10 +69,10 @@ namespace TangledServices.ServicePortal.API.Services
             {
                 LookupItem lookupGroupEntity = new LookupItem()
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id,
                     Name = model.Name,
                     DisplayAs = model.DisplayAs,
-                    Values = await ConvertModelToEntity(model.Values.ToList())
+                    Values = LookupItemValue.ConvertModelToEntity(model.Values)
                 };
 
                 LookupItem results = await _systemLookupItemManager.CreateItemAsync(lookupGroupEntity);
@@ -94,26 +94,5 @@ namespace TangledServices.ServicePortal.API.Services
 
             return null;
         }
-
-        #region Private methods
-        private async Task<IEnumerable<LookupItemValue>> ConvertModelToEntity(List<LookupItemValueModel> model)
-        {
-            List<LookupItemValue> lookupItemsEntity = new List<LookupItemValue>();
-
-            foreach (LookupItemValueModel lookupItemValueModel in model)
-            {
-                LookupItemValue lookupItemEntity = new LookupItemValue()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = lookupItemValueModel.Name,
-                    Abbreviation = lookupItemValueModel.Abbreviation,
-                };
-
-                lookupItemsEntity.Add(lookupItemEntity);
-            }
-
-            return lookupItemsEntity;
-        }
-        #endregion Private methods
     }
 }

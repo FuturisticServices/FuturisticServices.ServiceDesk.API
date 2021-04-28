@@ -39,6 +39,7 @@ namespace TangledServices.ServicePortal.API.Services
         private readonly IAdminService _adminService;
         private readonly ISystemService _systemService;
         private readonly IAdminLookupItemsService _adminLookupItemsService;
+        private readonly IAdminUsersService _adminUsersService;
         private readonly IAddressesService _addressesService;
         private readonly IPhoneNumbersService _phoneNumbersService;
         private readonly IWebsitesService _websitesService;
@@ -51,11 +52,12 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Members
 
         #region Constructors
-        public CustomerService(IAdminService adminService, ISystemService systemService, IAdminLookupItemsService adminLookupItemsService, IAddressesService addressesService, IPhoneNumbersService phoneNumbersService, IWebsitesService websitesService, IPointOfContactService pointOfContactService, ISystemLookupItemsService systemLookupItemsService, ISystemUsersService systemUsersService, ICustomersManager customersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public CustomerService(IAdminService adminService, ISystemService systemService, IAdminLookupItemsService adminLookupItemsService, IAdminUsersService adminUsersService, IAddressesService addressesService, IPhoneNumbersService phoneNumbersService, IWebsitesService websitesService, IPointOfContactService pointOfContactService, ISystemLookupItemsService systemLookupItemsService, ISystemUsersService systemUsersService, ICustomersManager customersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemService = systemService;
             _adminService = adminService;
             _adminLookupItemsService = adminLookupItemsService;
+            _adminUsersService = adminUsersService;
             _addressesService = addressesService;
             _phoneNumbersService = phoneNumbersService;
             _websitesService = websitesService;
@@ -139,7 +141,6 @@ namespace TangledServices.ServicePortal.API.Services
 
             //  Create Customer entity object.
             CustomerEntity customerEntity = new CustomerEntity(model);
-            customerEntity.Id = Guid.NewGuid().ToString();
 
             //  Persist customer to system database.
             customerEntity = await _customersManager.CreateItemAsync(customerEntity);
@@ -163,7 +164,7 @@ namespace TangledServices.ServicePortal.API.Services
             }
 
             //  Create 'Users' container and clone items from system database.            
-            containerResponse = await _adminService.CreateContainer("Users", "/username");
+            containerResponse = await _adminService.CreateContainer("Users", "/employeeId");
             if (containerResponse.StatusCode != HttpStatusCode.Created) throw new AdminContainerNotCreatedException("Users");
 
             var systemUsers = await _systemUsersService.GetItems();
@@ -171,8 +172,8 @@ namespace TangledServices.ServicePortal.API.Services
             {
                 if (systemUser.CloneToAdminDatabase)
                 {
-                    //LookupItemModel lookupItemModel = new LookupItemModel(systemLookupItem);
-                    //await _adminUsersService.CreateItem(userModel);
+                    AdminUserModel adminUserModel = new AdminUserModel(systemUser);
+                    await _adminUsersService.CreateItem(adminUserModel);
                 }
             }
 

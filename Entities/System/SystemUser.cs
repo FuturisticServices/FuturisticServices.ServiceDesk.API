@@ -27,6 +27,7 @@ namespace TangledServices.ServicePortal.API.Entities
             ProfileImageUrl = model.ProfileImageUrl;
             MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = model.PasswordExpirationDateTime;
+            CloneToAdminDatabase = model.CloneToAdminDatabase;
             Enabled = model.Enabled;
             EmailAddresses = EmailAddress.Construct(model.EmailAddresses);
             PhoneNumbers = PhoneNumber.Construct(model.PhoneNumbers);

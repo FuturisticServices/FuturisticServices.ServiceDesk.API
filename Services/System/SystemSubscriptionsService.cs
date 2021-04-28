@@ -15,6 +15,7 @@ namespace TangledServices.ServicePortal.API.Services
     {
         Task<bool> Found(string subscriptionId);
         Task<bool> NotFound(string subscriptionId);
+        Task<Subscription> CreateItem(Subscription subscription);
         Task<Subscription> GetItem(string id);
         Task<IEnumerable<Subscription>> GetItems();
         Task<IEnumerable<Subscription>> GetItems(bool includeSubscriptionsWithPromotionCode = false);
@@ -45,6 +46,12 @@ namespace TangledServices.ServicePortal.API.Services
         {
             Subscription subscription = await _systemSubscriptionsManager.GetItemAsync(subscriptionId);
             return subscription == null;
+        }
+
+        public async Task<Subscription> CreateItem(Subscription subscription)
+        {
+            subscription = await _systemSubscriptionsManager.CreateItemAsync(subscription);
+            return subscription;
         }
 
         public async Task<Subscription> GetItem(string id)
