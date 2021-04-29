@@ -37,9 +37,9 @@ namespace TangledServices.ServicePortal.API.Services
         private readonly IHashingService _hashingService;
         private readonly ISystemUsersService _systemUsersService;
         private readonly ISystemLookupItemsService _systemLookupItemsService;
-
-
         private readonly ISystemSubscriptionsService _systemSubscriptionsService;
+        private readonly ISystemDepartmentsService _systemDepartmentsService;
+
         private readonly ISystemManager _systemManager;
         private readonly ISystemUsersManager _systemUsersManager;
         private readonly IConfiguration _configuration;
@@ -56,13 +56,22 @@ namespace TangledServices.ServicePortal.API.Services
         /// <param name="systemUsersManager"></param>
         /// <param name="configuration"></param>
         /// <param name="webHostEnvironment"></param>
-        public SystemService(ISystemUsersService systemUsersService, IHashingService hashingService, ISystemManager systemManager, ISystemLookupItemsService systemLookupItemsService, ISystemSubscriptionsService systemSubscriptionsService, ISystemUsersManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemService(ISystemUsersService systemUsersService, 
+            IHashingService hashingService, 
+            ISystemManager systemManager, 
+            ISystemLookupItemsService systemLookupItemsService, 
+            ISystemSubscriptionsService systemSubscriptionsService, 
+            ISystemDepartmentsService systemDepartmentsService,
+            ISystemUsersManager systemUsersManager, 
+            IConfiguration configuration, 
+            IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemUsersService = systemUsersService;
             _hashingService = hashingService;
             _systemManager = systemManager;
             _systemLookupItemsService = systemLookupItemsService;
             _systemSubscriptionsService = systemSubscriptionsService;
+            _systemDepartmentsService = systemDepartmentsService;
             _systemUsersManager = systemUsersManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -91,6 +100,7 @@ namespace TangledServices.ServicePortal.API.Services
                 await createContainerLookupItems(container);
                 await createContainerSubscriptions(container);
                 await createContainerUsers(container);
+                await createContainerDepartments(container);
             }
         }
 
@@ -127,7 +137,7 @@ namespace TangledServices.ServicePortal.API.Services
         /// <returns>ContainerResponse object</returns>
         private async Task<ContainerResponse> createContainer(SystemResetModel container)
         {
-            ContainerResponse containerResponse = await _systemManager.CreateContainer(container.Name, container.PartitionKey);
+            ContainerResponse containerResponse = await _systemManager.CreateContainer(container.Name, container.PartitionKeyPath);
             return containerResponse;
         }
 
@@ -138,12 +148,11 @@ namespace TangledServices.ServicePortal.API.Services
         /// <returns>ContainerResponse object</returns>
         private async Task createContainerLookupItems(SystemResetModel container)
         {
-            if (container.Items != null)
+            if (container.LookupItems == null) return;
+
+            foreach (LookupItemModel model in container.LookupItems)
             {
-                foreach (LookupItemModel model in container.Items)
-                {
-                    await _systemLookupItemsService.CreateItem(model);
-                }
+                await _systemLookupItemsService.CreateItem(model);
             }
         }
 
@@ -154,15 +163,14 @@ namespace TangledServices.ServicePortal.API.Services
         /// <returns></returns>
         private async Task createContainerSubscriptions(SystemResetModel container)
         {
-            if (container.Subscriptions != null)
+            if (container.Subscriptions == null) return;
+
+            foreach (SubscriptionModel model in container.Subscriptions)
             {
-                foreach (SubscriptionModel model in container.Subscriptions)
-                {
-                    //  If a renewal timeframe exists, retrieve it. Otherwise, make it null.
-                    model.RenewalTimeframe = model.RenewalTimeframe == null ? null : await _systemLookupItemsService.GetItem("Subscription Renewal Timeframes", model.RenewalTimeframe.Id);
-                    var entity = new Subscription(model);
-                    await _systemSubscriptionsService.CreateItem(entity);
-                }
+                //  If a renewal timeframe exists, retrieve it. Otherwise, make it null.
+                model.RenewalTimeframe = model.RenewalTimeframe == null ? null : await _systemLookupItemsService.GetItem("Subscription Renewal Timeframes", model.RenewalTimeframe.Id);
+                var entity = new Subscription(model);
+                await _systemSubscriptionsService.CreateItem(entity);
             }
         }
 
@@ -173,35 +181,41 @@ namespace TangledServices.ServicePortal.API.Services
         /// <returns></returns>
         private async Task createContainerUsers(SystemResetModel container)
         {
-            if (container.Users != null)
+            if (container.Users == null) return;
+
+            foreach (SystemUserModel model in container.Users)
             {
-                foreach (SystemUserModel model in container.Users)
+                foreach (EmailAddressModel emailAddressModel in model.EmailAddresses)
                 {
-                    foreach (EmailAddressModel emailAddressModel in model.EmailAddresses)
-                    {
-                        emailAddressModel.Id = Guid.NewGuid().ToString();
-                        var emailAddress = await _systemLookupItemsService.GetItem(Enums.LookupItems.EmailAddressTypes.GetDescription().ToTitleCase(), emailAddressModel.Type.Id);
-                        //  TODO: Throw exception if emailAddress == null
-                        emailAddressModel.Type = new LookupItemValueModel(emailAddress);
-                    }
-
-                    foreach (PhoneNumberModel phoneNumberModel in model.PhoneNumbers)
-                    {
-                        phoneNumberModel.Id = Guid.NewGuid().ToString();
-                        var phoneNumber = await _systemLookupItemsService.GetItem(Enums.LookupItems.PhoneNumberTypes.GetDescription().ToTitleCase(), phoneNumberModel.Type.Id);
-                        phoneNumberModel.Type = new LookupItemValueModel(phoneNumber);
-                    }
-
-                    //  Encrypt password.
-                    model.Password = _hashingService.EncryptString(model.Password);
-
-                    //  Create entity from model.
-                    SystemUser entity = new SystemUser(model);
-
-                    //  Persist item.
-                    await _systemUsersService.CreateItem(entity);
+                    emailAddressModel.Id = Guid.NewGuid().ToString();
+                    var emailAddress = await _systemLookupItemsService.GetItem(Enums.LookupItems.EmailAddressTypes.GetDescription().ToTitleCase(), emailAddressModel.Type.Id);
+                    //  TODO: Throw exception if emailAddress == null
+                    emailAddressModel.Type = new LookupItemValueModel(emailAddress);
                 }
+
+                foreach (PhoneNumberModel phoneNumberModel in model.PhoneNumbers)
+                {
+                    phoneNumberModel.Id = Guid.NewGuid().ToString();
+                    var phoneNumber = await _systemLookupItemsService.GetItem(Enums.LookupItems.PhoneNumberTypes.GetDescription().ToTitleCase(), phoneNumberModel.Type.Id);
+                    phoneNumberModel.Type = new LookupItemValueModel(phoneNumber);
+                }
+
+                //  Encrypt password.
+                model.Password = _hashingService.EncryptString(model.Password);
+
+                //  Create entity from model.
+                SystemUser entity = new SystemUser(model);
+
+                //  Persist item.
+                await _systemUsersService.CreateItem(entity);
             }
+        }
+
+        private async Task createContainerDepartments(SystemResetModel container)
+        {
+            if (container.Departments == null) return;
+
+            foreach (SystemDepartmentModel model in container.Departments) await _systemDepartmentsService.CreateItem(model);
         }
 
         private async Task<bool> UsernameNotUnique(string username)

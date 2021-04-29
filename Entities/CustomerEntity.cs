@@ -17,7 +17,7 @@ namespace TangledServices.ServicePortal.API.Entities
         public CustomerEntity(CustomerModel model)
         {
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
-            LegalName = model.LegalName;
+            LegalEntityName = model.LegalName;
             Name = model.Name;
             AdminMoniker = model.AdminMoniker;
             TenantMonikers = model.TenantMonikers;
@@ -31,9 +31,9 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// Legal entity name of the tenant.
         /// </summary>
-        [JsonProperty(PropertyName = "legalName", Required = Required.Always)]
-        [Required, MaxLength(50), DisplayName("Legal name")]
-        public string LegalName { get; set; }
+        [JsonProperty(PropertyName = "legalEntityName", Required = Required.Always)]
+        [Required, MaxLength(50), DisplayName("Legal entity name")]
+        public string LegalEntityName { get; set; }
 
         /// <summary>
         /// Legal entity name of the tenant.

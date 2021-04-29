@@ -13,7 +13,7 @@ namespace TangledServices.ServicePortal.API.Entities
         public ResetContainer(string name, string partitionKey)
         {
             Name = name;
-            PartitionKey = partitionKey;
+            PartitionKeyPath = partitionKey;
         }
 
         /// <summary>
@@ -26,9 +26,9 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// Container name.
         /// </summary>
-        [JsonProperty(PropertyName = "partitionKey", Required = Required.Always)]
-        [Required, DisplayName("Partition key")]
-        public string PartitionKey { get; set; }
+        [JsonProperty(PropertyName = "partitionKeyPath", Required = Required.Always)]
+        [Required, DisplayName("Partition key path")]
+        public string PartitionKeyPath { get; set; }
 
         [JsonProperty(PropertyName = "groups", Required = Required.Default)]
         [DisplayName("Groups")]

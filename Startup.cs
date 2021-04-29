@@ -180,6 +180,7 @@ namespace TangledServices.ServicePortal.API
             services.AddSingleton<IEmailAddressService, EmailAddressService>();
             services.AddSingleton<IWebsitesService, WebsitesService>();
             services.AddSingleton<IBillingInformationService, BillingInformationService>();
+            services.AddSingleton<ISystemDepartmentsService, SystemDepartmentsService>();
 
             //  System managers.
             services.AddSingleton<ISystemManager, SystemManager>();
@@ -187,6 +188,7 @@ namespace TangledServices.ServicePortal.API
             services.AddSingleton<ISystemSubscriptionsManager, SystemSubscriptionsManager>();
             services.AddSingleton<ISystemUsersManager, SystemUsersManager>();
             services.AddSingleton<ICustomersManager, CustomersManager>();
+            services.AddSingleton<ISystemDepartmentsManager, SystemDepartmentsManager>();
 
             //  Admin services.
             services.AddSingleton<IAdminService, AdminService>();

@@ -13,7 +13,7 @@ namespace TangledServices.ServicePortal.API.Entities
 {
     public class ApiResponse
     {
-        public ApiResponse(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, string message = null, List<Object> responseModels = null)
+        public ApiResponse(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, string message = null, Dictionary<string, Object> responseModels = null)
         {
             StatusCode = (int)httpStatusCode;
             Status = httpStatusCode.ToString();
@@ -23,14 +23,14 @@ namespace TangledServices.ServicePortal.API.Entities
             {
                 Data = new ExpandoObject();
                 List<dynamic> models = new List<dynamic>();
-                foreach (Object responseModel in responseModels)
+                foreach (var responseModel in responseModels)
                 {
-                    Helpers.AddProperty(Data, responseModel.ToString().Split('.').Last(), responseModel);
+                    Helpers.AddProperty(Data, responseModel.Key, responseModel.Value);
                 }
             }
         }
 
-        public ApiResponse(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, string message = null, Exception exception = null, List<Object> responseModels = null)
+        public ApiResponse(HttpStatusCode httpStatusCode = HttpStatusCode.BadRequest, string message = null, Exception exception = null, Dictionary<string, Object> responseModels = null)
         {
             StatusCode = (int)httpStatusCode;
             Status = httpStatusCode.ToString();
@@ -42,9 +42,9 @@ namespace TangledServices.ServicePortal.API.Entities
             {
                 Data = new ExpandoObject();
                 List<dynamic> models = new List<dynamic>();
-                foreach (Object responseModel in responseModels)
+                foreach (var responseModel in responseModels)
                 {
-                    Helpers.AddProperty(Data, responseModel.ToString().Split('.').Last(), responseModel);
+                    Helpers.AddProperty(Data, responseModel.Key, responseModel.Value);
                 }
             }
         }

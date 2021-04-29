@@ -61,7 +61,9 @@ namespace TangledServices.ServicePortal.API.Controllers
 
                 CustomerEntity customerEntity = await _customerService.Get(adminMoniker);
                 CustomerModel model = new CustomerModel(customerEntity);
-                response = new ApiResponse(HttpStatusCode.OK, string.Format("Customer '{0}' found.", adminMoniker), new List<Object>() { customerEntity });
+
+                responseModels.Add("Customers", model);
+                response = new ApiResponse(HttpStatusCode.OK, string.Format("Customer '{0}' found.", adminMoniker), responseModels);
                 return Ok(new { response });
             }
             catch (CustomerNotFoundException exception)
@@ -94,7 +96,8 @@ namespace TangledServices.ServicePortal.API.Controllers
             {
                 CustomerModel customerModel = await _customerService.Create(model);
 
-                response = new ApiResponse(HttpStatusCode.OK, string.Format("Customer '{0}' created in the system database successfully.", model.Name), null, new List<Object>() { customerModel });
+                responseModels.Add("Customer", customerModel);
+                response = new ApiResponse(HttpStatusCode.OK, string.Format("Customer '{0}' created in the system database successfully.", model.Name), null, responseModels);
                 return Ok(new { response });
             }
             catch (SystemDatabaseNotCreatedException exception)
@@ -136,8 +139,10 @@ namespace TangledServices.ServicePortal.API.Controllers
         {
             try
             {
-                CustomerModel customerModel = await _customerService.Update(model);
-                response = new ApiResponse(HttpStatusCode.OK, string.Format("Customer '{0}' updated in system DB successfully.", model.Name), new List<Object>() { customerModel });
+                model = await _customerService.Update(model);
+
+                responseModels.Add("Customers", model);
+                response = new ApiResponse(HttpStatusCode.OK, string.Format("Customer '{0}' updated in system DB successfully.", model.Name), responseModels);
                 return Ok(new { response });
             }
             catch (UnauthorizedAccessException exception)

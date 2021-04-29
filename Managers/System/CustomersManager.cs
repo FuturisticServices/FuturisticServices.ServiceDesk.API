@@ -48,7 +48,7 @@ namespace TangledServices.ServicePortal.API.Managers
         /// <returns></returns>
         public async Task<CustomerEntity> CreateItemAsync(CustomerEntity entity)
         {
-            var results = await _container.CreateItemAsync<CustomerEntity>(entity, new PartitionKey(entity.LegalName));
+            var results = await _container.CreateItemAsync<CustomerEntity>(entity, new PartitionKey(entity.LegalEntityName));
             return results;
         }
 

@@ -1,0 +1,38 @@
+{
+  "system": {
+    "reset": {
+      "partitionKeyPath": "/employeId",
+      "users": [
+        {
+          "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
+          "employeeId": "tang000000",
+          "nameFirst": "System2",
+          "nameLast": "Admin",
+          "username": "system.admin",
+          "password": "password",
+          "displayName": "System Admin",
+          "mustChangePasswordAtNextLogin": false,
+          "cloneToAdminDatabase": true,
+          "enabled": true,
+          "emailAddresses": [
+            {
+              "type": {
+                "id": "36e8cc77-805b-4214-a53d-fdb4be9aa75c"
+              },
+              "address": "system.admin@tangled.services"
+            }
+          ],
+          "phoneNumbers": [
+            {
+              "type": {
+                "id": "706ec856-1a32-4ec3-970b-ad67c6485d68"
+              },
+              "number": "1112223333"
+            }
+          ],
+          "roles": ["System Admin", "DB Reset"]
+        }
+      ]
+    }
+  }
+}

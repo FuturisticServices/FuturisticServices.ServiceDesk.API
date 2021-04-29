@@ -392,7 +392,7 @@
             Container name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServicePortal.API.Entities.ResetContainer.PartitionKey">
+        <member name="P:TangledServices.ServicePortal.API.Entities.ResetContainer.PartitionKeyPath">
             <summary>
             Container name.
             </summary>
@@ -402,7 +402,7 @@
             Container name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServicePortal.API.Entities.SetupContainer.PartitionKey">
+        <member name="P:TangledServices.ServicePortal.API.Entities.SetupContainer.PartitionKeyPath">
             <summary>
             Container name.
             </summary>
@@ -782,7 +782,7 @@
             Container name.
             </summary>
         </member>
-        <member name="P:TangledServices.ServicePortal.API.Models.ResetContainerModel.PartitionKey">
+        <member name="P:TangledServices.ServicePortal.API.Models.ResetContainerModel.PartitionKeyPath">
             <summary>
             Container name.
             </summary>
