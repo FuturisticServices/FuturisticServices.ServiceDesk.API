@@ -19,7 +19,7 @@ namespace TangledServices.ServicePortal.API.Models
         public CustomerModel(CustomerEntity entity)
         {
             Id = entity.Id;
-            LegalName = entity.LegalName;
+            LegalName = entity.LegalEntityName;
             Name = entity.Name;
             AdminMoniker = entity.AdminMoniker;
             TenantMonikers = entity.TenantMonikers;
@@ -33,8 +33,8 @@ namespace TangledServices.ServicePortal.API.Models
         /// <summary>
         /// Legal entity name of the tenant.
         /// </summary>
-        [JsonProperty(PropertyName = "legalName", Required = Required.Default)]
-        [DataType(DataType.Text), StringLength(50, ErrorMessage = "Legal name cannot exceed {1} characters."), DisplayName("Entity name")]
+        [JsonProperty(PropertyName = "legalEntityName", Required = Required.Default)]
+        [DataType(DataType.Text), StringLength(50, ErrorMessage = "Legal entity name cannot exceed {1} characters."), DisplayName("Legal entity name")]
         public string LegalName { get; set; }
 
         /// <summary>

@@ -22,13 +22,13 @@ namespace TangledServices.ServicePortal.API.Models
         /// <summary>
         /// Container name.
         /// </summary>
-        [JsonProperty(PropertyName = "partitionKey", Required = Required.Always)]
-        [Required, DisplayName("Partition key")]
-        public string PartitionKey { get; set; }
+        [JsonProperty(PropertyName = "partitionKeyPath", Required = Required.Always)]
+        [Required, DisplayName("Partition key path")]
+        public string PartitionKeyPath { get; set; }
 
-        [JsonProperty(PropertyName = "items", Required = Required.Default)]
-        [DisplayName("Items")]
-        public List<LookupItemModel> Items { get; set; }
+        [JsonProperty(PropertyName = "lookupItems", Required = Required.Default)]
+        [DisplayName("Lookup items")]
+        public List<LookupItemModel> LookupItems { get; set; }
 
         [JsonProperty(PropertyName = "subscriptions", Required = Required.Default)]
         [DisplayName("Subscriptions")]
@@ -37,5 +37,9 @@ namespace TangledServices.ServicePortal.API.Models
         [JsonProperty(PropertyName = "users", Required = Required.Default)]
         [DisplayName("Users")]
         public List<SystemUserModel> Users { get; set; }
+
+        [JsonProperty(PropertyName = "departments", Required = Required.Default)]
+        [DisplayName("Departments")]
+        public List<SystemDepartmentModel> Departments { get; set; }
     }
 }

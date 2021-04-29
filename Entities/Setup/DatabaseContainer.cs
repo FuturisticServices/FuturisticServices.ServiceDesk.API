@@ -9,10 +9,10 @@ namespace TangledServices.ServicePortal.API.Entities
     {
         public DatabaseContainer() { }
 
-        public DatabaseContainer(string name, string partitionKey, bool cloneItems)
+        public DatabaseContainer(string name, string partitionKeyPath, bool cloneItems)
         {
             Name = name;
-            PartitionKey = partitionKey;
+            PartitionKeyPath = partitionKeyPath;
             CloneItems = cloneItems;
         }
 
@@ -26,9 +26,9 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// Container name.
         /// </summary>
-        [JsonProperty(PropertyName = "partitionKey", Required = Required.Always)]
-        [Required, DisplayName("Partition key")]
-        public string PartitionKey { get; set; }
+        [JsonProperty(PropertyName = "partitionKeyPath", Required = Required.Always)]
+        [Required, DisplayName("Partition key path")]
+        public string PartitionKeyPath { get; set; }
 
         /// <summary>
         /// Whether to clone items from the system container.

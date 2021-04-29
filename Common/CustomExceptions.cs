@@ -317,8 +317,22 @@ namespace TangledServices.ServicePortal.API.Common
     [Serializable]
     public class NameIsRequiredException : Exception
     {
-        public NameIsRequiredException() { }
-        public NameIsRequiredException(string name) : base("Name is required.") { }
+        public NameIsRequiredException() : base("Name is required.") { }
     }
     #endregion Fields
+
+    #region Departments
+    [Serializable]
+    public class DepartmentsNotFoundException : Exception
+    {
+        public DepartmentsNotFoundException() : base("No departments found.") { }
+    }
+
+    [Serializable]
+    public class DepartmentNotFoundException : Exception
+    {
+        public DepartmentNotFoundException() : base("Department NOT found.") { }
+        public DepartmentNotFoundException(string name) : base(string.Format("Department '{0}' NOT found.", name)) { }
+    }
+    #endregion Departments
 }

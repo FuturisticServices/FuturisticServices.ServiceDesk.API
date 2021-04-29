@@ -1,9 +1,5 @@
-{
-    "id": "2610f1bd-d698-4742-a748-eb0fc4a0b868",
-    "group": "Departments",
-    "label": "Departments",
-    "items": [
-        {
+[
+    {
         "id": "884e771d-327e-49a6-a567-ddadac1b8761",
         "name": "Accounting",
         "abbreviation": "ACCT",
@@ -19,8 +15,8 @@
             "abbreviation": "ACCT-AP"
             }
         ]
-        },
-        {
+    },
+    {
         "id": "cbc96690-3e1a-4c36-be7c-8c9656e7802a",
         "name": "Information Technology",
         "abbreviation": "IT",
@@ -53,8 +49,8 @@
             "abbreviation": "IT-DB"
             }
         ]
-        },
-        {
+    },
+    {
         "id": "b29bf150-df46-4ded-86a6-2c51e0912d8f",
         "name": "Operations",
         "abbreviation": "OPS",
@@ -70,6 +66,5 @@
             "abbreviation": "OPS-JAN"
             }
         ]
-        }
-    ]
-}
+    }
+]
