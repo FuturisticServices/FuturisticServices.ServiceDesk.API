@@ -19,8 +19,8 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface ISystemDepartmentsService
     {
-        Task<IEnumerable<SystemDepartmentModel>> GetItems(bool includeDeletedItems = false);
-        Task<SystemDepartment> GetItem(string id);
+        Task<IEnumerable<SystemDepartmentModel>> GetItems(bool flattenHierarchy = false, bool includeDeletedItems = false);
+        Task<SystemDepartmentModel> GetItem(string id, bool includeSubDepartments = true, bool includeDeletedItems = false);
         Task CreateItem(SystemDepartmentModel model);
         Task<SystemDepartmentModel> UpdateItem(SystemDepartmentModel model);
         Task Delete(string id);
@@ -48,29 +48,75 @@ namespace TangledServices.ServicePortal.API.Services
             await _systemDepartmentsManager.CreateItemAsync(entity);
         }
 
-        public async Task<IEnumerable<SystemDepartmentModel>> GetItems(bool includeDeletedItems = false)
+        /// <summary>
+        /// Retrieves all system departments.
+        /// </summary>
+        /// <param name="flattenHierarchy">True ~ Return departments in a flattened list. False ~ Return departments in parent/child hierarchy.</param>
+        /// <param name="includeDeletedItems">True ~ Include system departments that have been 'deleted'. False ~ Only include 'non-deleted' system departments.</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<SystemDepartmentModel>> GetItems(bool flattenHierarchy = false, bool includeDeletedItems = false)
         {
-            var departments = await _systemDepartmentsManager.GetItemsAsync();
-            if (!includeDeletedItems) departments = departments.Where(x => x.IsDeleted == true);
+            var systemDepartments = await _systemDepartmentsManager.GetItemsAsync();
+            if (systemDepartments == null || !systemDepartments.Any()) throw new DepartmentsNotFoundException();
 
-            var departmentModel = SystemDepartmentModel.Construct(departments);
-            return departmentModel;
+            var systemDepartmentsModel = SystemDepartmentModel.Construct(systemDepartments);    //  Utilize flattened list of system departments to search (only hit DB once).
+
+            if (!flattenHierarchy) systemDepartments = systemDepartments.Where(x => x.ParentId == null);   // Start with parent level items.
+
+            var model = new List<SystemDepartmentModel>();
+            foreach (SystemDepartment systemDepartment in systemDepartments)
+            {
+                var systemDepartmentModel = new SystemDepartmentModel(systemDepartment);
+                if (!flattenHierarchy) systemDepartmentModel.SubDepartments = await GetSubDepartments(systemDepartmentsModel, systemDepartmentModel, systemDepartment.Id);
+                model.Add(systemDepartmentModel);
+            }
+
+            return model;
         }
 
-        public async Task<SystemDepartment> GetItem(string id)
+        /// <summary>
+        /// Retrieves ONLY the specified system department.
+        /// </summary>
+        /// <param name="id">System department unique identifier (GUID).</param>
+        /// <param name="flattenHierarchy">True ~ Return departments in a flattened list. False ~ Return departments in parent/child hierarchy.</param>
+        /// <param name="includeSubDepartments">True ~ include associated sub-departments. False ~ do NOT include associated sub-deparments.</param>
+        /// <param name="includeDeletedItems">True ~ Include system departments that have been 'deleted'. False ~ Only include 'non-deleted' system departments.</param>
+        /// <returns></returns>
+        public async Task<SystemDepartmentModel> GetItem(string id, bool includeSubDepartments = true, bool includeDeletedItems = false)
         {
-            var department = await _systemDepartmentsManager.GetItemAsync(id);
-            if (department == null) throw new DepartmentNotFoundException(id);
+            var systemDepartments = await _systemDepartmentsManager.GetItemsAsync();
+            if (systemDepartments == null || !systemDepartments.Any()) throw new DepartmentsNotFoundException();
+            var systemDepartmentsModel = SystemDepartmentModel.Construct(systemDepartments);
 
-            return department;
+            var systemDepartment = systemDepartments.SingleOrDefault(x => x.Id == id);
+            if (systemDepartment == null || systemDepartment.IsDeleted) throw new DepartmentNotFoundException(id);
+
+            var systemDepartmentModel = new SystemDepartmentModel(systemDepartment);
+            if (includeSubDepartments) systemDepartmentModel.SubDepartments = await GetSubDepartments(systemDepartmentsModel, systemDepartmentModel, id);
+
+            return systemDepartmentModel;
+        }
+
+        private async Task<IEnumerable<SystemDepartmentModel>> GetSubDepartments(IEnumerable<SystemDepartmentModel> systemDepartmentsModel, SystemDepartmentModel systemDepartmentModel, string id)
+        {
+            
+            var subDepartments = systemDepartmentsModel.Where(x => string.Compare(x.ParentId, id, true) == 0);
+            subDepartments = subDepartments.ToList();
+
+            if (subDepartments.Any())
+            {
+                foreach (SystemDepartmentModel subDepartmentModel in subDepartments)
+                {
+                    subDepartmentModel.SubDepartments = await GetSubDepartments(systemDepartmentsModel, systemDepartmentModel, subDepartmentModel.Id);
+                }
+            }
+
+            return subDepartments;
         }
 
         public async Task<SystemDepartmentModel> UpdateItem(SystemDepartmentModel model)
         {
-            var department = await GetItem(model.Id);
-            if (department == null) throw new DepartmentNotFoundException(model.Name);
-
-            department = new SystemDepartment(model);
+            var department = new SystemDepartment(model);
             department = await _systemDepartmentsManager.UpdateItemAsync(department);
             var departmentModel = new SystemDepartmentModel(department);
             return departmentModel;
@@ -78,7 +124,7 @@ namespace TangledServices.ServicePortal.API.Services
 
         public async Task Delete(string id)
         {
-            var department = await GetItem(id);
+            var department = await _systemDepartmentsManager.GetItemAsync(id);
             if (department == null) throw new DepartmentNotFoundException();
 
             department.IsDeleted = false;

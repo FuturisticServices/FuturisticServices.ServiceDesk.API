@@ -31,19 +31,15 @@ namespace TangledServices.ServicePortal.API.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        /// <summary>
-        /// Retrieves all enabled system departments entities.
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(bool includeDeletedItems = false)
+        public async Task<IActionResult> Get(bool flattenHierarchy = false, bool includeDeletedItems = false)
         {
             try
             {
-                var model = await _systemDepartmentsService.GetItems(includeDeletedItems);
+                var model = await _systemDepartmentsService.GetItems(flattenHierarchy, includeDeletedItems);
 
                 responseModels.Add("systemDepartments", model);
                 response = new ApiResponse(HttpStatusCode.OK, "System departments retrieved successfully", responseModels);
@@ -56,21 +52,15 @@ namespace TangledServices.ServicePortal.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Retrieves a system department by its ID.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get(string id, bool includeSubDepartments = true, bool includeDeletedItems = false)
         {
             try
             {
-                var entity = await _systemDepartmentsService.GetItem(id);
-                var model = new SystemDepartmentModel(entity);
+                var model = await _systemDepartmentsService.GetItem(id, includeSubDepartments, includeDeletedItems);
 
                 responseModels.Add("systemDepartment", model);
                 response = new ApiResponse(HttpStatusCode.OK, string.Format("System department '{0}' retrieved successfully.", model.Name), responseModels);
@@ -83,11 +73,6 @@ namespace TangledServices.ServicePortal.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Updates proeprties associated with a system department.
-        /// </summary>
-        /// <param name="model">SystemDepartmentModel object with updated values.</param>
-        /// <returns></returns>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -109,13 +94,6 @@ namespace TangledServices.ServicePortal.API.Controllers
             }
         }
 
-        /// <summary>
-        /// Deletes the system department.
-        /// Doesn't delete the object physically from disc. Rather flags the object as 'disabled' being non-accessible to the UI.
-        /// The entity/object remains in the database in the event it is associated with existing data.
-        /// </summary>
-        /// <param name="id">GUID identifier.</param>
-        /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
