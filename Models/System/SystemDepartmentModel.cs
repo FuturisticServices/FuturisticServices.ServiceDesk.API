@@ -32,6 +32,7 @@ namespace TangledServices.ServicePortal.API.Models
             foreach (SystemDepartment department in entities)
             {
                 departments.Add(new SystemDepartmentModel(department));
+                //  if subDepartments exist, loop through each subDirectory and recirsively call Construct
             }
             return departments;
         }

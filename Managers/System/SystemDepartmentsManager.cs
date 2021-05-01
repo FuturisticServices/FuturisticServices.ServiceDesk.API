@@ -51,6 +51,15 @@ namespace TangledServices.ServicePortal.API.Managers
             return systemDepartment;
         }
 
+        public async Task<SystemDepartment> GetSubItemAsync(string id)
+        {
+            IEnumerable<SystemDepartment> departments = await GetItemsAsync();
+            if (departments == null || !departments.Any()) throw new DepartmentsNotFoundException();
+
+            SystemDepartment systemDepartment = departments.SingleOrDefault(x => string.Compare(x.Id, id, true) == 0);
+            return systemDepartment;
+        }
+
         public async Task<SystemDepartment> CreateItemAsync(SystemDepartment department)
         {
             var results = await _container.CreateItemAsync<SystemDepartment>(department, new PartitionKey(department.Name));
