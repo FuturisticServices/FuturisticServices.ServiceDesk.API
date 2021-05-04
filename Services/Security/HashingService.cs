@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
+﻿using Microsoft.AspNetCore.DataProtection;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,79 +15,38 @@ namespace TangledServices.ServicePortal.API.Services
 
     public class HashingService : IHashingService
     {
+        private readonly IDataProtectionProvider _dataProtectionProvider;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public HashingService(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public HashingService(IDataProtectionProvider dataProtectionProvider, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
+            _dataProtectionProvider = dataProtectionProvider;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
 
         #region Public methods
+        /// <summary>
+        /// https://www.infoworld.com/article/3431139/how-to-use-the-data-protection-api-in-aspnet-core.html
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public string EncryptString(string text)
         {
-            var keyString = _configuration.GetSection("hash:secretKey").Value; //  from appsettings.json
-            var key = Encoding.UTF8.GetBytes(keyString);
-
-            using (var aesAlg = Aes.Create())
-            {
-                using (var encryptor = aesAlg.CreateEncryptor(key, aesAlg.IV))
-                {
-                    using (var msEncrypt = new MemoryStream())
-                    {
-                        using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                        using (var swEncrypt = new StreamWriter(csEncrypt))
-                        {
-                            swEncrypt.Write(text);
-                        }
-
-                        var iv = aesAlg.IV;
-
-                        var decryptedContent = msEncrypt.ToArray();
-
-                        var result = new byte[iv.Length + decryptedContent.Length];
-
-                        Buffer.BlockCopy(iv, 0, result, 0, iv.Length);
-                        Buffer.BlockCopy(decryptedContent, 0, result, iv.Length, decryptedContent.Length);
-
-                        return Convert.ToBase64String(result);
-                    }
-                }
-            }
+            var key = _configuration.GetSection("hash:secretKey").Value; //  from appsettings.json
+            return _dataProtectionProvider.CreateProtector(key).Protect(text);
         }
 
-        public string DecryptString(string cipherText)
+        /// <summary>
+        /// https://www.infoworld.com/article/3431139/how-to-use-the-data-protection-api-in-aspnet-core.html
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public string DecryptString(string text)
         {
-            var keyString = _configuration.GetSection("hash:secretKey").Value; //  from appsettings.json
-            var fullCipher = Convert.FromBase64String(cipherText);
-
-            var iv = new byte[16];
-            var cipher = new byte[16];
-
-            Buffer.BlockCopy(fullCipher, 0, iv, 0, iv.Length);
-            Buffer.BlockCopy(fullCipher, iv.Length, cipher, 0, iv.Length);
-            var key = Encoding.UTF8.GetBytes(keyString);
-
-            using (var aesAlg = Aes.Create())
-            {
-                using (var decryptor = aesAlg.CreateDecryptor(key, iv))
-                {
-                    string result;
-                    using (var msDecrypt = new MemoryStream(cipher))
-                    {
-                        using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                        {
-                            using (var srDecrypt = new StreamReader(csDecrypt))
-                            {
-                                result = srDecrypt.ReadToEnd();
-                            }
-                        }
-                    }
-
-                    return result;
-                }
-            }
+            var key = _configuration.GetSection("hash:secretKey").Value; //  from appsettings.json
+            return _dataProtectionProvider.CreateProtector(key).Unprotect(text);
         }
         #endregion Public methods
     }

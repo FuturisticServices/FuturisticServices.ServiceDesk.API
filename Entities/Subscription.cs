@@ -22,7 +22,7 @@ namespace TangledServices.ServicePortal.API.Entities
             IsExpired = model.IsExpired;
             PromotionCode = model.PromotionCode;
             RenewalOccurrence = model.RenewalOccurrence;
-            RenewalTimeframe = model.RenewalTimeframe;
+            RenewalTimeframe = model.RenewalTimeframe == null ? null : new LookupItemValue(model.RenewalTimeframe);
             Highlights = model.Highlights;
         }
 
@@ -36,7 +36,7 @@ namespace TangledServices.ServicePortal.API.Entities
             IsExpired = model.Subscription.IsExpired;
             PromotionCode = model.Subscription.PromotionCode;
             RenewalOccurrence = model.Subscription.RenewalOccurrence;
-            RenewalTimeframe = model.Subscription.RenewalTimeframe;
+            RenewalTimeframe = model.Subscription.RenewalTimeframe == null ? null : new LookupItemValue(model.Subscription.RenewalTimeframe);
             Highlights = model.Subscription.Highlights;
         }
 

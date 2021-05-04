@@ -8,8 +8,6 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-using Newtonsoft.Json;
-
 using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Managers;
@@ -188,16 +186,13 @@ namespace TangledServices.ServicePortal.API.Services
                 foreach (EmailAddressModel emailAddressModel in model.EmailAddresses)
                 {
                     emailAddressModel.Id = Guid.NewGuid().ToString();
-                    var emailAddress = await _systemLookupItemsService.GetItem(Enums.LookupItems.EmailAddressTypes.GetDescription().ToTitleCase(), emailAddressModel.Type.Id);
-                    //  TODO: Throw exception if emailAddress == null
-                    emailAddressModel.Type = new LookupItemValueModel(emailAddress);
+                    emailAddressModel.Type = await _systemLookupItemsService.GetItem(Enums.LookupItems.EmailAddressTypes.GetDescription().ToTitleCase(), emailAddressModel.Type.Id);
                 }
 
                 foreach (PhoneNumberModel phoneNumberModel in model.PhoneNumbers)
                 {
                     phoneNumberModel.Id = Guid.NewGuid().ToString();
-                    var phoneNumber = await _systemLookupItemsService.GetItem(Enums.LookupItems.PhoneNumberTypes.GetDescription().ToTitleCase(), phoneNumberModel.Type.Id);
-                    phoneNumberModel.Type = new LookupItemValueModel(phoneNumber);
+                    phoneNumberModel.Type = await _systemLookupItemsService.GetItem(Enums.LookupItems.PhoneNumberTypes.GetDescription().ToTitleCase(), phoneNumberModel.Type.Id);
                 }
 
                 //  Encrypt password.

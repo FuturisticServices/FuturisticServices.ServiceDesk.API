@@ -20,8 +20,18 @@ namespace TangledServices.ServicePortal.API.Entities
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
             Name = model.Name;
             DisplayAs = model.DisplayAs;
-            CloneToAdminDatabase = model.CloneToAdminDatabase;
+            Clone = model.Clone;
             Values = LookupItemValue.ConvertModelToEntity(model.Values);
+        }
+
+        public static IEnumerable<LookupItem> Construct(IEnumerable<LookupItemModel> models)
+        {
+            List<LookupItem> model = new List<LookupItem>();
+            foreach (LookupItemModel lookupItemModel in models)
+            {
+                model.Add(new LookupItem(lookupItemModel));
+            }
+            return model;
         }
 
         /// <summary>
@@ -42,9 +52,9 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// Friendly value to use for display.
         /// </summary>
-        [JsonProperty(PropertyName = "cloneToAdminDatabase", Required = Required.Default)]
-        [DefaultValue(false), DisplayName("Clone to admin database")]
-        public bool CloneToAdminDatabase { get; set; }
+        [JsonProperty(PropertyName = "clone", Required = Required.Default)]
+        [DefaultValue(false), DisplayName("Clone")]
+        public bool Clone { get; set; }
 
         /// <summary>
         /// List of values.

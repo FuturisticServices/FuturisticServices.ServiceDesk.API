@@ -10,13 +10,15 @@ namespace TangledServices.ServicePortal.API.Models
     {
         public AddressModel() { }
 
+        //  Create a model from and entity.
         public AddressModel(Address entity)
         {
+            Type = new LookupItemValueModel(entity.Type);
             Line1 = entity.Line1;
             Line2 = entity.Line2;
             City = entity.City;
-            State = entity.State;
-            Country = entity.Country;
+            State = new LookupItemValueModel(entity.State);
+            Country = new LookupItemValueModel(entity.Country);
         }
 
         /// <summary>
@@ -24,7 +26,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required, DisplayName("Type")]
-        public LookupItemValue Type { get; set; }
+        public LookupItemValueModel Type { get; set; }
 
         /// <summary>
         /// Line 1 associated to address.
@@ -52,7 +54,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "state")]
         [Required, DisplayName("State")]
-        public LookupItemValue State { get; set; }
+        public LookupItemValueModel State { get; set; }
 
         /// <summary>
         /// Line 1 associated to address.
@@ -66,6 +68,6 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "country")]
         [DisplayName("Country")]
-        public LookupItemValue Country { get; set; }
+        public LookupItemValueModel Country { get; set; }
     }
 }

@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+using Newtonsoft.Json;
 
 namespace TangledServices.ServicePortal.API.Extensions
 {
@@ -119,6 +123,75 @@ namespace TangledServices.ServicePortal.API.Extensions
 
             //Return if it was a match or not
             return expression.IsMatch(creditCardNumber);
+        }
+
+        /// <summary>
+        /// Creates the random word number combination.
+        /// </summary>
+        /// <returns>System.String.</returns>
+        public static string CreateRandomWordNumberCombination()
+        {
+            Random rnd = new Random();
+            //Dictionary of strings
+            string[] words = { "Bold", "Think", "Friend", "Pony", "Fall", "Easy" };
+            //Random number from - to
+            int randomNumber = rnd.Next(2000, 3000);
+            //Create combination of word + number
+            string randomString = $"{words[rnd.Next(0, words.Length)]}{randomNumber}";
+
+            return randomString;
+        }
+
+        /// <summary>
+        /// WordsAPI ~ https://rapidapi.com/
+        /// </summary>
+        /// <returns></returns>
+        public async static Task<string> GetRandomWordFromWordsApi()
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://wordsapiv1.p.rapidapi.com/words/?random=true"),
+                Headers =
+                {
+                    { "x-rapidapi-key", "eedf35b492msh898c6a0da5cfdc4p126f83jsn3a8ea369c689" },
+                    { "x-rapidapi-host", "wordsapiv1.p.rapidapi.com" },
+                },
+            };
+
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var body = await response.Content.ReadAsStringAsync();
+                return body;
+            }
+        }
+
+        /// <summary>
+        /// WordsAPI ~ https://rapidapi.com/
+        /// </summary>
+        /// <returns></returns>
+        public async static Task<string> GetRandomStringFromWordsApi(int numberOfWords = 2)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://random-strings.p.rapidapi.com/v1/words?words=" + numberOfWords),
+                Headers =
+                {
+                    { "x-rapidapi-key", "eedf35b492msh898c6a0da5cfdc4p126f83jsn3a8ea369c689" },
+                    { "x-rapidapi-host", "random-strings.p.rapidapi.com" },
+                },
+            };
+
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var body = await response.Content.ReadAsStringAsync();
+                return body;
+            }
         }
     }
 }

@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 
+using Newtonsoft.Json.Linq;
+
 using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Extensions;
@@ -36,6 +38,7 @@ namespace TangledServices.ServicePortal.API.Services
     public class CustomerService : SystemBaseService, ICustomerService
     {
         #region Members
+        private readonly IHashingService _hashingService;
         private readonly IAdminService _adminService;
         private readonly ISystemService _systemService;
         private readonly IAdminLookupItemsService _adminLookupItemsService;
@@ -52,8 +55,9 @@ namespace TangledServices.ServicePortal.API.Services
         #endregion Members
 
         #region Constructors
-        public CustomerService(IAdminService adminService, ISystemService systemService, IAdminLookupItemsService adminLookupItemsService, IAdminUsersService adminUsersService, IAddressesService addressesService, IPhoneNumbersService phoneNumbersService, IWebsitesService websitesService, IPointOfContactService pointOfContactService, ISystemLookupItemsService systemLookupItemsService, ISystemUsersService systemUsersService, ICustomersManager customersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public CustomerService(IHashingService hashingService, IAdminService adminService, ISystemService systemService, IAdminLookupItemsService adminLookupItemsService, IAdminUsersService adminUsersService, IAddressesService addressesService, IPhoneNumbersService phoneNumbersService, IWebsitesService websitesService, IPointOfContactService pointOfContactService, ISystemLookupItemsService systemLookupItemsService, ISystemUsersService systemUsersService, ICustomersManager customersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
+            _hashingService = hashingService;
             _systemService = systemService;
             _adminService = adminService;
             _adminLookupItemsService = adminLookupItemsService;
@@ -139,13 +143,13 @@ namespace TangledServices.ServicePortal.API.Services
             model.AdminMoniker = model.AdminMoniker.ToUpper();
             model.TenantMonikers = new List<string>() { model.AdminMoniker };
 
-            //  Create Customer entity object.
+            //  Create customer entity 
             CustomerEntity customerEntity = new CustomerEntity(model);
 
-            //  Persist customer to system database.
+            //  Create customer item in system database.
             customerEntity = await _customersManager.CreateItemAsync(customerEntity);
 
-            //  Create customer database.
+            //  Create customer administrative database.
             DatabaseResponse databaseResponse = await _adminService.CreateDatabase();
             if (databaseResponse.StatusCode != HttpStatusCode.Created) throw new SystemDatabaseNotCreatedException();
 
@@ -153,13 +157,14 @@ namespace TangledServices.ServicePortal.API.Services
             var containerResponse = await _adminService.CreateContainer("LookupItems", "/name");
             if (containerResponse.StatusCode != HttpStatusCode.Created) throw new AdminContainerNotCreatedException("LookupItems");
 
-            var systemLookupItems = await _systemLookupItemsService.GetItems();
+            var systemLookupItemModels = await _systemLookupItemsService.GetItems();
+            var systemLookupItems = LookupItem.Construct(systemLookupItemModels);
             foreach (LookupItem systemLookupItem in systemLookupItems)
             {
-                if (systemLookupItem.CloneToAdminDatabase)
+                if (systemLookupItem.Clone)
                 {
-                    LookupItemModel lookupItemModel = new LookupItemModel(systemLookupItem);
-                    await _adminLookupItemsService.CreateItem(lookupItemModel);
+                    var systemLookupItemModel = new LookupItemModel(systemLookupItem);
+                    await _adminLookupItemsService.CreateItem(systemLookupItemModel);
                 }
             }
 
@@ -177,7 +182,24 @@ namespace TangledServices.ServicePortal.API.Services
                 }
             }
 
-            //  Create container 'Tenants' container.
+            //  Create customer 'admin' user.
+            foreach (AdminUserModel adminUserModel in model.Users)
+            {
+                adminUserModel.EmployeeId = adminUserModel.EmployeeId.Replace("{moniker}", model.AdminMoniker.ToLower());
+                adminUserModel.NameFirst = adminUserModel.EmployeeId.Replace("{moniker}", model.AdminMoniker.ToLower());
+                adminUserModel.Username = adminUserModel.EmployeeId.Replace("{moniker}", model.AdminMoniker.ToLower());
+                adminUserModel.DisplayName = adminUserModel.EmployeeId.Replace("{moniker}", model.AdminMoniker.ToLower());
+                adminUserModel.EmailAddresses.ForEach(x => x.Address = x.Address.Replace("{moniker}", model.AdminMoniker.ToLower()));
+                for (int i = 0; i < adminUserModel.Roles.Count; i++) adminUserModel.Roles[i] = adminUserModel.Roles[i].Replace("{moniker}", model.AdminMoniker.ToUpper());
+
+                var randomWord = await Helpers.GetRandomWordFromWordsApi();
+                var joPassword = JObject.Parse(randomWord)["word"];
+                adminUserModel.Password = _hashingService.EncryptString(joPassword.ToString());
+
+                await _adminUsersService.CreateItem(adminUserModel);
+            }
+
+            //  Create Tenants container.
             containerResponse = await _adminService.CreateContainer("Tenants", "/moniker");
             if (containerResponse.StatusCode != HttpStatusCode.Created) throw new AdminContainerNotCreatedException("Tenants");
 

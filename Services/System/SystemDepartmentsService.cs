@@ -91,6 +91,7 @@ namespace TangledServices.ServicePortal.API.Services
             var systemDepartment = systemDepartments.SingleOrDefault(x => x.Id == id);
             if (systemDepartment == null || systemDepartment.IsDeleted) throw new DepartmentNotFoundException(id);
 
+
             var systemDepartmentModel = new SystemDepartmentModel(systemDepartment);
             if (includeSubDepartments) systemDepartmentModel.SubDepartments = await GetSubDepartments(systemDepartmentsModel, systemDepartmentModel, id);
 

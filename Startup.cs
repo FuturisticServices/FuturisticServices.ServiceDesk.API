@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
@@ -32,8 +33,6 @@ namespace TangledServices.ServicePortal.API
             .SetBasePath(webHostEnvironment.ContentRootPath + @"\ConfigurationFiles")
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddJsonFile("system-reset.json", optional: true)
-            .AddJsonFile("admin-setup.json", optional: true)
-            .AddJsonFile("tenant-setup.json", optional: true)
             .AddEnvironmentVariables();
 
             Configuration = configurationBuilder.Build();
@@ -46,7 +45,7 @@ namespace TangledServices.ServicePortal.API
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddSwaggerGen((options) => {
-            //    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tangled Services Service Portal API", Version = "v1" });
+            //    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Tangled Services Portal API", Version = "v1" });
             //});
 
             services.AddSwaggerGen(c =>
@@ -138,6 +137,8 @@ namespace TangledServices.ServicePortal.API
                 };
             });
 
+            services.AddDataProtection();   //    .PersistKeysToFileSystem(new DirectoryInfo(@"C:\Tangled Services LLC\Products\Keys"));
+
             //services.AddControllers();
 
             services.AddSingleton<IWebHostEnvironment>(WebHostEnvironment);
@@ -200,6 +201,9 @@ namespace TangledServices.ServicePortal.API
             services.AddSingleton<IAdminManager, AdminManager>();
             services.AddSingleton<IAdminLookupItemsManager, AdminLookupItemsManager>();
             services.AddSingleton<IAdminUsersManager, AdminUsersManager>();
+
+            //  Security services.
+            services.AddSingleton<IHashingService, HashingService>();
 
             ////  Tenant services.
             //services.AddSingleton<ITenantRegistrationService, TenantRegistrationService>();

@@ -43,12 +43,12 @@ namespace TangledServices.ServicePortal.API.Controllers
         /// ** USE WITH CAUTION **
         /// </summary>
         /// <returns></returns>
-        [HttpPost("login")]
+        [HttpPost("authenticate")]
         [AllowAnonymous]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] string basicAuthHeader)
+        public async Task<IActionResult> Authenticate([FromHeader(Name = "Authorization")] string basicAuthHeader)
         {
             dynamic response = new ExpandoObject();
 

@@ -16,11 +16,11 @@ namespace TangledServices.ServicePortal.API.Managers
     public interface IAdminLookupItemsManager
     {
         Task<IEnumerable<LookupItem>> GetItemsAsync();
-        Task<LookupItem> GetItemAsync(Enums.LookupItems group);
-        Task<LookupItem> GetItemAsync(string groupName);
-        Task<LookupItemValue> GetItemAsync(string groupName, string id);
-        Task<LookupItem> CreateItemAsync(LookupItem group);
-        Task<LookupItem> UpsertGroupAsync(LookupItem group);
+        Task<LookupItem> GetItemAsync(Enums.LookupItems entity);
+        Task<LookupItem> GetItemAsync(string name);
+        Task<LookupItemValue> GetItemAsync(string name, string id);
+        Task<LookupItem> CreateItemAsync(LookupItem entity);
+        Task<LookupItem> UpsertGroupAsync(LookupItem entity);
     }
 
     public class AdminLookupItemsManager : AdminBaseManager, IAdminLookupItemsManager
@@ -43,39 +43,39 @@ namespace TangledServices.ServicePortal.API.Managers
             return result;
         }
 
-        public async Task<LookupItem> GetItemAsync(Enums.LookupItems group)
+        public async Task<LookupItem> GetItemAsync(Enums.LookupItems entity)
         {
-            LookupItem result = await GetItemAsync(group.GetDescription());
+            LookupItem result = await GetItemAsync(entity.GetDescription());
             return result;
         }
 
-        public async Task<LookupItem> GetItemAsync(string groupName)
+        public async Task<LookupItem> GetItemAsync(string name)
         {
-            groupName = groupName.ToTitleCase();
+            name = name.ToTitleCase();
 
             var query = _container.GetItemLinqQueryable<LookupItem>();
-            var iterator = query.Where(x => x.Name == groupName).ToFeedIterator();
+            var iterator = query.Where(x => x.Name == name).ToFeedIterator();
             var result = await iterator.ReadNextAsync();
             return result.FirstOrDefault();
         }
 
-        public async Task<LookupItemValue> GetItemAsync(string groupName, string id)
+        public async Task<LookupItemValue> GetItemAsync(string name, string id)
         {
             LookupItemValue item = null;
-            var group = await GetItemAsync(groupName);
+            var group = await GetItemAsync(name);
             if (group != null) item = await GetItem(group.Values, id);
             return item;
         }
 
-        public async Task<LookupItem> CreateItemAsync(LookupItem group)
+        public async Task<LookupItem> CreateItemAsync(LookupItem entity)
         {
-            var item = await _container.CreateItemAsync<LookupItem>(group);
+            var item = await _container.CreateItemAsync<LookupItem>(entity);
             return item;
         }
 
-        public async Task<LookupItem> UpsertGroupAsync(LookupItem group)
+        public async Task<LookupItem> UpsertGroupAsync(LookupItem entity)
         {
-            var results = await _container.UpsertItemAsync<LookupItem>(group);
+            var results = await _container.UpsertItemAsync<LookupItem>(entity);
             return results;
         }
 
