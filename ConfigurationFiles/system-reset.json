@@ -10,7 +10,7 @@
               "id": "7b8c8afe-e071-41b4-a12b-d538f2d8b31f",
               "name": "Address Types",
               "displayAs": "Address types",
-              "cloneToAdminDatabase": true,
+              "clone": true,
               "values": [
                 {
                   "id": "5d807feb-8a68-416d-94c2-f7489cba8121",
@@ -34,7 +34,7 @@
               "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
               "name": "Phone Number Types",
               "displayAs": "Phone number types",
-              "cloneToAdminDatabase": true,
+              "clone": true,
               "values": [
                 {
                   "id": "9eb023b0-f9c2-4ea5-9d2b-46d9e75494d1",
@@ -58,7 +58,7 @@
               "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
               "name": "Countries",
               "displayAs": "Countries",
-              "cloneToAdminDatabase": true,
+              "clone": true,
               "values": [
                 {
                   "id": "295fc3ec-f02a-4606-a3db-3dc3b0575b9e",
@@ -81,7 +81,7 @@
               "id": "fb3369c9-3e67-46ea-823b-2b73d07dcf52",
               "name": "Email Address Types",
               "displayAs": "Email address types",
-              "cloneToAdminDatabase": true,
+              "clone": true,
               "values": [
                 {
                   "id": "f013121f-5daa-48b8-8e3d-eabd7166b82c",
@@ -105,7 +105,7 @@
               "id": "7b630eb4-7cbb-417b-8749-96667eb3aa7c",
               "name": "Website Types",
               "displayAs": "Website types",
-              "cloneToAdminDatabase": true,
+              "clone": true,
               "values": [
                 {
                   "id": "f2cfdb8c-05b5-42d0-bb45-041086f85570",
@@ -129,7 +129,7 @@
               "id": "97106d33-68c4-48b0-b39c-21eaf84f29e6",
               "name": "States",
               "displayAs": "States",
-              "cloneToAdminDatabase": true,
+              "clone": true,
               "values": [
                 {
                   "id": "5c891d37-339e-4011-ac3c-e81f2b15a0c6",
@@ -432,7 +432,7 @@
               "id": "24f1c565-c184-4cdb-8698-6493bc2ea089",
               "name": "Database Platforms",
               "displayAs": "Database platforms",
-              "cloneToAdminDatabase": false,
+              "clone": false,
               "values": [
                 {
                   "id": "c74b3920-f1ab-4c23-b2cd-808775b25d21",
@@ -448,7 +448,7 @@
               "id": "9261271b-e63c-4ee7-97cf-fef2cf73dba4",
               "name": "Subscription Renewal Timeframes",
               "displayAs": "Subscription renewal timeframes",
-              "cloneToAdminDatabase": false,
+              "clone": false,
               "values": [
                 {
                   "name": "Monthly",
@@ -554,20 +554,20 @@
             {
               "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
               "employeeId": "tang000000",
-              "nameFirst": "System2",
+              "nameFirst": "Root",
               "nameLast": "Admin",
-              "username": "system.admin",
+              "username": "root.admin",
               "password": "password",
-              "displayName": "System Admin",
+              "displayName": "Root Admin",
               "mustChangePasswordAtNextLogin": false,
-              "cloneToAdminDatabase": true,
+              "clone": true,
               "enabled": true,
               "emailAddresses": [
                 {
                   "type": {
                     "id": "36e8cc77-805b-4214-a53d-fdb4be9aa75c"
                   },
-                  "address": "system.admin@tangled.services"
+                  "address": "root.admin@tangled.services"
                 }
               ],
               "phoneNumbers": [
@@ -578,7 +578,7 @@
                   "number": "1112223333"
                 }
               ],
-              "roles": ["System Admin", "DB Reset"]
+              "roles": ["Root Admin"]
             }
           ]
         },

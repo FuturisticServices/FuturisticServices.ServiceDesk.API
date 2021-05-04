@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
-using Microsoft.Azure.Cosmos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
@@ -18,12 +15,12 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface ISystemLookupItemsService
     {
-        Task<LookupItem> GetItem(Enums.LookupItems item);
-        Task<LookupItem> GetItem(string itemName);
-        Task<LookupItemValue> GetItem(string itemName, string id);
-        Task<IEnumerable<LookupItem>> GetItems();
-        Task<LookupItem> CreateItem(LookupItemModel model);
-        Task<LookupItem> UpdateGroup(LookupItem model);
+        Task<LookupItemModel> GetItem(Enums.LookupItems item);
+        Task<LookupItemModel> GetItem(string name);
+        Task<LookupItemValueModel> GetItem(string name, string id);
+        Task<IEnumerable<LookupItemModel>> GetItems();
+        Task<LookupItemModel> CreateItem(LookupItemModel model);
+        Task<LookupItemModel> Update(LookupItemModel model);
     }
 
     public class SystemLookupItemsService : SystemBaseService, ISystemLookupItemsService
@@ -39,57 +36,57 @@ namespace TangledServices.ServicePortal.API.Services
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<LookupItem> GetItem(Enums.LookupItems item)
+        public async Task<LookupItemModel> GetItem(Enums.LookupItems item)
         {
-            LookupItem results = await _systemLookupItemManager.GetItemAsync(item);
-            return results;
+            var entity = await _systemLookupItemManager.GetItemAsync(item);
+            var model = new LookupItemModel(entity);
+            return model;
         }
 
-        public async Task<LookupItem> GetItem(string itemName)
+        public async Task<LookupItemModel> GetItem(string name)
         {
-            LookupItem results = await _systemLookupItemManager.GetItemAsync(itemName);
-            return results;
+            var entity = await _systemLookupItemManager.GetItemAsync(name);
+            return entity == null ? null : new LookupItemModel(entity);
         }
 
-        public async Task<LookupItemValue> GetItem(string itemName, string id)
+        public async Task<LookupItemValueModel> GetItem(string name, string id)
         {
-            LookupItemValue results = await _systemLookupItemManager.GetItemAsync(itemName, id);
-            return results;
+            LookupItemValue entity = await _systemLookupItemManager.GetItemAsync(name, id);
+            var model = new LookupItemValueModel(entity);
+            return model;
         }
 
-        public async Task<IEnumerable<LookupItem>> GetItems()
+        public async Task<IEnumerable<LookupItemModel>> GetItems()
         {
-            var results = await _systemLookupItemManager.GetItemsAsync();
-            return results;
+            var entitites = await _systemLookupItemManager.GetItemsAsync();
+            var model = LookupItemModel.Construct(entitites);
+            return model;
         }
 
-        public async Task<LookupItem> CreateItem(LookupItemModel model)
+        public async Task<LookupItemModel> CreateItem(LookupItemModel model)
         {
             if (await GetItem(model.Name) == null)
             {
-                LookupItem lookupGroupEntity = new LookupItem()
-                {
-                    Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id,
-                    Name = model.Name,
-                    DisplayAs = model.DisplayAs,
-                    Values = LookupItemValue.ConvertModelToEntity(model.Values)
-                };
-
-                LookupItem results = await _systemLookupItemManager.CreateItemAsync(lookupGroupEntity);
-                return results;
+                LookupItem entity = new LookupItem(model);
+                entity = await _systemLookupItemManager.CreateItemAsync(entity);
+                model = new LookupItemModel(entity);
+                return model;
             }
-            return null;
+
+            throw new SystemLookupItemAlreadyExistsException(model.Name);
         }
 
-        public async Task<LookupItem> UpdateGroup(LookupItem model)
+        public async Task<LookupItemModel> Update(LookupItemModel model)
         {
-            var group = await _systemLookupItemManager.GetItemAsync(model.Name);
+            var entity = await _systemLookupItemManager.GetItemAsync(model.Id);
+            if (entity == null) throw new SystemLookupItemNotFoundException();
 
-            if (group != null)
+            if (entity != null)
             {
-                group.Values.ToList().ForEach(x => x.Id = x.Id != null ? x.Id : Guid.NewGuid().ToString());
-                LookupItem results = await _systemLookupItemManager.UpsertGroupAsync(group);
-                return results;
+                entity.Values.ToList().ForEach(x => x.Id = x.Id != null ? x.Id : Guid.NewGuid().ToString());
+                entity = await _systemLookupItemManager.UpsertGroupAsync(entity);
+                model = new LookupItemModel(entity);
+                return model;
             }
 
             return null;

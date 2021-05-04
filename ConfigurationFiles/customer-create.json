@@ -62,5 +62,36 @@
       },
       "address": "its@nau.edu"
     }
-  }
+  },
+  "users": [
+    {
+      "id": "767b1bae-1b4b-4f5a-addd-d3e78601fc2c",
+      "employeeId": "{moniker}000000",
+      "nameFirst": "{moniker}",
+      "nameLast": "Admin",
+      "username": "{moniker}.admin",
+      "password": "password",
+      "displayName": "{moniker} Admin",
+      "mustChangePasswordAtNextLogin": false,
+      "cloneToTenantDatabase": true,
+      "enabled": true,
+      "emailAddresses": [
+        {
+          "type": {
+            "id": "36e8cc77-805b-4214-a53d-fdb4be9aa75c"
+          },
+          "address": "{moniker}.admin@tangled.services"
+        }
+      ],
+      "phoneNumbers": [
+        {
+          "type": {
+            "id": "706ec856-1a32-4ec3-970b-ad67c6485d68"
+          },
+          "number": "1112223333"
+        }
+      ],
+      "roles": ["{moniker} Admin"]
+    }
+  ]
 }

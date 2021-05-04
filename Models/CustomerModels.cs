@@ -87,6 +87,13 @@ namespace TangledServices.ServicePortal.API.Models
         public PointOfContactModel PointOfContact { get; set; }
 
         /// <summary>
+        /// Customer administrative website users.
+        /// </summary>
+        [JsonProperty(PropertyName = "users", Required = Required.Default)]
+        [DisplayName("Users")]
+        public List<AdminUserModel> Users { get; set; }
+
+        /// <summary>
         /// Determines if the tenant account is currently active.
         /// </summary>
         [JsonProperty(PropertyName = "enabled", Required = Required.DisallowNull)]

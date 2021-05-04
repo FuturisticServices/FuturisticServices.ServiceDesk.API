@@ -1,17 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TangledServices.ServicePortal.API.Common
 {
     #region LookupItems
     [Serializable]
-    public class LookupItemsNotFoundException : Exception
+    public class SystemLookupItemsNotFoundException : Exception
     {
-        public LookupItemsNotFoundException() { }
+        public SystemLookupItemsNotFoundException() : base("No LookupItems found in system database.") { }
+    }
 
-        public LookupItemsNotFoundException(bool sourceIsSystemDatabase = false) : base(string.Format("Lookup items not found{0}.", sourceIsSystemDatabase ? "in system DB" : string.Empty)) { }
+    public class SystemLookupItemNotFoundException : Exception
+    {
+        public SystemLookupItemNotFoundException() { }
+
+        public SystemLookupItemNotFoundException(string name) : base(string.Format("LookupItem '{0}' not found in system database.", name)) { }
+    }
+
+    public class SystemLookupItemAlreadyExistsException : Exception
+    {
+        public SystemLookupItemAlreadyExistsException() { }
+
+        public SystemLookupItemAlreadyExistsException(string name) : base(string.Format("LookupItem '{0}' already exists in system database.", name)) { }
     }
     #endregion LookupItems
 

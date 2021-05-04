@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
+using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Models;
 using TangledServices.ServicePortal.API.Services;
@@ -19,7 +20,7 @@ namespace TangledServices.ServicePortal.API.Controllers
     [Route("api/system/lookupitems")]
     [ApiVersion("1.0")]
     [ApiController]
-    public class SystemLookupItemsController : ControllerBase
+    public class SystemLookupItemsController : BaseController
     {
         private readonly ISystemLookupItemsService _systemService;
         private readonly IConfiguration _configuration;
@@ -151,10 +152,9 @@ namespace TangledServices.ServicePortal.API.Controllers
         }
 
         /// <summary>
-        /// Update one or more group items in the LookupItems container.
+        /// Updates an existing SystemLookupItem item.
         /// </summary>
-        /// <param name="groupName">Name of the group associated to common items.</param>
-        /// <param name="lookupItemsToUpdate">Array of <LookupItem> containing item properties to update.</LookupItem></param>
+        /// <param name="model">SystemLookupItemModel object.</param>
         /// <returns>401 ~ Not authorized or invalid JWT token.</returns>
         /// <returns>200 ~ OK</returns>
         /// <returns>400 ~ Bad request</returns>
@@ -163,27 +163,24 @@ namespace TangledServices.ServicePortal.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromBody] LookupItem group)
+        public async Task<IActionResult> Put([FromBody] LookupItemModel model)
         {
             try
             {
-                group = await _systemService.UpdateGroup(group);
+                model = await _systemService.Update(model);
 
-                if (group != null)
-                {
-                    _response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("LookupItem group '{0}' updated.", group.Name));
-                    _response.data = group;
-                    return Ok(new { _response });
-                }
-
-                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("LookupItem group '{0}' does not exist.", group.Name));
-                return BadRequest(new { _response });
+                responseModels.Add("systemLookupItem", model);
+                response = new ApiResponse(HttpStatusCode.OK, string.Format("SystemLookupItem '{0}' found.", model.DisplayAs), responseModels);
+                return Ok(new { response });
             }
-            catch (Exception ex)
+            catch (SystemLookupItemNotFoundException exception)
             {
-                _response.group = null;
-                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("Error updating LookupItem '{0}'. Error: {1}", group.Name, ex.Message));
-                return BadRequest(new { _response });
+                response = new ApiResponse(HttpStatusCode.Unauthorized, "Access denied", exception, null);
+                return Unauthorized(new { response });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest("Error updating LookupItem in system database. Error: " + exception.Message);
             }
         }
     }

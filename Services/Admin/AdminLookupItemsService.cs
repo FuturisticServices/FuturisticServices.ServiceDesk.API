@@ -67,15 +67,8 @@ namespace TangledServices.ServicePortal.API.Services
         {
             if (await GetItem(model.Name) == null)
             {
-                LookupItem lookupGroupEntity = new LookupItem()
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = model.Name,
-                    DisplayAs = model.DisplayAs,
-                    Values = await ConvertModelToEntity(model.Values.ToList())
-                };
-
-                LookupItem results = await _systemLookupItemManager.CreateItemAsync(lookupGroupEntity);
+                var entity = new LookupItem(model);
+                LookupItem results = await _systemLookupItemManager.CreateItemAsync(entity);
                 return results;
             }
             return null;

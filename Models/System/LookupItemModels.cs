@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
@@ -20,7 +17,18 @@ namespace TangledServices.ServicePortal.API.Models
             Id = entity.Id;
             Name = entity.Name;
             DisplayAs = entity.DisplayAs;
+            Clone = entity.Clone;
             Values = LookupItemValueModel.Construct(entity.Values);
+        }
+
+        public static IEnumerable<LookupItemModel> Construct(IEnumerable<LookupItem> entities)
+        {
+            List<LookupItemModel> model = new List<LookupItemModel>();
+            foreach (LookupItem lookupItem in entities)
+            {
+                model.Add(new LookupItemModel(lookupItem));
+            }
+            return model;
         }
 
         /// <summary>
@@ -41,9 +49,9 @@ namespace TangledServices.ServicePortal.API.Models
         /// <summary>
         /// Friendly value to use for display.
         /// </summary>
-        [JsonProperty(PropertyName = "cloneToAdminDatabase", Required = Required.Default)]
-        [DefaultValue(false), DisplayName("Clone to admin database")]
-        public bool CloneToAdminDatabase { get; set; }
+        [JsonProperty(PropertyName = "clone", Required = Required.Default)]
+        [DefaultValue(false), DisplayName("Clone")]
+        public bool Clone { get; set; }
 
         /// <summary>
         /// List of values.

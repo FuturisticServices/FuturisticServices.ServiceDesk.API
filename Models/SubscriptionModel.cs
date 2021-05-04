@@ -15,6 +15,7 @@ namespace TangledServices.ServicePortal.API.Models
     {
         public SubscriptionModel() {}
 
+        //  Create a model from an entity.
         public SubscriptionModel(Subscription entity)
         {
             Id = entity.Id;
@@ -24,7 +25,7 @@ namespace TangledServices.ServicePortal.API.Models
             IsExpired = entity.IsExpired;
             PromotionCode = entity.PromotionCode;
             RenewalOccurrence = entity.RenewalOccurrence;
-            RenewalTimeframe = entity.RenewalTimeframe;
+            RenewalTimeframe = new LookupItemValueModel(entity.RenewalTimeframe);
             Highlights = entity.Highlights;
         }
 
@@ -72,7 +73,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "renewalTimeframe", Required = Required.AllowNull)]
         [DisplayName("Renewal timeframe")]
-        public LookupItemValue RenewalTimeframe { get; set; }
+        public LookupItemValueModel RenewalTimeframe { get; set; }
 
         /// <summary>
         /// Name of the subscription.

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -11,10 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-using Newtonsoft.Json;
-
 using TangledServices.ServicePortal.API.Entities;
-using TangledServices.ServicePortal.API.Models;
 using TangledServices.ServicePortal.API.Services;
 
 namespace TangledServices.ServicePortal.API.Controllers
@@ -45,7 +39,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         /// Utilizes hardcoded GUIDs so item IDs remain the same each time a reset is performed.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("reset")]
+        [HttpPost("reset")]
         [AllowAnonymous]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
