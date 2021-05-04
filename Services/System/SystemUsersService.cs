@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
+using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Extensions;
 using TangledServices.ServicePortal.API.Managers;
+using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Services
 {
@@ -22,7 +24,7 @@ namespace TangledServices.ServicePortal.API.Services
         Task<IEnumerable<SystemUser>> GetItems();
         Task<string> GetUsernameAsync(string basicAuthHeader);
         Task<string> GetPasswordAsync(string basicAuthHeader);
-        Task<SystemUser> AuthenticateAsync(string basicAuthHeader);
+        Task<SystemUserModel> AuthenticateAsync(string basicAuthHeader);
         Task<string> GenerateJwtToken(SystemUser user);
         Task<string> GetUniqueEmployeeId(string moniker);
     }
@@ -77,23 +79,20 @@ namespace TangledServices.ServicePortal.API.Services
             return string.Empty;
         }
 
-        public async Task<SystemUser> AuthenticateAsync(string basicAuthHeader)
+        public async Task<SystemUserModel> AuthenticateAsync(string basicAuthHeader)
         {
-            if (basicAuthHeader.ToString().StartsWith("Basic"))
-            {
-                var loginUsername = await GetUsernameAsync(basicAuthHeader);
-                var loginPassword = await GetPasswordAsync(basicAuthHeader);
+            if (!basicAuthHeader.ToString().StartsWith("Basic")) throw new Exception("'Basic' header not found.");
 
-                if (!string.IsNullOrEmpty(loginUsername) && !string.IsNullOrEmpty(loginPassword))
-                {
-                    var user = await _systemUsersManager.GetItemAsync(loginUsername);
-                    if (user != null)
-                    {
-                        var password = _hashingService.DecryptString(user.Password);
-                        if (loginPassword == password) return user;
-                    }
-                }
-            }
+            var loginUsername = await GetUsernameAsync(basicAuthHeader);
+            var loginPassword = await GetPasswordAsync(basicAuthHeader);
+
+            if (string.IsNullOrEmpty(loginUsername) || string.IsNullOrEmpty(loginPassword)) throw new LoginFailedException();
+
+            var user = await _systemUsersManager.GetItemAsync(loginUsername);
+            if (user == null) throw new UserNotFoundException();
+
+            var password = _hashingService.DecryptString(user.Password);
+            if (loginPassword == password) return new SystemUserModel(user);
 
             return null;
         }

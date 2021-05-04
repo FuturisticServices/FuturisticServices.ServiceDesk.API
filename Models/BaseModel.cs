@@ -12,7 +12,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// <summary>
         /// A unique GUID identifier.
         /// </summary>
-        [JsonProperty(PropertyName = "id", Required = Required.AllowNull)]
+        [JsonProperty(PropertyName = "id", Required = Required.Default)]
         [DisplayName("ID")]
         public string Id { get; set; }
     }
