@@ -8,11 +8,11 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
 {
-    public class WebsiteModel : BaseModel
+    public class SystemWebsiteModel : BaseModel
     {
-        public WebsiteModel() { }
+        public SystemWebsiteModel() { }
 
-        public WebsiteModel (Website entity)
+        public SystemWebsiteModel (SystemWebsite entity)
         {
             Url = entity.Url;
         }
@@ -22,7 +22,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required, DisplayName("Type")]
-        public LookupItemValue Type { get; set; }
+        public SystemLookupItemValue Type { get; set; }
 
         [Required, DataType(DataType.Url)]
         public string Url { get; set; }

@@ -11,7 +11,7 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface IEmailAddressService
     {
-        Task<EmailAddressModel> Validate(EmailAddressModel model);
+        Task<SystemEmailAddressModel> Validate(SystemEmailAddressModel model);
     }
 
     public class EmailAddressService : SystemBaseService, IEmailAddressService
@@ -30,7 +30,7 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Public methods
-        public async Task<EmailAddressModel> Validate(EmailAddressModel model)
+        public async Task<SystemEmailAddressModel> Validate(SystemEmailAddressModel model)
         {
             if (model.Address == string.Empty) throw new AddressLine1IsRequiredException();
 

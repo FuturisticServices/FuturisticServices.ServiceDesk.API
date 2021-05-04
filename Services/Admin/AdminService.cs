@@ -77,7 +77,7 @@ namespace TangledServices.ServicePortal.API.Services
         /// <param name="database">The [TangledServices.ServicePortal] database object.</param>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
-        private async Task<ContainerResponse> CreateContainer( LookupItem group)
+        private async Task<ContainerResponse> CreateContainer( SystemLookupItem group)
         {
             ContainerResponse containerResponse = await _adminManager.CreateContainer(group.Name, group.Name);
             return containerResponse;
@@ -88,7 +88,7 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns>ContainerResponse object</returns>
-        private async Task CreateContainerLookupGroups(LookupItem container)
+        private async Task CreateContainerLookupGroups(SystemLookupItem container)
         {
             //if (container.Groups != null)
             //{
@@ -127,7 +127,7 @@ namespace TangledServices.ServicePortal.API.Services
         /// </summary>
         /// <param name="container">The container represented as a ResetContainerModel object.</param>
         /// <returns></returns>
-        private async Task CreateContainerUsers(LookupItem container)
+        private async Task CreateContainerUsers(SystemLookupItem container)
         {
             //if (container.Users != null)
             //{

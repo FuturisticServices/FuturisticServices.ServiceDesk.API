@@ -148,7 +148,7 @@ namespace TangledServices.ServicePortal.API.Services
         {
             if (container.LookupItems == null) return;
 
-            foreach (LookupItemModel model in container.LookupItems)
+            foreach (SystemLookupItemModel model in container.LookupItems)
             {
                 await _systemLookupItemsService.CreateItem(model);
             }
@@ -183,13 +183,13 @@ namespace TangledServices.ServicePortal.API.Services
 
             foreach (SystemUserModel model in container.Users)
             {
-                foreach (EmailAddressModel emailAddressModel in model.EmailAddresses)
+                foreach (SystemEmailAddressModel emailAddressModel in model.EmailAddresses)
                 {
                     emailAddressModel.Id = Guid.NewGuid().ToString();
                     emailAddressModel.Type = await _systemLookupItemsService.GetItem(Enums.LookupItems.EmailAddressTypes.GetDescription().ToTitleCase(), emailAddressModel.Type.Id);
                 }
 
-                foreach (PhoneNumberModel phoneNumberModel in model.PhoneNumbers)
+                foreach (SystemPhoneNumberModel phoneNumberModel in model.PhoneNumbers)
                 {
                     phoneNumberModel.Id = Guid.NewGuid().ToString();
                     phoneNumberModel.Type = await _systemLookupItemsService.GetItem(Enums.LookupItems.PhoneNumberTypes.GetDescription().ToTitleCase(), phoneNumberModel.Type.Id);

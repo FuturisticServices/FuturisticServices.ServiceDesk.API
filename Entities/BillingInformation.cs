@@ -26,7 +26,7 @@ namespace TangledServices.ServicePortal.API.Entities
             CardSecurityValue = model.CardSecurityValue;
             ExpirationMonth = model.ExpirationMonth;
             ExpirationYear = model.ExpirationYear;
-            Address = new Address(model.Address);
+            Address = new SystemAddress(model.Address);
         }
 
         /// <summary>
@@ -57,6 +57,6 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// The billing address of the credit card.
         /// </summary>
-        public Address Address { get; set; }
+        public SystemAddress Address { get; set; }
     }
 }

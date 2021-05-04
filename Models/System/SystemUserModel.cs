@@ -27,8 +27,8 @@ namespace TangledServices.ServicePortal.API.Models
             MustChangePasswordAtNextLogin = entity.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = entity.PasswordExpirationDateTime;
             Enabled = entity.Enabled;
-            EmailAddresses = EmailAddressModel.Construct(entity.EmailAddresses);
-            PhoneNumbers = PhoneNumberModel.Construct(entity.PhoneNumbers);
+            EmailAddresses = SystemEmailAddressModel.Construct(entity.EmailAddresses);
+            PhoneNumbers = SystemPhoneNumberModel.Construct(entity.PhoneNumbers);
             Roles = entity.Roles;
         }
 
@@ -129,14 +129,14 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "emailAddresses", Required = Required.Default)]
         [DisplayName("Email Addresses")]
-        public List<EmailAddressModel> EmailAddresses { get; set; }
+        public List<SystemEmailAddressModel> EmailAddresses { get; set; }
 
         /// <summary>
         /// Phone numbers associated to the user.
         /// </summary>
         [JsonProperty(PropertyName = "phoneNumbers", Required = Required.Default)]
         [DisplayName("Phone numbers")]
-        public List<PhoneNumberModel> PhoneNumbers { get; set; }
+        public List<SystemPhoneNumberModel> PhoneNumbers { get; set; }
 
         /// <summary>
         /// Role(s) the user is authorized to perform.

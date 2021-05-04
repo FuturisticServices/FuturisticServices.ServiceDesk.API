@@ -18,7 +18,7 @@ namespace TangledServices.ServicePortal.API.Models
             CardSecurityValue = entity.CardSecurityValue;
             ExpirationMonth = entity.ExpirationMonth;
             ExpirationYear = entity.ExpirationYear;
-            Address = new AddressModel(entity.Address);
+            Address = new SystemAddressModel(entity.Address);
         }
 
         public string NameOnCard { get; set; }
@@ -26,6 +26,6 @@ namespace TangledServices.ServicePortal.API.Models
         public string CardSecurityValue { get; set; }
         public int ExpirationMonth { get; set; }
         public int ExpirationYear { get; set; }
-        public AddressModel Address { get; set; }
+        public SystemAddressModel Address { get; set; }
     }
 }

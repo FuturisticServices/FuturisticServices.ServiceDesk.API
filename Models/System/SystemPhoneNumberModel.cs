@@ -8,22 +8,22 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
 {
-    public class PhoneNumberModel : BaseModel
+    public class SystemPhoneNumberModel : BaseModel
     {
-        public PhoneNumberModel() { }
+        public SystemPhoneNumberModel() { }
 
-        public PhoneNumberModel(PhoneNumber entity)
+        public SystemPhoneNumberModel(SystemPhoneNumber entity)
         {
             Number = entity.Number;
-            Type = new LookupItemValueModel(entity.Type);
+            Type = new SystemLookupItemValueModel(entity.Type);
         }
 
-        public static List<PhoneNumberModel> Construct(List<PhoneNumber> entities)
+        public static List<SystemPhoneNumberModel> Construct(List<SystemPhoneNumber> entities)
         {
-            List<PhoneNumberModel> phoneNumbers = new List<PhoneNumberModel>();
-            foreach (PhoneNumber phoneNumber in entities)
+            List<SystemPhoneNumberModel> phoneNumbers = new List<SystemPhoneNumberModel>();
+            foreach (SystemPhoneNumber phoneNumber in entities)
             {
-                phoneNumbers.Add(new PhoneNumberModel(phoneNumber));
+                phoneNumbers.Add(new SystemPhoneNumberModel(phoneNumber));
             }
             return phoneNumbers;
         }
@@ -33,7 +33,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required, DisplayName("Type")]
-        public LookupItemValueModel Type { get; set; }
+        public SystemLookupItemValueModel Type { get; set; }
 
         /// <summary>
         /// Phone number.

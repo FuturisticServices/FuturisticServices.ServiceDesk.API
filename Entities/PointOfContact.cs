@@ -23,9 +23,9 @@ namespace TangledServices.ServicePortal.API.Entities
             FirstName = model.FirstName;
             LastName = model.LastName;
             Title = model.Title;
-            Address = new Address(model.Address);
-            PhoneNumber = new PhoneNumber(model.PhoneNumber);
-            EmailAddress = new EmailAddress(model.EmailAddress);
+            Address = new SystemAddress(model.Address);
+            PhoneNumber = new SystemPhoneNumber(model.PhoneNumber);
+            EmailAddress = new SystemEmailAddress(model.EmailAddress);
         }
 
         [JsonProperty(PropertyName = "firstName")]
@@ -38,20 +38,20 @@ namespace TangledServices.ServicePortal.API.Entities
         public string Title { get; set; }
         
         [JsonProperty(PropertyName = "address")]
-        public Address Address { get; set; }
+        public SystemAddress Address { get; set; }
         
         /// <summary>
         /// The primary phone number associated to the PoC.
         /// </summary>
         [JsonProperty(PropertyName = "phoneNumber")]
         [Required, JsonRequired]
-        public PhoneNumber PhoneNumber { get; set; }
+        public SystemPhoneNumber PhoneNumber { get; set; }
         
         /// <summary>
         /// The primary email addresses associated to PoC.
         /// </summary>
         [JsonProperty(PropertyName = "emailAddress")]
         [Required, JsonRequired]
-        public EmailAddress EmailAddress { get; set; }
+        public SystemEmailAddress EmailAddress { get; set; }
     }
 }

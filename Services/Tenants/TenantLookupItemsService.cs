@@ -18,12 +18,12 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface ITenantLookupItemsService
     {
-        Task<LookupItem> GetItem(Enums.LookupItems item);
-        Task<LookupItem> GetItem(string itemName);
-        Task<LookupItemValue> GetItem(string itemName, string id);
-        Task<IEnumerable<LookupItem>> GetItems();
-        Task<LookupItem> CreateItem(LookupItemModel model);
-        Task<LookupItem> UpdateGroup(LookupItem model);
+        Task<SystemLookupItem> GetItem(Enums.LookupItems item);
+        Task<SystemLookupItem> GetItem(string itemName);
+        Task<SystemLookupItemValue> GetItem(string itemName, string id);
+        Task<IEnumerable<SystemLookupItem>> GetItems();
+        Task<SystemLookupItem> CreateItem(SystemLookupItemModel model);
+        Task<SystemLookupItem> UpdateGroup(SystemLookupItem model);
     }
 
     public class TenantLookupItemsService : TenantBaseService, ITenantLookupItemsService
@@ -39,35 +39,35 @@ namespace TangledServices.ServicePortal.API.Services
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<LookupItem> GetItem(Enums.LookupItems item)
+        public async Task<SystemLookupItem> GetItem(Enums.LookupItems item)
         {
-            LookupItem results = await _systemLookupItemManager.GetItemAsync(item);
+            SystemLookupItem results = await _systemLookupItemManager.GetItemAsync(item);
             return results;
         }
 
-        public async Task<LookupItem> GetItem(string itemName)
+        public async Task<SystemLookupItem> GetItem(string itemName)
         {
-            LookupItem results = await _systemLookupItemManager.GetItemAsync(itemName);
+            SystemLookupItem results = await _systemLookupItemManager.GetItemAsync(itemName);
             return results;
         }
 
-        public async Task<LookupItemValue> GetItem(string itemName, string id)
+        public async Task<SystemLookupItemValue> GetItem(string itemName, string id)
         {
-            LookupItemValue results = await _systemLookupItemManager.GetItemAsync(itemName, id);
+            SystemLookupItemValue results = await _systemLookupItemManager.GetItemAsync(itemName, id);
             return results;
         }
 
-        public async Task<IEnumerable<LookupItem>> GetItems()
+        public async Task<IEnumerable<SystemLookupItem>> GetItems()
         {
             var results = await _systemLookupItemManager.GetItemsAsync();
             return results;
         }
 
-        public async Task<LookupItem> CreateItem(LookupItemModel model)
+        public async Task<SystemLookupItem> CreateItem(SystemLookupItemModel model)
         {
             if (await GetItem(model.Name) == null)
             {
-                LookupItem lookupGroupEntity = new LookupItem()
+                SystemLookupItem lookupGroupEntity = new SystemLookupItem()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = model.Name,
@@ -75,20 +75,20 @@ namespace TangledServices.ServicePortal.API.Services
                     Values = await ConvertModelToEntity(model.Values.ToList())
                 };
 
-                LookupItem results = await _systemLookupItemManager.CreateItemAsync(lookupGroupEntity);
+                SystemLookupItem results = await _systemLookupItemManager.CreateItemAsync(lookupGroupEntity);
                 return results;
             }
             return null;
         }
 
-        public async Task<LookupItem> UpdateGroup(LookupItem model)
+        public async Task<SystemLookupItem> UpdateGroup(SystemLookupItem model)
         {
             var group = await _systemLookupItemManager.GetItemAsync(model.Name);
 
             if (group != null)
             {
                 group.Values.ToList().ForEach(x => x.Id = x.Id != null ? x.Id : Guid.NewGuid().ToString());
-                LookupItem results = await _systemLookupItemManager.UpsertGroupAsync(group);
+                SystemLookupItem results = await _systemLookupItemManager.UpsertGroupAsync(group);
                 return results;
             }
 
@@ -96,13 +96,13 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Private methods
-        private async Task<IEnumerable<LookupItemValue>> ConvertModelToEntity(List<LookupItemValueModel> model)
+        private async Task<IEnumerable<SystemLookupItemValue>> ConvertModelToEntity(List<SystemLookupItemValueModel> model)
         {
-            List<LookupItemValue> lookupItemsEntity = new List<LookupItemValue>();
+            List<SystemLookupItemValue> lookupItemsEntity = new List<SystemLookupItemValue>();
 
-            foreach (LookupItemValueModel lookupItemValueModel in model)
+            foreach (SystemLookupItemValueModel lookupItemValueModel in model)
             {
-                LookupItemValue lookupItemEntity = new LookupItemValue()
+                SystemLookupItemValue lookupItemEntity = new SystemLookupItemValue()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = lookupItemValueModel.Name,

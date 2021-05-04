@@ -15,12 +15,12 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// A website accessible from a modern web browser.
     /// </summary>
-    public class Website
+    public class SystemWebsite
     {
-        public Website() { }
+        public SystemWebsite() { }
 
         //  Create entity from model.
-        public Website(WebsiteModel model)
+        public SystemWebsite(SystemWebsiteModel model)
         {
             Type = model.Type;
             Url = model.Url;
@@ -31,7 +31,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required, DisplayName("Type")]
-        public LookupItemValue Type { get; set; }
+        public SystemLookupItemValue Type { get; set; }
 
         /// <summary>
         /// The website URL.

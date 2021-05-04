@@ -25,7 +25,7 @@ namespace TangledServices.ServicePortal.API.Models
             IsExpired = entity.IsExpired;
             PromotionCode = entity.PromotionCode;
             RenewalOccurrence = entity.RenewalOccurrence;
-            RenewalTimeframe = new LookupItemValueModel(entity.RenewalTimeframe);
+            RenewalTimeframe = new SystemLookupItemValueModel(entity.RenewalTimeframe);
             Highlights = entity.Highlights;
         }
 
@@ -73,7 +73,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "renewalTimeframe", Required = Required.AllowNull)]
         [DisplayName("Renewal timeframe")]
-        public LookupItemValueModel RenewalTimeframe { get; set; }
+        public SystemLookupItemValueModel RenewalTimeframe { get; set; }
 
         /// <summary>
         /// Name of the subscription.

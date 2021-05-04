@@ -9,20 +9,20 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Physical mailing address.
     /// </summary>
-    public class Address
+    public class SystemAddress
     {
-        public Address() { }
+        public SystemAddress() { }
 
         //  Create entity from model.
-        public Address(AddressModel model)
+        public SystemAddress(SystemAddressModel model)
         {
-            Type = new LookupItemValue(model.Type);
+            Type = new SystemLookupItemValue(model.Type);
             Line1 = model.Line1;
             Line2 = model.Line2;
             City = model.City;
-            State = new LookupItemValue(model.State);
+            State = new SystemLookupItemValue(model.State);
             PostalCode = model.PostalCode;
-            Country = new LookupItemValue(model.Country);
+            Country = new SystemLookupItemValue(model.Country);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type")]
         [Required, JsonRequired]
-        public LookupItemValue Type { get; set; }
+        public SystemLookupItemValue Type { get; set; }
 
         /// <summary>
         /// Line 1 associated to the address.
@@ -58,7 +58,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "state")]
         [Required, JsonRequired, DisplayName("State")]
-        public LookupItemValue State { get; set; }
+        public SystemLookupItemValue State { get; set; }
 
         /// <summary>
         /// Post/zip code associated to the address.
@@ -72,6 +72,6 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "country")]
         [Required, JsonRequired, DisplayName("Country")]
-        public LookupItemValue Country { get; set; }
+        public SystemLookupItemValue Country { get; set; }
     }
 }

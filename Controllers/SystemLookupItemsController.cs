@@ -127,7 +127,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] LookupItemModel model)
+        public async Task<IActionResult> Post([FromBody] SystemLookupItemModel model)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromBody] LookupItemModel model)
+        public async Task<IActionResult> Put([FromBody] SystemLookupItemModel model)
         {
             try
             {

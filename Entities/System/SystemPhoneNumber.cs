@@ -14,22 +14,22 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Physical phone number.
     /// </summary>
-    public class PhoneNumber
+    public class SystemPhoneNumber
     {
-        public PhoneNumber() { }
+        public SystemPhoneNumber() { }
 
-        public PhoneNumber(PhoneNumberModel model)
+        public SystemPhoneNumber(SystemPhoneNumberModel model)
         {
-            Type = new LookupItemValue(model.Type);
+            Type = new SystemLookupItemValue(model.Type);
             Number = model.Number;
         }
 
-        public static List<PhoneNumber> Construct(List<PhoneNumberModel> model)
+        public static List<SystemPhoneNumber> Construct(List<SystemPhoneNumberModel> model)
         {
-            List<PhoneNumber> phoneNumbers = new List<PhoneNumber>();
-            foreach (PhoneNumberModel phoneNumber in model)
+            List<SystemPhoneNumber> phoneNumbers = new List<SystemPhoneNumber>();
+            foreach (SystemPhoneNumberModel phoneNumber in model)
             {
-                phoneNumbers.Add(new PhoneNumber(phoneNumber));
+                phoneNumbers.Add(new SystemPhoneNumber(phoneNumber));
             }
             return phoneNumbers;
         }
@@ -39,7 +39,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required]
-        public LookupItemValue Type { get; set; }
+        public SystemLookupItemValue Type { get; set; }
 
         /// <summary>
         /// The physical phone number.
