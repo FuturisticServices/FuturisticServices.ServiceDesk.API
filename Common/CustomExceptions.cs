@@ -344,4 +344,18 @@ namespace TangledServices.ServicePortal.API.Common
         public DepartmentNotFoundException(string name) : base(string.Format("Department '{0}' NOT found.", name)) { }
     }
     #endregion Departments
+
+    #region Login
+    [Serializable]
+    public class LoginFailedException : Exception
+    {
+        public LoginFailedException() : base("Login failed.") { }
+    }
+
+    [Serializable]
+    public class UserNotFoundException : Exception
+    {
+        public UserNotFoundException() : base("User not found.") { }
+    }
+    #endregion Login
 }
