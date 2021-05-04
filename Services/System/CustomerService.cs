@@ -158,13 +158,13 @@ namespace TangledServices.ServicePortal.API.Services
             if (containerResponse.StatusCode != HttpStatusCode.Created) throw new AdminContainerNotCreatedException("LookupItems");
 
             var systemLookupItemModels = await _systemLookupItemsService.GetItems();
-            var systemLookupItems = LookupItem.Construct(systemLookupItemModels);
-            foreach (LookupItem systemLookupItem in systemLookupItems)
+            var systemLookupItems = SystemLookupItem.Construct(systemLookupItemModels);
+            foreach (SystemLookupItem systemLookupItem in systemLookupItems)
             {
-                if (systemLookupItem.Clone)
+                if (systemLookupItem.CloneToAdminDatabase)
                 {
-                    var systemLookupItemModel = new LookupItemModel(systemLookupItem);
-                    await _adminLookupItemsService.CreateItem(systemLookupItemModel);
+                    var adminLookupItemModel = new AdminLookupItemModel(systemLookupItem);
+                    await _adminLookupItemsService.CreateItem(adminLookupItemModel);
                 }
             }
 

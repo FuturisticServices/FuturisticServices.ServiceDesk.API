@@ -13,7 +13,7 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface IWebsitesService
     {
-        Task<WebsiteModel> Validate(WebsiteModel model);
+        Task<SystemWebsiteModel> Validate(SystemWebsiteModel model);
     }
 
     public class WebsitesService : SystemBaseService, IWebsitesService
@@ -32,7 +32,7 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Public methods
-        public async Task<WebsiteModel> Validate(WebsiteModel model)
+        public async Task<SystemWebsiteModel> Validate(SystemWebsiteModel model)
         {
             if (model.Url == string.Empty) throw new WebsiteUrlIsRequiredException();
 

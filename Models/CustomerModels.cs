@@ -23,9 +23,9 @@ namespace TangledServices.ServicePortal.API.Models
             Name = entity.Name;
             AdminMoniker = entity.AdminMoniker;
             TenantMonikers = entity.TenantMonikers;
-            Address = new AddressModel(entity.Address);
-            PhoneNumber = new PhoneNumberModel(entity.PhoneNumber);
-            Website = new WebsiteModel(entity.Website);
+            Address = new SystemAddressModel(entity.Address);
+            PhoneNumber = new SystemPhoneNumberModel(entity.PhoneNumber);
+            Website = new SystemWebsiteModel(entity.Website);
             PointOfContact = new PointOfContactModel(entity.PointOfContact);
             Enabled = entity.Enabled;
         }
@@ -63,21 +63,21 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "address", Required = Required.Always)]
         [Required]
-        public AddressModel Address { get; set; }
+        public SystemAddressModel Address { get; set; }
 
         /// <summary>
         /// Primary phone number of the tenant.
         /// </summary>
         [JsonProperty(PropertyName = "phoneNumber", Required = Required.Always)]
         [Required]
-        public PhoneNumberModel PhoneNumber { get; set; }
+        public SystemPhoneNumberModel PhoneNumber { get; set; }
 
         /// <summary>
         /// Company public website URL.
         /// </summary>
         [JsonProperty(PropertyName = "website", Required = Required.Always)]
         [Required]
-        public WebsiteModel Website { get; set; }
+        public SystemWebsiteModel Website { get; set; }
 
         /// <summary>
         /// Tenant point of contact.

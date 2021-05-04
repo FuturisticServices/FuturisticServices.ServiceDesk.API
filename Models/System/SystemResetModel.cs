@@ -28,7 +28,7 @@ namespace TangledServices.ServicePortal.API.Models
 
         [JsonProperty(PropertyName = "lookupItems", Required = Required.Default)]
         [DisplayName("Lookup items")]
-        public List<LookupItemModel> LookupItems { get; set; }
+        public List<SystemLookupItemModel> LookupItems { get; set; }
 
         [JsonProperty(PropertyName = "subscriptions", Required = Required.Default)]
         [DisplayName("Subscriptions")]

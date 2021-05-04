@@ -22,7 +22,7 @@ namespace TangledServices.ServicePortal.API.Entities
             IsExpired = model.IsExpired;
             PromotionCode = model.PromotionCode;
             RenewalOccurrence = model.RenewalOccurrence;
-            RenewalTimeframe = model.RenewalTimeframe == null ? null : new LookupItemValue(model.RenewalTimeframe);
+            RenewalTimeframe = model.RenewalTimeframe == null ? null : new SystemLookupItemValue(model.RenewalTimeframe);
             Highlights = model.Highlights;
         }
 
@@ -36,7 +36,7 @@ namespace TangledServices.ServicePortal.API.Entities
             IsExpired = model.Subscription.IsExpired;
             PromotionCode = model.Subscription.PromotionCode;
             RenewalOccurrence = model.Subscription.RenewalOccurrence;
-            RenewalTimeframe = model.Subscription.RenewalTimeframe == null ? null : new LookupItemValue(model.Subscription.RenewalTimeframe);
+            RenewalTimeframe = model.Subscription.RenewalTimeframe == null ? null : new SystemLookupItemValue(model.Subscription.RenewalTimeframe);
             Highlights = model.Subscription.Highlights;
         }
 
@@ -79,19 +79,12 @@ namespace TangledServices.ServicePortal.API.Entities
         [Required, DisplayName("Renewal occurence")]
         public int RenewalOccurrence { get; set; }
 
-        ///// <summary>
-        ///// Name of the subscription.
-        ///// </summary>
-        //[JsonProperty(PropertyName = "renewalTimeframeId", Required = Required.Default)]
-        //[DisplayName("Renewal timeframe ID")]
-        //public string RenewalTimeframeId { get; set; }
-
         /// <summary>
         /// Name of the subscription.
         /// </summary>
         [JsonProperty(PropertyName = "renewalTimeframe", Required = Required.AllowNull)]
         [DisplayName("Renewal timeframe")]
-        public LookupItemValue RenewalTimeframe { get; set; }
+        public SystemLookupItemValue RenewalTimeframe { get; set; }
 
         /// <summary>
         /// Name of the subscription.

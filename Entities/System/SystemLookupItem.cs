@@ -11,25 +11,25 @@ using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Entities
 {
-    public class LookupItem: BaseEntity
+    public class SystemLookupItem: BaseEntity
     {
-        public LookupItem() { }
+        public SystemLookupItem() { }
 
-        public LookupItem(LookupItemModel model)
+        public SystemLookupItem(SystemLookupItemModel model)
         {
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
             Name = model.Name;
             DisplayAs = model.DisplayAs;
-            Clone = model.Clone;
-            Values = LookupItemValue.ConvertModelToEntity(model.Values);
+            CloneToAdminDatabase = model.CloneToAdminDatabase;
+            Values = SystemLookupItemValue.ConvertModelToEntity(model.Values);
         }
 
-        public static IEnumerable<LookupItem> Construct(IEnumerable<LookupItemModel> models)
+        public static IEnumerable<SystemLookupItem> Construct(IEnumerable<SystemLookupItemModel> models)
         {
-            List<LookupItem> model = new List<LookupItem>();
-            foreach (LookupItemModel lookupItemModel in models)
+            List<SystemLookupItem> model = new List<SystemLookupItem>();
+            foreach (SystemLookupItemModel lookupItemModel in models)
             {
-                model.Add(new LookupItem(lookupItemModel));
+                model.Add(new SystemLookupItem(lookupItemModel));
             }
             return model;
         }
@@ -50,37 +50,37 @@ namespace TangledServices.ServicePortal.API.Entities
         public string DisplayAs { get; set; }
 
         /// <summary>
-        /// Friendly value to use for display.
+        /// Whether to clone this item when a admin database is being created.
         /// </summary>
-        [JsonProperty(PropertyName = "clone", Required = Required.Default)]
-        [DefaultValue(false), DisplayName("Clone")]
-        public bool Clone { get; set; }
+        [JsonProperty(PropertyName = "cloneToAdminDatabase", Required = Required.Default)]
+        [DefaultValue(false), DisplayName("Clone to admin database")]
+        public bool CloneToAdminDatabase { get; set; }
 
         /// <summary>
         /// List of values.
         /// </summary>
         [JsonProperty(PropertyName = "values", Required = Required.Default)]
         [DisplayName("Values")]
-        public IEnumerable<LookupItemValue> Values { get; set; }
+        public IEnumerable<SystemLookupItemValue> Values { get; set; }
     }
 
-    public class LookupItemValue : BaseEntity
+    public class SystemLookupItemValue : BaseEntity
     {
-        public LookupItemValue() { }
+        public SystemLookupItemValue() { }
 
-        public LookupItemValue(LookupItemValueModel model) 
+        public SystemLookupItemValue(SystemLookupItemValueModel model) 
         {
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
             Name = model.Name;
             Abbreviation = model.Abbreviation;
         }
 
-        public static IEnumerable<LookupItemValue> ConvertModelToEntity(IEnumerable<LookupItemValueModel> values)
+        public static IEnumerable<SystemLookupItemValue> ConvertModelToEntity(IEnumerable<SystemLookupItemValueModel> values)
         {
-            List<LookupItemValue> model = new List<LookupItemValue>();
-            foreach (LookupItemValueModel value in values)
+            List<SystemLookupItemValue> model = new List<SystemLookupItemValue>();
+            foreach (SystemLookupItemValueModel value in values)
             {
-                model.Add(new LookupItemValue(value));
+                model.Add(new SystemLookupItemValue(value));
             }
             return model;
         }
@@ -98,12 +98,5 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "abbreviation", Required = Required.Default)]
         [MaxLength(10), DisplayName("Abbreviation")]
         public string Abbreviation { get; set; }
-
-        ///// <summary>
-        ///// List of values.
-        ///// </summary>
-        //[JsonProperty(PropertyName = "items", Required = Required.Default)]
-        //[DisplayName("Items")]
-        //public IEnumerable<LookupItemValue> Items { get; set; }
     }
 }

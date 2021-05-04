@@ -15,12 +15,12 @@ namespace TangledServices.ServicePortal.API.Managers
 {
     public interface IAdminLookupItemsManager
     {
-        Task<IEnumerable<LookupItem>> GetItemsAsync();
-        Task<LookupItem> GetItemAsync(Enums.LookupItems entity);
-        Task<LookupItem> GetItemAsync(string name);
-        Task<LookupItemValue> GetItemAsync(string name, string id);
-        Task<LookupItem> CreateItemAsync(LookupItem entity);
-        Task<LookupItem> UpsertGroupAsync(LookupItem entity);
+        Task<IEnumerable<AdminLookupItem>> GetItemsAsync();
+        Task<AdminLookupItem> GetItemAsync(Enums.LookupItems entity);
+        Task<AdminLookupItem> GetItemAsync(string name);
+        Task<AdminLookupItemValue> GetItemAsync(string name, string id);
+        Task<AdminLookupItem> CreateItemAsync(AdminLookupItem entity);
+        Task<AdminLookupItem> UpsertGroupAsync(AdminLookupItem entity);
     }
 
     public class AdminLookupItemsManager : AdminBaseManager, IAdminLookupItemsManager
@@ -35,51 +35,51 @@ namespace TangledServices.ServicePortal.API.Managers
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
-        public async Task<IEnumerable<LookupItem>> GetItemsAsync()
+        public async Task<IEnumerable<AdminLookupItem>> GetItemsAsync()
         {
-            var query = _container.GetItemLinqQueryable<LookupItem>();
+            var query = _container.GetItemLinqQueryable<AdminLookupItem>();
             var iterator = query.ToFeedIterator();
             var result = await iterator.ReadNextAsync();
             return result;
         }
 
-        public async Task<LookupItem> GetItemAsync(Enums.LookupItems entity)
+        public async Task<AdminLookupItem> GetItemAsync(Enums.LookupItems entity)
         {
-            LookupItem result = await GetItemAsync(entity.GetDescription());
+            AdminLookupItem result = await GetItemAsync(entity.GetDescription());
             return result;
         }
 
-        public async Task<LookupItem> GetItemAsync(string name)
+        public async Task<AdminLookupItem> GetItemAsync(string name)
         {
             name = name.ToTitleCase();
 
-            var query = _container.GetItemLinqQueryable<LookupItem>();
+            var query = _container.GetItemLinqQueryable<AdminLookupItem>();
             var iterator = query.Where(x => x.Name == name).ToFeedIterator();
             var result = await iterator.ReadNextAsync();
             return result.FirstOrDefault();
         }
 
-        public async Task<LookupItemValue> GetItemAsync(string name, string id)
+        public async Task<AdminLookupItemValue> GetItemAsync(string name, string id)
         {
-            LookupItemValue item = null;
+            AdminLookupItemValue item = null;
             var group = await GetItemAsync(name);
             if (group != null) item = await GetItem(group.Values, id);
             return item;
         }
 
-        public async Task<LookupItem> CreateItemAsync(LookupItem entity)
+        public async Task<AdminLookupItem> CreateItemAsync(AdminLookupItem entity)
         {
-            var item = await _container.CreateItemAsync<LookupItem>(entity);
+            var item = await _container.CreateItemAsync<AdminLookupItem>(entity);
             return item;
         }
 
-        public async Task<LookupItem> UpsertGroupAsync(LookupItem entity)
+        public async Task<AdminLookupItem> UpsertGroupAsync(AdminLookupItem entity)
         {
-            var results = await _container.UpsertItemAsync<LookupItem>(entity);
+            var results = await _container.UpsertItemAsync<AdminLookupItem>(entity);
             return results;
         }
 
-        private async Task<LookupItemValue> GetItem(IEnumerable<LookupItemValue> values, string id)
+        private async Task<AdminLookupItemValue> GetItem(IEnumerable<AdminLookupItemValue> values, string id)
         {
             var value = values.SingleOrDefault(x => x.Id == id);
 

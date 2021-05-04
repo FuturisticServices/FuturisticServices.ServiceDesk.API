@@ -8,22 +8,22 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Models
 {
-    public class EmailAddressModel : BaseModel
+    public class SystemEmailAddressModel : BaseModel
     {
-        public EmailAddressModel() { }
+        public SystemEmailAddressModel() { }
 
-        public EmailAddressModel(EmailAddress entity)
+        public SystemEmailAddressModel(SystemEmailAddress entity)
         {
             Address = entity.Address;
-            Type = new LookupItemValueModel(entity.Type);
+            Type = new SystemLookupItemValueModel(entity.Type);
         }
 
-        public static List<EmailAddressModel> Construct(List<EmailAddress> entities)
+        public static List<SystemEmailAddressModel> Construct(List<SystemEmailAddress> entities)
         {
-            List<EmailAddressModel> emailAddresses = new List<EmailAddressModel>();
-            foreach (EmailAddress emailAddress in entities)
+            List<SystemEmailAddressModel> emailAddresses = new List<SystemEmailAddressModel>();
+            foreach (SystemEmailAddress emailAddress in entities)
             {
-                emailAddresses.Add(new EmailAddressModel(emailAddress));
+                emailAddresses.Add(new SystemEmailAddressModel(emailAddress));
             }
             return emailAddresses;
         }
@@ -33,7 +33,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required, DisplayName("Type")]
-        public LookupItemValueModel Type { get; set; }
+        public SystemLookupItemValueModel Type { get; set; }
 
         /// <summary>
         /// Email address.

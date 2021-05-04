@@ -14,22 +14,22 @@ namespace TangledServices.ServicePortal.API.Entities
     /// <summary>
     /// Physical email address.
     /// </summary>
-    public class EmailAddress
+    public class SystemEmailAddress
     {
-        public EmailAddress() { }
+        public SystemEmailAddress() { }
 
-        public EmailAddress(EmailAddressModel model)
+        public SystemEmailAddress(SystemEmailAddressModel model)
         {
-            Type = new LookupItemValue(model.Type);
+            Type = new SystemLookupItemValue(model.Type);
             Address = model.Address;
         }
 
-        public static List<EmailAddress> Construct(List<EmailAddressModel> model)
+        public static List<SystemEmailAddress> Construct(List<SystemEmailAddressModel> model)
         {
-            List<EmailAddress> emailAddresses = new List<EmailAddress>();
-            foreach (EmailAddressModel emailAddress in model)
+            List<SystemEmailAddress> emailAddresses = new List<SystemEmailAddress>();
+            foreach (SystemEmailAddressModel emailAddress in model)
             {
-                emailAddresses.Add(new EmailAddress(emailAddress));
+                emailAddresses.Add(new SystemEmailAddress(emailAddress));
             }
             return emailAddresses;
         }
@@ -39,7 +39,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [Required]
-        public LookupItemValue Type { get; set; }
+        public SystemLookupItemValue Type { get; set; }
 
         /// <summary>
         /// Physical email address.

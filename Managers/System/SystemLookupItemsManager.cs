@@ -13,12 +13,12 @@ namespace TangledServices.ServicePortal.API.Managers
 {
     public interface ISystemLookupItemsManager
     {
-        Task<IEnumerable<LookupItem>> GetItemsAsync();
-        Task<LookupItem> GetItemAsync(Enums.LookupItems group);
-        Task<LookupItem> GetItemAsync(string groupName);
-        Task<LookupItemValue> GetItemAsync(string groupName, string id);
-        Task<LookupItem> CreateItemAsync(LookupItem group);
-        Task<LookupItem> UpsertGroupAsync(LookupItem group);
+        Task<IEnumerable<SystemLookupItem>> GetItemsAsync();
+        Task<SystemLookupItem> GetItemAsync(Enums.LookupItems group);
+        Task<SystemLookupItem> GetItemAsync(string groupName);
+        Task<SystemLookupItemValue> GetItemAsync(string groupName, string id);
+        Task<SystemLookupItem> CreateItemAsync(SystemLookupItem group);
+        Task<SystemLookupItem> UpsertGroupAsync(SystemLookupItem group);
     }
 
     public class SystemLookupItemsManager : SystemBaseManager, ISystemLookupItemsManager
@@ -31,51 +31,51 @@ namespace TangledServices.ServicePortal.API.Managers
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
-        public async Task<IEnumerable<LookupItem>> GetItemsAsync()
+        public async Task<IEnumerable<SystemLookupItem>> GetItemsAsync()
         {
-            var query = _container.GetItemLinqQueryable<LookupItem>();
+            var query = _container.GetItemLinqQueryable<SystemLookupItem>();
             var iterator = query.ToFeedIterator();
             var result = await iterator.ReadNextAsync();
             return result;
         }
 
-        public async Task<LookupItem> GetItemAsync(Enums.LookupItems group)
+        public async Task<SystemLookupItem> GetItemAsync(Enums.LookupItems group)
         {
-            LookupItem result = await GetItemAsync(group.GetDescription());
+            SystemLookupItem result = await GetItemAsync(group.GetDescription());
             return result;
         }
 
-        public async Task<LookupItem> GetItemAsync(string groupName)
+        public async Task<SystemLookupItem> GetItemAsync(string groupName)
         {
             groupName = groupName.ToTitleCase();
 
-            var query = _container.GetItemLinqQueryable<LookupItem>();
+            var query = _container.GetItemLinqQueryable<SystemLookupItem>();
             var iterator = query.Where(x => x.Name == groupName).ToFeedIterator();
             var result = await iterator.ReadNextAsync();
             return result.FirstOrDefault();
         }
 
-        public async Task<LookupItemValue> GetItemAsync(string groupName, string id)
+        public async Task<SystemLookupItemValue> GetItemAsync(string groupName, string id)
         {
-            LookupItemValue item = null;
+            SystemLookupItemValue item = null;
             var group = await GetItemAsync(groupName);
             if (group != null) item = await GetItem(group.Values, id);
             return item;
         }
 
-        public async Task<LookupItem> CreateItemAsync(LookupItem group)
+        public async Task<SystemLookupItem> CreateItemAsync(SystemLookupItem group)
         {
-            var item = await _container.CreateItemAsync<LookupItem>(group);
+            var item = await _container.CreateItemAsync<SystemLookupItem>(group);
             return item;
         }
 
-        public async Task<LookupItem> UpsertGroupAsync(LookupItem group)
+        public async Task<SystemLookupItem> UpsertGroupAsync(SystemLookupItem group)
         {
-            var results = await _container.UpsertItemAsync<LookupItem>(group);
+            var results = await _container.UpsertItemAsync<SystemLookupItem>(group);
             return results;
         }
 
-        private async Task<LookupItemValue> GetItem(IEnumerable<LookupItemValue> values, string id)
+        private async Task<SystemLookupItemValue> GetItem(IEnumerable<SystemLookupItemValue> values, string id)
         {
             var value = values.SingleOrDefault(x => x.Id == id);
 

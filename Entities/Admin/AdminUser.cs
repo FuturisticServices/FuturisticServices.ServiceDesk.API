@@ -28,8 +28,8 @@ namespace TangledServices.ServicePortal.API.Entities
             PasswordExpirationDateTime = model.PasswordExpirationDateTime;
             CloneToATenantDatabase = model.CloneToATenantDatabase;
             Enabled = model.Enabled;
-            EmailAddresses = EmailAddress.Construct(model.EmailAddresses);
-            PhoneNumbers = PhoneNumber.Construct(model.PhoneNumbers);
+            EmailAddresses = SystemEmailAddress.Construct(model.EmailAddresses);
+            PhoneNumbers = SystemPhoneNumber.Construct(model.PhoneNumbers);
             Roles = model.Roles;
         }
 
@@ -130,14 +130,14 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "emailAddresses", Required = Required.Default)]
         [DisplayName("Email Addresses")]
-        public List<EmailAddress> EmailAddresses { get; set; }
+        public List<SystemEmailAddress> EmailAddresses { get; set; }
 
         /// <summary>
         /// Phone numbers associated to the user.
         /// </summary>
         [JsonProperty(PropertyName = "phoneNumbers", Required = Required.Default)]
         [DisplayName("Phone numbers")]
-        public List<PhoneNumber> PhoneNumbers { get; set; }
+        public List<SystemPhoneNumber> PhoneNumbers { get; set; }
 
         /// <summary>
         /// Role(s) the user is authorized to perform.

@@ -16,16 +16,16 @@ namespace TangledServices.ServicePortal.API.Models
             FirstName = entity.FirstName;
             LastName = entity.LastName;
             Title = entity.Title;
-            Address = new AddressModel(entity.Address);
-            PhoneNumber = new PhoneNumberModel(entity.PhoneNumber);
-            EmailAddress = new EmailAddressModel(entity.EmailAddress);
+            Address = new SystemAddressModel(entity.Address);
+            PhoneNumber = new SystemPhoneNumberModel(entity.PhoneNumber);
+            EmailAddress = new SystemEmailAddressModel(entity.EmailAddress);
         }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Title { get; set; }
-        public AddressModel Address { get; set; }
-        public PhoneNumberModel PhoneNumber { get; set; }
-        public EmailAddressModel EmailAddress { get; set; }
+        public SystemAddressModel Address { get; set; }
+        public SystemPhoneNumberModel PhoneNumber { get; set; }
+        public SystemEmailAddressModel EmailAddress { get; set; }
     }
 }

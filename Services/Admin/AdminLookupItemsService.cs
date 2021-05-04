@@ -18,70 +18,70 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface IAdminLookupItemsService
     {
-        Task<LookupItem> GetItem(Enums.LookupItems item);
-        Task<LookupItem> GetItem(string itemName);
-        Task<LookupItemValue> GetItem(string itemName, string id);
-        Task<IEnumerable<LookupItem>> GetItems();
-        Task<LookupItem> CreateItem(LookupItemModel model);
-        Task<LookupItem> UpdateGroup(LookupItem model);
+        Task<AdminLookupItem> GetItem(Enums.LookupItems item);
+        Task<AdminLookupItem> GetItem(string itemName);
+        Task<AdminLookupItemValue> GetItem(string itemName, string id);
+        Task<IEnumerable<AdminLookupItem>> GetItems();
+        Task<AdminLookupItem> CreateItem(AdminLookupItemModel model);
+        Task<AdminLookupItem> UpdateGroup(AdminLookupItem model);
     }
 
     public class AdminLookupItemsService : AdminBaseService, IAdminLookupItemsService
     {
-        private readonly IAdminLookupItemsManager _systemLookupItemManager;
+        private readonly IAdminLookupItemsManager _adminLookupItemManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         public AdminLookupItemsService(IAdminLookupItemsManager systemLookupItemManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
-            _systemLookupItemManager = systemLookupItemManager;
+            _adminLookupItemManager = systemLookupItemManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<LookupItem> GetItem(Enums.LookupItems item)
+        public async Task<AdminLookupItem> GetItem(Enums.LookupItems item)
         {
-            LookupItem results = await _systemLookupItemManager.GetItemAsync(item);
+            AdminLookupItem results = await _adminLookupItemManager.GetItemAsync(item);
             return results;
         }
 
-        public async Task<LookupItem> GetItem(string itemName)
+        public async Task<AdminLookupItem> GetItem(string itemName)
         {
-            LookupItem results = await _systemLookupItemManager.GetItemAsync(itemName);
+            AdminLookupItem results = await _adminLookupItemManager.GetItemAsync(itemName);
             return results;
         }
 
-        public async Task<LookupItemValue> GetItem(string itemName, string id)
+        public async Task<AdminLookupItemValue> GetItem(string itemName, string id)
         {
-            LookupItemValue results = await _systemLookupItemManager.GetItemAsync(itemName, id);
+            AdminLookupItemValue results = await _adminLookupItemManager.GetItemAsync(itemName, id);
             return results;
         }
 
-        public async Task<IEnumerable<LookupItem>> GetItems()
+        public async Task<IEnumerable<AdminLookupItem>> GetItems()
         {
-            var results = await _systemLookupItemManager.GetItemsAsync();
+            var results = await _adminLookupItemManager.GetItemsAsync();
             return results;
         }
 
-        public async Task<LookupItem> CreateItem(LookupItemModel model)
+        public async Task<AdminLookupItem> CreateItem(AdminLookupItemModel model)
         {
             if (await GetItem(model.Name) == null)
             {
-                var entity = new LookupItem(model);
-                LookupItem results = await _systemLookupItemManager.CreateItemAsync(entity);
+                var entity = new AdminLookupItem(model);
+                AdminLookupItem results = await _adminLookupItemManager.CreateItemAsync(entity);
                 return results;
             }
             return null;
         }
 
-        public async Task<LookupItem> UpdateGroup(LookupItem model)
+        public async Task<AdminLookupItem> UpdateGroup(AdminLookupItem model)
         {
-            var group = await _systemLookupItemManager.GetItemAsync(model.Name);
+            var group = await _adminLookupItemManager.GetItemAsync(model.Name);
 
             if (group != null)
             {
                 group.Values.ToList().ForEach(x => x.Id = x.Id != null ? x.Id : Guid.NewGuid().ToString());
-                LookupItem results = await _systemLookupItemManager.UpsertGroupAsync(group);
+                AdminLookupItem results = await _adminLookupItemManager.UpsertGroupAsync(group);
                 return results;
             }
 
@@ -89,13 +89,13 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Private methods
-        private async Task<IEnumerable<LookupItemValue>> ConvertModelToEntity(List<LookupItemValueModel> model)
+        private async Task<IEnumerable<AdminLookupItemValue>> ConvertModelToEntity(List<AdminLookupItemValueModel> model)
         {
-            List<LookupItemValue> lookupItemsEntity = new List<LookupItemValue>();
+            List<AdminLookupItemValue> lookupItemsEntity = new List<AdminLookupItemValue>();
 
-            foreach (LookupItemValueModel lookupItemValueModel in model)
+            foreach (AdminLookupItemValueModel lookupItemValueModel in model)
             {
-                LookupItemValue lookupItemEntity = new LookupItemValue()
+                AdminLookupItemValue lookupItemEntity = new AdminLookupItemValue()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = lookupItemValueModel.Name,

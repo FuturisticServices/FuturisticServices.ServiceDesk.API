@@ -13,7 +13,7 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface IPhoneNumbersService
     {
-        Task<PhoneNumberModel> Validate(PhoneNumberModel model);
+        Task<SystemPhoneNumberModel> Validate(SystemPhoneNumberModel model);
     }
 
     public class PhoneNumbersService : SystemBaseService, IPhoneNumbersService
@@ -32,7 +32,7 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Public methods
-        public async Task<PhoneNumberModel> Validate(PhoneNumberModel model)
+        public async Task<SystemPhoneNumberModel> Validate(SystemPhoneNumberModel model)
         {
             if (model.Number == string.Empty) throw new PhoneNumberIsRequiredException();
 

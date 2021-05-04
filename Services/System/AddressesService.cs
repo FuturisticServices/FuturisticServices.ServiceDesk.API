@@ -11,7 +11,7 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface IAddressesService
     {
-        Task<AddressModel> Validate(AddressModel model);
+        Task<SystemAddressModel> Validate(SystemAddressModel model);
     }
 
     public class AddressesService : SystemBaseService, IAddressesService
@@ -32,7 +32,7 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Public methods
-        public async Task<AddressModel> Validate(AddressModel model)
+        public async Task<SystemAddressModel> Validate(SystemAddressModel model)
         {
             if (model.Type.Id == string.Empty) throw new AddressTypeIdIsRequiredException();
             model.Type = await _systemLookupItemService.GetItem("Address Types", model.Type.Id);
