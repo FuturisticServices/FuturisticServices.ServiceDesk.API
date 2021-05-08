@@ -181,7 +181,7 @@ namespace TangledServices.ServicePortal.API.Services
         {
             if (container.Users == null) return;
 
-            foreach (SystemUserModel model in container.Users)
+            foreach (SystemUserAuthenticateModel model in container.Users)
             {
                 foreach (SystemEmailAddressModel emailAddressModel in model.EmailAddresses)
                 {
@@ -199,7 +199,7 @@ namespace TangledServices.ServicePortal.API.Services
                 model.Password = _hashingService.EncryptString(model.Password);
 
                 //  Create entity from model.
-                SystemUser entity = new SystemUser(model);
+                SystemAuthenticateUser entity = new SystemAuthenticateUser(model);
 
                 //  Persist item.
                 await _systemUsersService.CreateItem(entity);

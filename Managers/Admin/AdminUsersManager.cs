@@ -14,9 +14,9 @@ namespace TangledServices.ServicePortal.API.Managers
 {
     public interface IAdminUsersManager
     {
-        Task<AdminUser> GetItemAsync(string username);
+        Task<AdminAuthenticateUser> GetItemAsync(string username);
         Task<IEnumerable<AdminUser>> GetItemsAsync();
-        Task<AdminUser> CreateItemAsync(AdminUser adminUser);
+        Task<AdminAuthenticateUser> CreateItemAsync(AdminAuthenticateUser adminUser);
     }
 
 public class AdminUsersManager : AdminBaseManager, IAdminUsersManager
@@ -24,9 +24,9 @@ public class AdminUsersManager : AdminBaseManager, IAdminUsersManager
         public AdminUsersManager(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", httpContextAccessor, configuration, webHostEnvironment)
         { }
 
-        public async Task<AdminUser> GetItemAsync(string username)
+        public async Task<AdminAuthenticateUser> GetItemAsync(string username)
         {
-            var query = _container.GetItemLinqQueryable<AdminUser>();
+            var query = _container.GetItemLinqQueryable<AdminAuthenticateUser>();
             var iterator = query.Where(x => x.Username.ToLower() == username.ToLower()).ToFeedIterator();
             var result = await iterator.ReadNextAsync();
             return result.FirstOrDefault();
@@ -40,9 +40,9 @@ public class AdminUsersManager : AdminBaseManager, IAdminUsersManager
             return result;
         }
 
-        public async Task<AdminUser> CreateItemAsync(AdminUser adminUser)
+        public async Task<AdminAuthenticateUser> CreateItemAsync(AdminAuthenticateUser adminAuthenticateUser)
         {
-            var results = await _container.CreateItemAsync<AdminUser>(adminUser, new PartitionKey(adminUser.EmployeeId));
+            var results = await _container.CreateItemAsync<AdminAuthenticateUser>(adminAuthenticateUser, new PartitionKey(adminAuthenticateUser.Username));
             return results;
         }
     }

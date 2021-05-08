@@ -36,7 +36,7 @@ namespace TangledServices.ServicePortal.API.Models
 
         [JsonProperty(PropertyName = "users", Required = Required.Default)]
         [DisplayName("Users")]
-        public List<SystemUserModel> Users { get; set; }
+        public List<SystemUserAuthenticateModel> Users { get; set; }
 
         [JsonProperty(PropertyName = "departments", Required = Required.Default)]
         [DisplayName("Departments")]

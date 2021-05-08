@@ -447,11 +447,6 @@
             Name of the subscription.
             </summary>
         </member>
-        <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.EmployeeID">
-            <summary>
-            Suffix of the user.
-            </summary>
-        </member>
         <member name="P:TangledServices.ServicePortal.API.Entities.SystemUser.NamePrefix">
             <summary>
             Suffix of the user.
@@ -589,11 +584,6 @@
         <member name="P:TangledServices.ServicePortal.API.Entities.TenantSubscription.ServiceTermsAgreementDate">
             <summary>
             Datetime of tenant agreeing to the 'Service Terms' legal agreement
-            </summary>
-        </member>
-        <member name="P:TangledServices.ServicePortal.API.Entities.User.EmployeeID">
-            <summary>
-            Suffix of the user.
             </summary>
         </member>
         <member name="P:TangledServices.ServicePortal.API.Entities.User.NamePrefix">
@@ -818,11 +808,6 @@
         <member name="P:TangledServices.ServicePortal.API.Models.TenantRegistrationModel.BillingInformation">
             <summary>
             Contains information to charge the tenant for subscription feees.
-            </summary>
-        </member>
-        <member name="P:TangledServices.ServicePortal.API.Models.UserModel.EmployeeId">
-            <summary>
-            Unique ID associated to a user by the tenant.
             </summary>
         </member>
         <member name="P:TangledServices.ServicePortal.API.Models.UserModel.NamePrefix">

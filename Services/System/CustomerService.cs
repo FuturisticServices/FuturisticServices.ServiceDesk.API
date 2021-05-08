@@ -169,26 +169,25 @@ namespace TangledServices.ServicePortal.API.Services
             }
 
             //  Create 'Users' container and clone items from system database.            
-            containerResponse = await _adminService.CreateContainer("Users", "/employeeId");
+            containerResponse = await _adminService.CreateContainer("Users", "/username");
             if (containerResponse.StatusCode != HttpStatusCode.Created) throw new AdminContainerNotCreatedException("Users");
 
-            var systemUsers = await _systemUsersService.GetItems();
-            foreach (SystemUser systemUser in systemUsers)
+            var systemAuthenticateUsers = await _systemUsersService.GetItems();
+            foreach (SystemAuthenticateUser systemAuthenticateUser in systemAuthenticateUsers)
             {
-                if (systemUser.CloneToAdminDatabase)
+                if (systemAuthenticateUser.CloneToAdminDatabase)
                 {
-                    AdminUserModel adminUserModel = new AdminUserModel(systemUser);
-                    await _adminUsersService.CreateItem(adminUserModel);
+                    AdminAuthenticateUserModel adminAuthenticateUserModel = new AdminAuthenticateUserModel(systemAuthenticateUser);
+                    await _adminUsersService.CreateItem(adminAuthenticateUserModel);
                 }
             }
 
             //  Create customer 'admin' user.
-            foreach (AdminUserModel adminUserModel in model.Users)
+            foreach (AdminAuthenticateUserModel adminUserModel in model.Users)
             {
-                adminUserModel.EmployeeId = adminUserModel.EmployeeId.Replace("{moniker}", model.AdminMoniker.ToLower());
-                adminUserModel.NameFirst = adminUserModel.EmployeeId.Replace("{moniker}", model.AdminMoniker.ToLower());
-                adminUserModel.Username = adminUserModel.EmployeeId.Replace("{moniker}", model.AdminMoniker.ToLower());
-                adminUserModel.DisplayName = adminUserModel.EmployeeId.Replace("{moniker}", model.AdminMoniker.ToLower());
+                adminUserModel.NameFirst = adminUserModel.NameFirst.Replace("{moniker}", model.AdminMoniker.ToLower());
+                adminUserModel.Username = adminUserModel.Username.Replace("{moniker}", model.AdminMoniker.ToLower());
+                adminUserModel.DisplayName = adminUserModel.DisplayName.Replace("{moniker}", model.AdminMoniker.ToLower());
                 adminUserModel.EmailAddresses.ForEach(x => x.Address = x.Address.Replace("{moniker}", model.AdminMoniker.ToLower()));
                 for (int i = 0; i < adminUserModel.Roles.Count; i++) adminUserModel.Roles[i] = adminUserModel.Roles[i].Replace("{moniker}", model.AdminMoniker.ToUpper());
 

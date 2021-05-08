@@ -16,30 +16,20 @@ namespace TangledServices.ServicePortal.API.Entities
         public SystemUser(SystemUserModel model)
         {
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
-            EmployeeId = model.EmployeeId;
             NamePrefix = model.NamePrefix;
             NameFirst = model.NameFirst;
             NameLast = model.NameLast;
             NameSuffix = model.NameSuffix;
-            Username = model.Username;
-            Password = model.Password;
             DisplayName = model.DisplayName;
             ProfileImageUrl = model.ProfileImageUrl;
             MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = model.PasswordExpirationDateTime;
-            CloneToAdminDatabase = model.CloneToAdminDatabase;
             Enabled = model.Enabled;
             EmailAddresses = SystemEmailAddress.Construct(model.EmailAddresses);
             PhoneNumbers = SystemPhoneNumber.Construct(model.PhoneNumbers);
             Roles = model.Roles;
+            CloneToAdminDatabase = model.CloneToAdminDatabase;
         }
-
-        /// <summary>
-        /// Suffix of the user.
-        /// </summary>
-        [JsonProperty(PropertyName = "employeeId", Required = Required.Always)]
-        [Required, DisplayName("Employee ID")]
-        public string EmployeeId { get; set; }
 
         /// <summary>
         /// Suffix of the user.
@@ -68,20 +58,6 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "nameSuffix", Required = Required.Default)]
         [MinLength(1), MaxLength(10), DisplayName("Suffix")]
         public string NameSuffix { get; set; }
-
-        /// <summary>
-        /// Unique user identifier used for authentication.
-        /// </summary>
-        [JsonProperty(PropertyName = "username", Required = Required.Always)]
-        [Required, MinLength(3), MaxLength(25), DisplayName("Username")]
-        public string Username { get; set; }
-
-        /// <summary>
-        /// Hashed password used for authentication.
-        /// </summary>
-        [JsonProperty(PropertyName = "password", Required = Required.Always)]
-        [Required, MinLength(8), MaxLength(50), DisplayName("Password")]
-        public string Password { get; set; }
 
         /// <summary>
         /// Unique identifier used when displaying the 'user' within the interface.
@@ -115,13 +91,6 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// Controls whether this user can attempt to login.
         /// </summary>
-        [JsonProperty(PropertyName = "cloneToAdminDatabase", Required = Required.Default)]
-        [DefaultValue(false), DisplayName("Clone to admin database")]
-        public bool CloneToAdminDatabase { get; set; }
-
-        /// <summary>
-        /// Controls whether this user can attempt to login.
-        /// </summary>
         [JsonProperty(PropertyName = "enabled", Required = Required.Always)]
         [Required, DefaultValue(true), DisplayName("Enabled")]
         public bool Enabled { get; set; }
@@ -146,5 +115,121 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "roles", Required = Required.Default)]
         [DisplayName("Roles")]
         public List<string> Roles { get; set; }
+
+        /// <summary>
+        /// Controls whether this user can attempt to login.
+        /// </summary>
+        [JsonProperty(PropertyName = "cloneToAdminDatabase", Required = Required.Default)]
+        [DefaultValue(false), DisplayName("Clone to admin database")]
+        public bool CloneToAdminDatabase { get; set; }
+    }
+
+    public class SystemAuthenticateUser : SystemUser
+    {
+        public SystemAuthenticateUser() { }
+
+        public SystemAuthenticateUser(SystemUserAuthenticateModel model)
+        {
+            Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
+            NamePrefix = model.NamePrefix;
+            NameFirst = model.NameFirst;
+            NameLast = model.NameLast;
+            NameSuffix = model.NameSuffix;
+            Username = model.Username;
+            Password = model.Password;
+            DisplayName = model.DisplayName;
+            ProfileImageUrl = model.ProfileImageUrl;
+            MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
+            PasswordExpirationDateTime = model.PasswordExpirationDateTime;
+            CloneToAdminDatabase = model.CloneToAdminDatabase;
+            Enabled = model.Enabled;
+            EmailAddresses = SystemEmailAddress.Construct(model.EmailAddresses);
+            PhoneNumbers = SystemPhoneNumber.Construct(model.PhoneNumbers);
+            Roles = model.Roles;
+        }
+
+        public SystemAuthenticateUser(SystemUserModel model, SystemAuthenticateUser entity)
+        {
+            Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
+            NamePrefix = model.NamePrefix;
+            NameFirst = model.NameFirst;
+            NameLast = model.NameLast;
+            NameSuffix = model.NameSuffix;
+            Username = entity.Username;
+            Password = entity.Password;
+            DisplayName = model.DisplayName;
+            ProfileImageUrl = model.ProfileImageUrl;
+            MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
+            PasswordExpirationDateTime = model.PasswordExpirationDateTime;
+            CloneToAdminDatabase = entity.CloneToAdminDatabase;
+            Enabled = model.Enabled;
+            EmailAddresses = SystemEmailAddress.Construct(model.EmailAddresses);
+            PhoneNumbers = SystemPhoneNumber.Construct(model.PhoneNumbers);
+            Roles = model.Roles;
+        }
+
+        /// <summary>
+        /// Unique user identifier used for authentication.
+        /// </summary>
+        [JsonProperty(PropertyName = "username", Required = Required.Always)]
+        [Required, MinLength(3), MaxLength(25), DisplayName("Username")]
+        public string Username { get; set; }
+
+        /// <summary>
+        /// Hashed password used for authentication.
+        /// </summary>
+        [JsonProperty(PropertyName = "password", Required = Required.Always)]
+        [Required, MinLength(8), MaxLength(50), DisplayName("Password")]
+        public string Password { get; set; }
+    }
+
+    public class SystemUserResetUsername : BaseEntity
+    {
+        public SystemUserResetUsername() { }
+
+        public SystemUserResetUsername(SystemUserResetUsernameModel entity)
+        {
+            ResetUsername = entity.ResetUsername;
+            ConfirmPassword = entity.ConfirmPassword;
+        }
+
+        /// <summary>
+        /// Unique user identifier used for authentication.
+        /// </summary>
+        [JsonProperty(PropertyName = "resetUsername", Required = Required.Always)]
+        [Required, MinLength(3), MaxLength(25), DisplayName("Reset username")]
+        public string ResetUsername { get; set; }
+
+        /// <summary>
+        /// Hashed password used for authentication.
+        /// </summary>
+        [JsonProperty(PropertyName = "confirmPassword", Required = Required.Always)]
+        [Required, DisplayName("Confirm password")]
+        public string ConfirmPassword { get; set; }
+    }
+
+    public class SystemUserResetPassword : BaseEntity
+    {
+        public SystemUserResetPassword() { }
+
+        public SystemUserResetPassword(SystemUserResetPasswordModel entity)
+        {
+            ResetPassword = entity.ResetPassword;
+            ConfirmPassword = entity.ConfirmPassword;
+        }
+
+        /// <summary>
+        /// Unique user identifier used for authentication.
+        /// </summary>
+        [JsonProperty(PropertyName = "resetPassword", Required = Required.Always)]
+        [Required, MinLength(3), MaxLength(25), DisplayName("Reset password")]
+        public string ResetPassword { get; set; }
+
+        /// <summary>
+        /// Hashed password used for authentication.
+        /// </summary>
+        [JsonProperty(PropertyName = "confirmPassword", Required = Required.Always)]
+        [Required, DisplayName("Confirm password")]
+        public string ConfirmPassword { get; set; }
     }
 }

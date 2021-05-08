@@ -66,7 +66,6 @@
   "users": [
     {
       "id": "767b1bae-1b4b-4f5a-addd-d3e78601fc2c",
-      "employeeId": "{moniker}000000",
       "nameFirst": "{moniker}",
       "nameLast": "Admin",
       "username": "{moniker}.admin",

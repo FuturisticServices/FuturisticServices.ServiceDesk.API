@@ -358,4 +358,26 @@ namespace TangledServices.ServicePortal.API.Common
         public UserNotFoundException() : base("User not found.") { }
     }
     #endregion Login
+
+    #region User
+    [Serializable]
+    public class PasswordsDoNotMatchException : Exception
+    {
+        public PasswordsDoNotMatchException() : base("Passwords do not match.") { }
+    }
+
+    [Serializable]
+    public class UsernameAlreadyExistsException : Exception
+    {
+        public UsernameAlreadyExistsException(string username) : base(string.Format("Username '{0}' already exists.", username)) { }
+    }
+    #endregion User
+
+    #region GUID
+    [Serializable]
+    public class GuidNotValidException : Exception
+    {
+        public GuidNotValidException() : base("GUID not valid.") { }
+    }
+    #endregion GUID
 }
