@@ -61,6 +61,12 @@ namespace TangledServices.ServicePortal.API.Common
             awsDynamoDb
         }
 
+        public static class Role
+        {
+            public const string Root = "Root Admin";
+            public const string User = "User";
+        }
+
         public static string GetDescription<T>(this T enumValue) where T : struct, IConvertible
         {
             if (!typeof(T).IsEnum)

@@ -19,13 +19,12 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface IAdminUsersService
     {
-        Task<AdminUser> CreateItem(AdminUserModel model);
+        Task<AdminAuthenticateUser> CreateItem(AdminAuthenticateUserModel model);
         Task<IEnumerable<AdminUser>> GetItems();
         Task<string> GetUsernameAsync(string basicAuthHeader);
         Task<string> GetPasswordAsync(string basicAuthHeader);
         Task<AdminUser> AuthenticateAsync(string basicAuthHeader);
-        Task<string> GenerateJwtToken(AdminUser user);
-        Task<string> GetUniqueEmployeeId(string moniker);
+        Task<string> GenerateJwtToken(AdminAuthenticateUser user);
     }
 
     public class AdminUsersService : AdminBaseService, IAdminUsersService
@@ -44,9 +43,9 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Public methods
-        public Task<AdminUser> CreateItem(AdminUserModel model)
+        public Task<AdminAuthenticateUser> CreateItem(AdminAuthenticateUserModel model)
         {
-            AdminUser entity = new AdminUser(model);
+            AdminAuthenticateUser entity = new AdminAuthenticateUser(model);
             return _adminUsersManager.CreateItemAsync(entity);
         }
 
@@ -99,27 +98,10 @@ namespace TangledServices.ServicePortal.API.Services
 
             return null;
         }
-
-        public async Task<string> GetUniqueEmployeeId(string moniker)
-        {
-            var users = await _adminUsersManager.GetItemsAsync();
-            string employeeId = string.Empty;
-            bool employeeIdNotUnique = true;
-
-            do
-            {
-                string randomNumber = Helpers.GetRandomNumber();
-                employeeId = string.Format("{0}{1}", moniker, randomNumber);
-                employeeIdNotUnique = users.Any(x => x.EmployeeId.ToLower() == employeeId.ToLower());
-
-            } while (employeeIdNotUnique);
-
-            return employeeId;
-        }
         #endregion Public methods
 
         #region Private methods
-        public async Task<string> GenerateJwtToken(AdminUser user)
+        public async Task<string> GenerateJwtToken(AdminAuthenticateUser user)
         {
             string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value; //  from appsettings.json
 

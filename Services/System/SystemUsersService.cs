@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,13 +21,17 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface ISystemUsersService
     {
-        Task CreateItem(SystemUser systemUser);
+        Task CreateItem(SystemAuthenticateUser systemUser);
+        Task<SystemUserModel> UpdateItem(SystemUserModel model);
         Task<IEnumerable<SystemUser>> GetItems();
+        Task<SystemAuthenticateUser> GetItem(Guid id);
         Task<string> GetUsernameAsync(string basicAuthHeader);
         Task<string> GetPasswordAsync(string basicAuthHeader);
-        Task<SystemUserModel> AuthenticateAsync(string basicAuthHeader);
-        Task<string> GenerateJwtToken(SystemUser user);
-        Task<string> GetUniqueEmployeeId(string moniker);
+        Task<SystemUserAuthenticateModel> AuthenticateAsync(string basicAuthHeader);
+        Task ResetUsername(SystemUserResetUsernameModel model);
+        Task ResetPassword(SystemUserResetPasswordModel model);
+        Task<string> GenerateJwtToken(SystemAuthenticateUser user);
+        Task DeleteItem(Guid id);
     }
 
     public class SystemUsersService : SystemBaseService, ISystemUsersService
@@ -45,14 +50,36 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Public methods
-        public async Task CreateItem(SystemUser systemUser)
+        public async Task CreateItem(SystemAuthenticateUser systemUser)
         {
             await _systemUsersManager.CreateItemAsync(systemUser);
         }
 
-        public Task<IEnumerable<SystemUser>> GetItems()
+        public async Task<SystemUserModel> UpdateItem(SystemUserModel model)
         {
-            return _systemUsersManager.GetItemsAsync();
+            var systemAuthenticateUser = await GetItem(new Guid(model.Id));
+            if (systemAuthenticateUser == null) throw new UserNotFoundException();
+
+            systemAuthenticateUser = new SystemAuthenticateUser(model, systemAuthenticateUser);
+            await _systemUsersManager.UpsertItemAsync(systemAuthenticateUser);
+            return new SystemUserModel(systemAuthenticateUser);
+        }
+
+        public async Task<IEnumerable<SystemUser>> GetItems()
+        {
+            return await _systemUsersManager.GetItemsAsync();
+        }
+
+        public async Task<SystemAuthenticateUser> GetItem(string username)
+        {
+            var results = await _systemUsersManager.GetItemAsync(username);
+            return results;
+        }
+
+        public async Task<SystemAuthenticateUser> GetItem(Guid id)
+        {
+            var results = await _systemUsersManager.GetItemAsync(id);
+            return results;
         }
 
         public async Task<string> GetUsernameAsync(string basicAuthHeader)
@@ -79,7 +106,7 @@ namespace TangledServices.ServicePortal.API.Services
             return string.Empty;
         }
 
-        public async Task<SystemUserModel> AuthenticateAsync(string basicAuthHeader)
+        public async Task<SystemUserAuthenticateModel> AuthenticateAsync(string basicAuthHeader)
         {
             if (!basicAuthHeader.ToString().StartsWith("Basic")) throw new Exception("'Basic' header not found.");
 
@@ -92,31 +119,40 @@ namespace TangledServices.ServicePortal.API.Services
             if (user == null) throw new UserNotFoundException();
 
             var password = _hashingService.DecryptString(user.Password);
-            if (loginPassword == password) return new SystemUserModel(user);
+            if (loginPassword == password) return new SystemUserAuthenticateModel(user);
 
             return null;
         }
 
-        public async Task<string> GetUniqueEmployeeId(string moniker)
+        public async Task ResetUsername(SystemUserResetUsernameModel model)
         {
-            var users = await _systemUsersManager.GetItemsAsync();
-            string employeeId = string.Empty;
-            bool employeeIdNotUnique = true;
+            var systemUser = await GetItem(new Guid(model.Id));
+            if (systemUser == null) throw new UserNotFoundException();
 
-            do
-            {
-                string randomNumber = Helpers.GetRandomNumber();
-                employeeId = string.Format("{0}{1}", moniker, randomNumber);
-                employeeIdNotUnique = users.Any(x => x.EmployeeId.ToLower() == employeeId.ToLower());
+            if (string.Compare(_hashingService.DecryptString(systemUser.Password), model.ConfirmPassword, false) != 0) throw new PasswordsDoNotMatchException();
+            if (await UsernameAlreadyExists(model.ResetUsername)) throw new UsernameAlreadyExistsException(model.ResetUsername);
 
-            } while (employeeIdNotUnique);
+            //  TODO: All or nothing!
+            //  NoSQL databases do not support updating the partition key value of an existing item. Need to delete entire document and create new.
+            //  Transactions using the same partition key (but this process uses 2 different partition keys) ~ https://devblogs.microsoft.com/cosmosdb/introducing-transactionalbatch-in-the-net-sdk/
+            await _systemUsersManager.DeleteItemAsync(systemUser);
 
-            return employeeId;
+            systemUser.Username = model.ResetUsername;
+            await CreateItem(systemUser);
         }
-        #endregion Public methods
 
-        #region Private methods
-        public async Task<string> GenerateJwtToken(SystemUser user)
+        public async Task ResetPassword(SystemUserResetPasswordModel model)
+        {
+            var systemUser = await GetItem(new Guid(model.Id));
+            if (systemUser == null) throw new UserNotFoundException();
+
+            if (string.Compare(_hashingService.DecryptString(systemUser.Password), model.ConfirmPassword, false) != 0) throw new PasswordsDoNotMatchException();
+
+            systemUser.Password = _hashingService.EncryptString(model.ResetPassword);
+            systemUser = await _systemUsersManager.UpsertItemAsync(systemUser);
+        }
+
+        public async Task<string> GenerateJwtToken(SystemAuthenticateUser user)
         {
             string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value; //  from appsettings.json
 
@@ -136,13 +172,30 @@ namespace TangledServices.ServicePortal.API.Services
             var jwtSecurityToken = new JwtSecurityToken(
                 issuer: "tangled.services",
                 audience: "tangled.services",
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(365),
                 claims: authClaims,
                 signingCredentials: credentials
             );
             var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
             return token;
+        }
+
+        public async Task DeleteItem(Guid id)
+        {
+            var systemUser = await GetItem(id);
+            if (systemUser == null) throw new UserNotFoundException();
+
+            systemUser.Enabled = false;
+            await _systemUsersManager.UpsertItemAsync(systemUser);
+        }
+        #endregion Public methods
+
+        #region Private methods
+        private async Task<bool> UsernameAlreadyExists(string username)
+        {
+            var systemUser = await GetItem(username);
+            return systemUser != null;
         }
         #endregion Private methods
     }

@@ -535,11 +535,10 @@
             },
             {
               "name": "Users",
-              "partitionKey": "employeeId",
+              "partitionKey": "username",
               "users": [
                 {
                   "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
-                  "employeeId": "tang000000",
                   "nameFirst": "Root",
                   "nameLast": "Admin",
                   "username": "root.admin",
