@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 
 using Newtonsoft.Json;
 
+using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Models;
 using TangledServices.ServicePortal.API.Services;
@@ -37,6 +38,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         }
 
         [HttpGet("encrypt")]
+        [AllowAnonymous]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -64,6 +66,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("decrypt")]
+        [AllowAnonymous]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

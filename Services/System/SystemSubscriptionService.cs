@@ -11,7 +11,7 @@ using TangledServices.ServicePortal.API.Managers;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface ISystemSubscriptionsService
+    public interface ISystemSubscriptionService
     {
         Task<bool> Found(string subscriptionId);
         Task<bool> NotFound(string subscriptionId);
@@ -23,13 +23,13 @@ namespace TangledServices.ServicePortal.API.Services
         Task<SubscriptionModel> Validate(SubscriptionModel model);
     }
 
-    public class SystemSubscriptionsService : SystemBaseService, ISystemSubscriptionsService
+    public class SystemSubscriptionService : SystemBaseService, ISystemSubscriptionService
     {
         private readonly ISystemSubscriptionsManager _systemSubscriptionsManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemSubscriptionsService(ISystemSubscriptionsManager systemSubscriptionManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemSubscriptionService(ISystemSubscriptionsManager systemSubscriptionManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemSubscriptionsManager = systemSubscriptionManager;
             _configuration = configuration;

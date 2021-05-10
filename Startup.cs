@@ -171,29 +171,30 @@ namespace TangledServices.ServicePortal.API
             //  System services.
             services.AddSingleton<ISystemService, SystemService>();
             services.AddSingleton<ICustomerService, CustomerService>();
-            services.AddSingleton<ISystemLookupItemsService, SystemLookupItemsService>();
-            services.AddSingleton<ISystemSubscriptionsService, SystemSubscriptionsService>();
-            services.AddSingleton<ISystemUsersService, SystemUsersService>();
+            services.AddSingleton<ISystemLookupItemService, SystemLookupItemService>();
+            services.AddSingleton<ISystemSubscriptionService, SystemSubscriptionService>();
+            services.AddSingleton<ISystemUserService, SystemUserService>();
             services.AddSingleton<ICompanyService, CompanyService>();
-            services.AddSingleton<IPointOfContactService, PointOfContactService>();
-            services.AddSingleton<IAddressesService, AddressesService>();
-            services.AddSingleton<IPhoneNumbersService, PhoneNumbersService>();
-            services.AddSingleton<IEmailAddressService, EmailAddressService>();
-            services.AddSingleton<IWebsitesService, WebsitesService>();
+            services.AddSingleton<ISystemPointOfContactService, SystemPointOfContactService>();
+            services.AddSingleton<ISystemAddressService, SystemAddressService>();
+            services.AddSingleton<ISystemPhoneNumberService, SystemPhoneNumberService>();
+            services.AddSingleton<ISystemEmailAddressService, SystemEmailAddressService>();
+            services.AddSingleton<ISystemWebsiteService, SystemWebsiteService>();
             services.AddSingleton<IBillingInformationService, BillingInformationService>();
-            services.AddSingleton<ISystemDepartmentsService, SystemDepartmentsService>();
+            services.AddSingleton<ISystemDepartmentService, SystemDepartmentService>();
 
             //  System managers.
             services.AddSingleton<ISystemManager, SystemManager>();
-            services.AddSingleton<ISystemLookupItemsManager, SystemLookupItemsManager>();
+            services.AddSingleton<ISystemLookupItemManager, SystemLookupItemManager>();
             services.AddSingleton<ISystemSubscriptionsManager, SystemSubscriptionsManager>();
-            services.AddSingleton<ISystemUsersManager, SystemUsersManager>();
+            services.AddSingleton<ISystemUserManager, SystemUserManager>();
             services.AddSingleton<ICustomersManager, CustomersManager>();
             services.AddSingleton<ISystemDepartmentsManager, SystemDepartmentsManager>();
 
             //  Admin services.
             services.AddSingleton<IAdminService, AdminService>();
-            services.AddSingleton<IAdminLookupItemsService, AdminLookupItemsService>();
+            services.AddSingleton<IAdminEmailAddressService, AdminEmailAddressService>();
+            services.AddSingleton<IAdminPhoneNumberService, AdminPhoneNumberService>();
             services.AddSingleton<IAdminLookupItemsService, AdminLookupItemsService>();
             services.AddSingleton<IAdminUsersService, AdminUsersService>();
 

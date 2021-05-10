@@ -38,36 +38,40 @@ namespace TangledServices.ServicePortal.API.Services
     public class CustomerService : SystemBaseService, ICustomerService
     {
         #region Members
-        private readonly IHashingService _hashingService;
         private readonly IAdminService _adminService;
-        private readonly ISystemService _systemService;
         private readonly IAdminLookupItemsService _adminLookupItemsService;
         private readonly IAdminUsersService _adminUsersService;
-        private readonly IAddressesService _addressesService;
-        private readonly IPhoneNumbersService _phoneNumbersService;
-        private readonly IWebsitesService _websitesService;
-        private readonly IPointOfContactService _pointOfContactService;
-        private readonly ISystemLookupItemsService _systemLookupItemsService;
-        private readonly ISystemUsersService _systemUsersService;
+        private readonly IAdminEmailAddressService _adminEmailAddressService;
+        private readonly IAdminPhoneNumberService _adminPhoneNumberService;
+        private readonly ISystemService _systemService;        
+        private readonly ISystemAddressService _systemAddressService;
+        private readonly ISystemPhoneNumberService _systemPhoneNumberService;
+        private readonly ISystemWebsiteService _systemWebsiteService;
+        private readonly ISystemPointOfContactService _systemPointOfContactService;
+        private readonly ISystemLookupItemService _systemLookupItemService;
+        private readonly ISystemUserService _systemUserService;
         private readonly ICustomersManager _customersManager;
+        private readonly IHashingService _hashingService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
         #endregion Members
 
         #region Constructors
-        public CustomerService(IHashingService hashingService, IAdminService adminService, ISystemService systemService, IAdminLookupItemsService adminLookupItemsService, IAdminUsersService adminUsersService, IAddressesService addressesService, IPhoneNumbersService phoneNumbersService, IWebsitesService websitesService, IPointOfContactService pointOfContactService, ISystemLookupItemsService systemLookupItemsService, ISystemUsersService systemUsersService, ICustomersManager customersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public CustomerService(IAdminService adminService, ISystemService systemService, IAdminLookupItemsService adminLookupItemsService, IAdminEmailAddressService adminEmailAddressService, IAdminPhoneNumberService adminPhoneNumberService, IAdminUsersService adminUsersService, ISystemAddressService systemAddressService, ISystemPhoneNumberService systemPhoneNumberService, ISystemWebsiteService systemWebsiteService, ISystemPointOfContactService systemPointOfContactService, ISystemLookupItemService systemLookupItemService, ISystemUserService systemUserService, ICustomersManager customersManager, IHashingService hashingService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _hashingService = hashingService;
             _systemService = systemService;
             _adminService = adminService;
             _adminLookupItemsService = adminLookupItemsService;
+            _adminEmailAddressService = adminEmailAddressService;
+            _adminPhoneNumberService = adminPhoneNumberService;
             _adminUsersService = adminUsersService;
-            _addressesService = addressesService;
-            _phoneNumbersService = phoneNumbersService;
-            _websitesService = websitesService;
-            _pointOfContactService = pointOfContactService;
-            _systemLookupItemsService = systemLookupItemsService;
-            _systemUsersService = systemUsersService;
+            _systemAddressService = systemAddressService;
+            _systemPhoneNumberService = systemPhoneNumberService;
+            _systemWebsiteService = systemWebsiteService;
+            _systemPointOfContactService = systemPointOfContactService;
+            _systemLookupItemService = systemLookupItemService;
+            _systemUserService = systemUserService;
             _customersManager = customersManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -149,7 +153,7 @@ namespace TangledServices.ServicePortal.API.Services
             //  Create customer item in system database.
             customerEntity = await _customersManager.CreateItemAsync(customerEntity);
 
-            //  Create customer administrative database.
+            //  Create customer admin database.
             DatabaseResponse databaseResponse = await _adminService.CreateDatabase();
             if (databaseResponse.StatusCode != HttpStatusCode.Created) throw new SystemDatabaseNotCreatedException();
 
@@ -157,7 +161,7 @@ namespace TangledServices.ServicePortal.API.Services
             var containerResponse = await _adminService.CreateContainer("LookupItems", "/name");
             if (containerResponse.StatusCode != HttpStatusCode.Created) throw new AdminContainerNotCreatedException("LookupItems");
 
-            var systemLookupItemModels = await _systemLookupItemsService.GetItems();
+            var systemLookupItemModels = await _systemLookupItemService.GetItems();
             var systemLookupItems = SystemLookupItem.Construct(systemLookupItemModels);
             foreach (SystemLookupItem systemLookupItem in systemLookupItems)
             {
@@ -172,7 +176,7 @@ namespace TangledServices.ServicePortal.API.Services
             containerResponse = await _adminService.CreateContainer("Users", "/username");
             if (containerResponse.StatusCode != HttpStatusCode.Created) throw new AdminContainerNotCreatedException("Users");
 
-            var systemAuthenticateUsers = await _systemUsersService.GetItems();
+            var systemAuthenticateUsers = await _systemUserService.GetItems();
             foreach (SystemAuthenticateUser systemAuthenticateUser in systemAuthenticateUsers)
             {
                 if (systemAuthenticateUser.CloneToAdminDatabase)
@@ -185,15 +189,17 @@ namespace TangledServices.ServicePortal.API.Services
             //  Create customer 'admin' user.
             foreach (AdminAuthenticateUserModel adminUserModel in model.Users)
             {
-                adminUserModel.NameFirst = adminUserModel.NameFirst.Replace("{moniker}", model.AdminMoniker.ToLower());
+                adminUserModel.NameFirst = adminUserModel.NameFirst.Replace("{moniker}", model.AdminMoniker.ToUpper());
                 adminUserModel.Username = adminUserModel.Username.Replace("{moniker}", model.AdminMoniker.ToLower());
-                adminUserModel.DisplayName = adminUserModel.DisplayName.Replace("{moniker}", model.AdminMoniker.ToLower());
+                adminUserModel.DisplayAs = adminUserModel.DisplayAs.Replace("{moniker}", model.AdminMoniker.ToUpper());
                 adminUserModel.EmailAddresses.ForEach(x => x.Address = x.Address.Replace("{moniker}", model.AdminMoniker.ToLower()));
-                for (int i = 0; i < adminUserModel.Roles.Count; i++) adminUserModel.Roles[i] = adminUserModel.Roles[i].Replace("{moniker}", model.AdminMoniker.ToUpper());
+                //for (int i = 0; i < adminUserModel.Roles.Count; i++) adminUserModel.Roles[i] = adminUserModel.Roles[i].Replace("{moniker}", model.AdminMoniker.ToUpper());
 
                 var randomWord = await Helpers.GetRandomWordFromWordsApi();
                 var joPassword = JObject.Parse(randomWord)["word"];
                 adminUserModel.Password = _hashingService.EncryptString(joPassword.ToString());
+                adminUserModel.EmailAddresses = await _adminEmailAddressService.Validate(adminUserModel.EmailAddresses);
+                adminUserModel.PhoneNumbers = await _adminPhoneNumberService.Validate(adminUserModel.PhoneNumbers);
 
                 await _adminUsersService.CreateItem(adminUserModel);
             }
@@ -261,10 +267,10 @@ namespace TangledServices.ServicePortal.API.Services
             model.Name = Helpers.ToTitleCase(model.Name);
             model.LegalName = model.Name;
 
-            model.Address = await _addressesService.Validate(model.Address);
-            model.PhoneNumber = await _phoneNumbersService.Validate(model.PhoneNumber);
-            model.Website = await _websitesService.Validate(model.Website);
-            model.PointOfContact = await _pointOfContactService.Validate(model.PointOfContact);
+            model.Address = await _systemAddressService.Validate(model.Address);
+            model.PhoneNumber = await _systemPhoneNumberService.Validate(model.PhoneNumber);
+            model.Website = await _systemWebsiteService.Validate(model.Website);
+            model.PointOfContact = await _systemPointOfContactService.Validate(model.PointOfContact);
 
             return model;
         }

@@ -18,15 +18,15 @@ namespace TangledServices.ServicePortal.API.Services
 
     public class CompanyService : SystemBaseService, ICompanyService
     {
-        private readonly IAddressesService _addressService;
-        private readonly IPhoneNumbersService _phoheNumberService;
-        private readonly IWebsitesService _websiteService;
+        private readonly ISystemAddressService _addressService;
+        private readonly ISystemPhoneNumberService _phoheNumberService;
+        private readonly ISystemWebsiteService _websiteService;
         private readonly IHashingService _hashingService;
-        private readonly ISystemUsersManager _systemUsersManager;
+        private readonly ISystemUserManager _systemUsersManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CompanyService(IAddressesService addressService, IPhoneNumbersService phoneNumberService, IWebsitesService websiteService, IHashingService hashingService, ISystemUsersManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public CompanyService(ISystemAddressService addressService, ISystemPhoneNumberService phoneNumberService, ISystemWebsiteService websiteService, IHashingService hashingService, ISystemUserManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _addressService = addressService;
             _phoheNumberService = phoneNumberService;

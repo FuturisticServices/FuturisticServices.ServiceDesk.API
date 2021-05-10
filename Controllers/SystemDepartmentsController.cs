@@ -20,13 +20,13 @@ namespace TangledServices.ServicePortal.API.Controllers
     [ApiController]
     public class SystemDepartmentsController : BaseController
     {
-        private readonly ISystemDepartmentsService _systemDepartmentsService;
+        private readonly ISystemDepartmentService _systemDepartmentService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemDepartmentsController(ISystemDepartmentsService systemDepartmentsService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public SystemDepartmentsController(ISystemDepartmentService systemDepartmentService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            _systemDepartmentsService = systemDepartmentsService;
+            _systemDepartmentService = systemDepartmentService;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -39,7 +39,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         {
             try
             {
-                var model = await _systemDepartmentsService.GetItems(flattenHierarchy, includeDeletedItems);
+                var model = await _systemDepartmentService.GetItems(flattenHierarchy, includeDeletedItems);
 
                 responseModels.Add("systemDepartments", model);
                 response = new ApiResponse(HttpStatusCode.OK, "System departments retrieved successfully", responseModels);
@@ -60,7 +60,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         {
             try
             {
-                var model = await _systemDepartmentsService.GetItem(id, includeSubDepartments, includeDeletedItems);
+                var model = await _systemDepartmentService.GetItem(id, includeSubDepartments, includeDeletedItems);
 
                 responseModels.Add("systemDepartment", model);
                 response = new ApiResponse(HttpStatusCode.OK, string.Format("System department '{0}' retrieved successfully.", model.Name), responseModels);
@@ -81,7 +81,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         {
             try
             {
-                model = await _systemDepartmentsService.UpdateItem(model);
+                model = await _systemDepartmentService.UpdateItem(model);
 
                 responseModels.Add("systemDepartment", model);
                 response = new ApiResponse(HttpStatusCode.OK, string.Format("System department '{0}' updated successfully.", model.Name), responseModels);
@@ -102,7 +102,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         {
             try
             {
-                await _systemDepartmentsService.Delete(id);
+                await _systemDepartmentService.Delete(id);
 
                 response = new ApiResponse(HttpStatusCode.OK, string.Format("System department with ID '{0}' deleted successfully.", id), responseModels);
                 return Ok(new { response });

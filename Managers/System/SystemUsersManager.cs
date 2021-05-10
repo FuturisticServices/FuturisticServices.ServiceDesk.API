@@ -14,25 +14,25 @@ using TangledServices.ServicePortal.API.Managers;
 
 namespace TangledServices.ServicePortal.API.Managers
 {
-    public interface ISystemUsersManager
+    public interface ISystemUserManager
     {
         Task<SystemAuthenticateUser> GetItemAsync(string username);
         Task<SystemAuthenticateUser> GetItemAsync(Guid id);
         Task<IEnumerable<SystemAuthenticateUser>> GetItemsAsync();
         //Task<SystemUser> CreateItemAsync(SystemUser user);
-        Task<SystemUser> UpsertItemAsync(SystemUser user);
+        //Task<SystemUser> UpsertItemAsync(SystemUser user);
         Task<SystemAuthenticateUser> CreateItemAsync(SystemAuthenticateUser user);
         Task<SystemAuthenticateUser> UpsertItemAsync(SystemAuthenticateUser user);
         //Task<TransactionalBatchResponse> ResetUsernameAsync(string sourceUserName, SystemAuthenticateUser user);
         Task DeleteItemAsync(SystemAuthenticateUser user);
 }
 
-public class SystemUsersManager : SystemBaseManager, ISystemUsersManager
+public class SystemUserManager : SystemBaseManager, ISystemUserManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public SystemUsersManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", configuration, webHostEnvironment)
+        public SystemUserManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("Users", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -62,17 +62,11 @@ public class SystemUsersManager : SystemBaseManager, ISystemUsersManager
             return result.FirstOrDefault();
         }
 
-        //public async Task<SystemUser> CreateItemAsync(SystemUser user)
+        //public async Task<SystemUser> UpsertItemAsync(SystemUser user)
         //{
-        //    var results = await _container.CreateItemAsync<SystemUser>(user, new PartitionKey(user.Username));
+        //    var results = await _container.UpsertItemAsync<SystemUser>(user);
         //    return results;
         //}
-
-        public async Task<SystemUser> UpsertItemAsync(SystemUser user)
-        {
-            var results = await _container.UpsertItemAsync<SystemUser>(user);
-            return results;
-        }
 
         public async Task<SystemAuthenticateUser> CreateItemAsync(SystemAuthenticateUser user)
         {

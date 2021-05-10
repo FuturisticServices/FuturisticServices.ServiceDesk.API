@@ -543,7 +543,7 @@
                   "nameLast": "Admin",
                   "username": "root.admin",
                   "password": "password",
-                  "displayName": "Tangled Root Admin",
+                  "displayAs": "Tangled Root Admin",
                   "mustChangePasswordAtNextLogin": false,
                   "enabled": true,
                   "emailAddresses": [

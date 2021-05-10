@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
+using TangledServices.ServicePortal.API.Common;
 using TangledServices.ServicePortal.API.Entities;
 using TangledServices.ServicePortal.API.Extensions;
 using TangledServices.ServicePortal.API.Models;
@@ -19,23 +20,33 @@ namespace TangledServices.ServicePortal.API.Services
 {
     public interface IAdminUsersService
     {
-        Task<AdminAuthenticateUser> CreateItem(AdminAuthenticateUserModel model);
+        Task CreateItem(AdminAuthenticateUserModel model);
+        Task<AdminAuthenticateUser> GetItem(string username);
+        Task<AdminAuthenticateUser> GetItem(Guid id);
         Task<IEnumerable<AdminUser>> GetItems();
         Task<string> GetUsernameAsync(string basicAuthHeader);
         Task<string> GetPasswordAsync(string basicAuthHeader);
-        Task<AdminUser> AuthenticateAsync(string basicAuthHeader);
+        Task<AdminAuthenticateUserModel> AuthenticateAsync(string basicAuthHeader);
         Task<string> GenerateJwtToken(AdminAuthenticateUser user);
+        Task<AdminUserModel> UpdateItem(AdminUserModel model);
+        Task ResetUsername(AdminUserResetUsernameModel model);
+        Task ResetPassword(AdminUserResetPasswordModel model);
+        Task DeleteItem(Guid id);
     }
 
     public class AdminUsersService : AdminBaseService, IAdminUsersService
     {
-        private readonly IHashingService _hashingService;
+        private readonly IAdminPhoneNumberService _adminPhoneNumberService;
+        private readonly IAdminEmailAddressService _adminEmailAddressService;
         private readonly IAdminUsersManager _adminUsersManager;
+        private readonly IHashingService _hashingService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AdminUsersService(IHashingService hashingService, IAdminUsersManager adminUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public AdminUsersService(IAdminPhoneNumberService adminPhoneNumberService, IAdminEmailAddressService adminEmailAddressService, IAdminUsersManager adminUsersManager, IHashingService hashingService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
+            _adminPhoneNumberService = adminPhoneNumberService;
+            _adminEmailAddressService = adminEmailAddressService;
             _hashingService = hashingService;
             _adminUsersManager = adminUsersManager;
             _configuration = configuration;
@@ -43,10 +54,13 @@ namespace TangledServices.ServicePortal.API.Services
         }
 
         #region Public methods
-        public Task<AdminAuthenticateUser> CreateItem(AdminAuthenticateUserModel model)
+        public async Task CreateItem(AdminAuthenticateUserModel model)
         {
-            AdminAuthenticateUser entity = new AdminAuthenticateUser(model);
-            return _adminUsersManager.CreateItemAsync(entity);
+            model = await Validate(model);
+
+            var adminUser = new AdminAuthenticateUser(model);
+            adminUser.Password = _hashingService.EncryptString(model.Password);
+            await _adminUsersManager.CreateItemAsync(adminUser);
         }
 
         public Task<IEnumerable<AdminUser>> GetItems()
@@ -78,29 +92,38 @@ namespace TangledServices.ServicePortal.API.Services
             return string.Empty;
         }
 
-        public async Task<AdminUser> AuthenticateAsync(string basicAuthHeader)
+        public async Task<AdminAuthenticateUserModel> AuthenticateAsync(string basicAuthHeader)
         {
-            if (basicAuthHeader.ToString().StartsWith("Basic"))
-            {
-                var loginUsername = await GetUsernameAsync(basicAuthHeader);
-                var loginPassword = await GetPasswordAsync(basicAuthHeader);
+            if (!basicAuthHeader.ToString().StartsWith("Basic")) throw new Exception("'Basic' header not found.");
 
-                if (!string.IsNullOrEmpty(loginUsername) && !string.IsNullOrEmpty(loginPassword))
-                {
-                    var user = await _adminUsersManager.GetItemAsync(loginUsername);
-                    if (user != null)
-                    {
-                        var password = _hashingService.DecryptString(user.Password);
-                        if (loginPassword == password) return user;
-                    }
-                }
-            }
+            var loginUsername = await GetUsernameAsync(basicAuthHeader);
+            var loginPassword = await GetPasswordAsync(basicAuthHeader);
+
+            if (string.IsNullOrEmpty(loginUsername) || string.IsNullOrEmpty(loginPassword)) throw new LoginFailedException();
+
+            var user = await _adminUsersManager.GetItemAsync(loginUsername);
+            if (user == null) throw new UserNotFoundException();
+
+            var password = _hashingService.DecryptString(user.Password);
+            if (loginPassword == password) return new AdminAuthenticateUserModel(user);
 
             return null;
         }
-        #endregion Public methods
 
-        #region Private methods
+        public async Task<AdminAuthenticateUser> GetItem(string username)
+        {
+            var results = await _adminUsersManager.GetItemAsync(username);
+            return results;
+        }
+
+        public async Task<AdminAuthenticateUser> GetItem(Guid id)
+        {
+            var results = await _adminUsersManager.GetItemAsync(id);
+            if (results == null) throw new UserNotFoundException();
+
+            return results;
+        }
+
         public async Task<string> GenerateJwtToken(AdminAuthenticateUser user)
         {
             string jwtSecretKey = _configuration.GetSection("jwt:secretKey").Value; //  from appsettings.json
@@ -128,6 +151,76 @@ namespace TangledServices.ServicePortal.API.Services
             var token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
             return token;
+        }
+
+        public async Task<AdminUserModel> UpdateItem(AdminUserModel model)
+        {
+            var adminAuthenticateUser = await GetItem(new Guid(model.Id));
+            if (adminAuthenticateUser == null) throw new UserNotFoundException();
+
+            adminAuthenticateUser = new AdminAuthenticateUser(model, adminAuthenticateUser);
+            await _adminUsersManager.UpsertItemAsync(adminAuthenticateUser);
+            return new AdminUserModel(adminAuthenticateUser);
+        }
+
+        public async Task ResetUsername(AdminUserResetUsernameModel model)
+        {
+            var adminUser = await GetItem(new Guid(model.Id));
+            if (adminUser == null) throw new UserNotFoundException();
+
+            if (string.Compare(_hashingService.DecryptString(adminUser.Password), model.ConfirmPassword, false) != 0) throw new PasswordsDoNotMatchException();
+            if (await UsernameAlreadyExists(model.ResetUsername)) throw new UsernameAlreadyExistsException(model.ResetUsername);
+
+            //  TODO: All or nothing!
+            //  NoSQL databases do not support updating the partition key value of an existing item. Need to delete entire document and create new.
+            //  Transactions using the same partition key (but this process uses 2 different partition keys) ~ https://devblogs.microsoft.com/cosmosdb/introducing-transactionalbatch-in-the-net-sdk/
+            await _adminUsersManager.DeleteItemAsync(adminUser);
+
+            adminUser.Username = model.ResetUsername;
+
+            var adminAuthenticateUser = new AdminAuthenticateUserModel(adminUser);
+            await CreateItem(adminAuthenticateUser);
+        }
+
+        public async Task ResetPassword(AdminUserResetPasswordModel model)
+        {
+            var adminUser = await GetItem(new Guid(model.Id));
+            if (adminUser == null) throw new UserNotFoundException();
+
+            if (string.Compare(_hashingService.DecryptString(adminUser.Password), model.ConfirmPassword, false) != 0) throw new PasswordsDoNotMatchException();
+
+            adminUser.Password = _hashingService.EncryptString(model.ResetPassword);
+            adminUser = await _adminUsersManager.UpsertItemAsync(adminUser);
+        }
+
+        public async Task DeleteItem(Guid id)
+        {
+            var systemUser = await GetItem(id);
+            if (systemUser == null) throw new UserNotFoundException();
+
+            systemUser.Enabled = false;
+            await _adminUsersManager.UpsertItemAsync(systemUser);
+        }
+        #endregion Public methods
+
+        #region Private methods
+        private async Task<bool> UsernameAlreadyExists(string username)
+        {
+            var systemUser = await GetItem(username);
+            return systemUser != null;
+        }
+
+        private async Task<AdminAuthenticateUserModel> Validate(AdminAuthenticateUserModel model)
+        {
+            if (await UsernameAlreadyExists(model.Username)) throw new UsernameAlreadyExistsException(model.Username);
+
+            model.NameFirst = Helpers.ToTitleCase(model.NameFirst);
+            model.NameLast = Helpers.ToTitleCase(model.NameLast);
+
+            model.EmailAddresses = await _adminEmailAddressService.Validate(model.EmailAddresses);
+            model.PhoneNumbers = await _adminPhoneNumberService.Validate(model.PhoneNumbers);
+
+            return model;
         }
         #endregion Private methods
     }

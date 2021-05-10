@@ -13,27 +13,47 @@ using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface ISystemLookupItemsService
+    public interface ISystemLookupItemService
     {
-        Task<SystemLookupItemModel> GetItem(Enums.LookupItems item);
+        Task<SystemLookupItemModel> GetItem(Guid id);
         Task<SystemLookupItemModel> GetItem(string name);
+        Task<SystemLookupItemModel> GetItem(Enums.LookupItems item);
+        Task<SystemLookupItemModel> GetItem(Enums.LookupItems item, string id);
         Task<SystemLookupItemValueModel> GetItem(string name, string id);
         Task<IEnumerable<SystemLookupItemModel>> GetItems();
         Task<SystemLookupItemModel> CreateItem(SystemLookupItemModel model);
         Task<SystemLookupItemModel> Update(SystemLookupItemModel model);
     }
 
-    public class SystemLookupItemsService : SystemBaseService, ISystemLookupItemsService
+    public class SystemLookupItemService : SystemBaseService, ISystemLookupItemService
     {
-        private readonly ISystemLookupItemsManager _systemLookupItemManager;
+        private readonly ISystemLookupItemManager _systemLookupItemManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupItemsService(ISystemLookupItemsManager systemLookupItemManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemLookupItemService(ISystemLookupItemManager systemLookupItemManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemLookupItemManager = systemLookupItemManager;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
+        }
+
+        public async Task<SystemLookupItemModel> GetItem(Guid id)
+        {
+            var group = await _systemLookupItemManager.GetItemAsync(id);
+            if (group == null) throw new SystemLookupItemNotFoundException();
+
+            var model = new SystemLookupItemModel(group);
+            return model;
+        }
+
+        public async Task<SystemLookupItemModel> GetItem(string name)
+        {
+            var group = await _systemLookupItemManager.GetItemAsync(name);
+            if (group == null) throw new SystemLookupItemNotFoundException(name);
+
+            var model = new SystemLookupItemModel(group);
+            return model;
         }
 
         public async Task<SystemLookupItemModel> GetItem(Enums.LookupItems item)
@@ -43,10 +63,11 @@ namespace TangledServices.ServicePortal.API.Services
             return model;
         }
 
-        public async Task<SystemLookupItemModel> GetItem(string name)
+        public async Task<SystemLookupItemModel> GetItem(Enums.LookupItems item, string id)
         {
-            var entity = await _systemLookupItemManager.GetItemAsync(name);
-            return entity == null ? null : new SystemLookupItemModel(entity);
+            SystemLookupItem entity = await _systemLookupItemManager.GetItemAsync(item, id);
+            var model = new SystemLookupItemModel(entity);
+            return model;
         }
 
         public async Task<SystemLookupItemValueModel> GetItem(string name, string id)
@@ -59,6 +80,8 @@ namespace TangledServices.ServicePortal.API.Services
         public async Task<IEnumerable<SystemLookupItemModel>> GetItems()
         {
             var entitites = await _systemLookupItemManager.GetItemsAsync();
+            if (!entitites.Any()) throw new SystemLookupItemsNotFoundException();
+
             var model = SystemLookupItemModel.Construct(entitites);
             return model;
         }

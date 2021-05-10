@@ -11,22 +11,22 @@ using TangledServices.ServicePortal.API.Managers;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface IPointOfContactService
+    public interface ISystemPointOfContactService
     {
         Task<PointOfContactModel> Validate(PointOfContactModel model);
     }
 
-    public class PointOfContactService : SystemBaseService, IPointOfContactService
+    public class SystemPointOfContactService : SystemBaseService, ISystemPointOfContactService
     {
-        private readonly IAddressesService _addressService;
-        private readonly IPhoneNumbersService _phoheNumberService;
-        private readonly IEmailAddressService _emailAddressService;
+        private readonly ISystemAddressService _addressService;
+        private readonly ISystemPhoneNumberService _phoheNumberService;
+        private readonly ISystemEmailAddressService _emailAddressService;
         private readonly IHashingService _hashingService;
-        private readonly ISystemUsersManager _systemUsersManager;
+        private readonly ISystemUserManager _systemUsersManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PointOfContactService(IAddressesService addressService, IPhoneNumbersService phoneNumberService, IEmailAddressService emailAddressService, IHashingService hashingService, ISystemUsersManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemPointOfContactService(ISystemAddressService addressService, ISystemPhoneNumberService phoneNumberService, ISystemEmailAddressService emailAddressService, IHashingService hashingService, ISystemUserManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _addressService = addressService;
             _phoheNumberService = phoneNumberService;

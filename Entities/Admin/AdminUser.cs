@@ -16,16 +16,17 @@ namespace TangledServices.ServicePortal.API.Entities
         public AdminUser(AdminUserModel model)
         {
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
+            NamePrefix = model.NamePrefix;
             NameFirst = model.NameFirst;
             NameLast = model.NameLast;
             NameSuffix = model.NameSuffix;
-            DisplayName = model.DisplayName;
+            DisplayAs = model.DisplayAs;
             ProfileImageUrl = model.ProfileImageUrl;
             MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = model.PasswordExpirationDateTime;
             Enabled = model.Enabled;
-            EmailAddresses = SystemEmailAddress.Construct(model.EmailAddresses);
-            PhoneNumbers = SystemPhoneNumber.Construct(model.PhoneNumbers);
+            EmailAddresses = AdminEmailAddress.Construct(model.EmailAddresses);
+            PhoneNumbers = AdminPhoneNumber.Construct(model.PhoneNumbers);
             Roles = model.Roles;
         }
 
@@ -60,9 +61,9 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// Unique identifier used when displaying the 'user' within the interface.
         /// </summary>
-        [JsonProperty(PropertyName = "displayName", Required = Required.Default)]
-        [MinLength(3), MaxLength(25), DisplayName("DisplayName")]
-        public string DisplayName { get; set; }
+        [JsonProperty(PropertyName = "displayAs", Required = Required.Default)]
+        [MinLength(3), MaxLength(25), DisplayName("Display as")]
+        public string DisplayAs { get; set; }
 
         /// <summary>
         /// URL of the user's profile image.
@@ -84,7 +85,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "passwordExpirationDateTime", Required = Required.Default)]
         [DisplayName("Password expiration date and time")]
-        public DateTime? PasswordExpirationDateTime { get; set; }
+        public string PasswordExpirationDateTime { get; set; }
 
         /// <summary>
         /// Controls whether this user can attempt to login.
@@ -98,14 +99,14 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "emailAddresses", Required = Required.Default)]
         [DisplayName("Email Addresses")]
-        public List<SystemEmailAddress> EmailAddresses { get; set; }
+        public List<AdminEmailAddress> EmailAddresses { get; set; }
 
         /// <summary>
         /// Phone numbers associated to the user.
         /// </summary>
         [JsonProperty(PropertyName = "phoneNumbers", Required = Required.Default)]
         [DisplayName("Phone numbers")]
-        public List<SystemPhoneNumber> PhoneNumbers { get; set; }
+        public List<AdminPhoneNumber> PhoneNumbers { get; set; }
 
         /// <summary>
         /// Role(s) the user is authorized to perform.
@@ -122,19 +123,38 @@ namespace TangledServices.ServicePortal.API.Entities
         public AdminAuthenticateUser(AdminAuthenticateUserModel model)
         {
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
+            NamePrefix = model.NamePrefix;
             NameFirst = model.NameFirst;
             NameLast = model.NameLast;
             NameSuffix = model.NameSuffix;
             Username = model.Username;
             Password = model.Password;
-            DisplayName = model.DisplayName;
+            DisplayAs = model.DisplayAs;
             ProfileImageUrl = model.ProfileImageUrl;
             MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = model.PasswordExpirationDateTime;
-            CloneToATenantDatabase = model.CloneToATenantDatabase;
             Enabled = model.Enabled;
-            EmailAddresses = SystemEmailAddress.Construct(model.EmailAddresses);
-            PhoneNumbers = SystemPhoneNumber.Construct(model.PhoneNumbers);
+            EmailAddresses = AdminEmailAddress.Construct(model.EmailAddresses);
+            PhoneNumbers = AdminPhoneNumber.Construct(model.PhoneNumbers);
+            Roles = model.Roles;
+        }
+
+        public AdminAuthenticateUser(AdminUserModel model, AdminAuthenticateUser entity)
+        {
+            Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
+            NamePrefix = model.NamePrefix;
+            NameFirst = model.NameFirst;
+            NameLast = model.NameLast;
+            NameSuffix = model.NameSuffix;
+            Username = entity.Username;
+            Password = entity.Password;
+            DisplayAs = model.DisplayAs;
+            ProfileImageUrl = model.ProfileImageUrl;
+            MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
+            PasswordExpirationDateTime = model.PasswordExpirationDateTime;
+            Enabled = model.Enabled;
+            EmailAddresses = AdminEmailAddress.Construct(model.EmailAddresses);
+            PhoneNumbers = AdminPhoneNumber.Construct(model.PhoneNumbers);
             Roles = model.Roles;
         }
 
@@ -151,12 +171,55 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "password", Required = Required.Always)]
         [Required, MinLength(8), MaxLength(50), DisplayName("Password")]
         public string Password { get; set; }
+    }
+
+    public class AdminUserResetUsername : BaseEntity
+    {
+        public AdminUserResetUsername() { }
+
+        public AdminUserResetUsername(AdminUserResetUsernameModel entity)
+        {
+            ResetUsername = entity.ResetUsername;
+            ConfirmPassword = entity.ConfirmPassword;
+        }
 
         /// <summary>
-        /// Controls whether this user can attempt to login.
+        /// Unique user identifier used for authentication.
         /// </summary>
-        [JsonProperty(PropertyName = "cloneToATenantDatabase", Required = Required.Default)]
-        [DefaultValue(false), DisplayName("Clone to tenant database")]
-        public bool CloneToATenantDatabase { get; set; }
+        [JsonProperty(PropertyName = "resetUsername", Required = Required.Always)]
+        [Required, MinLength(3), MaxLength(25), DisplayName("Reset username")]
+        public string ResetUsername { get; set; }
+
+        /// <summary>
+        /// Hashed password used for authentication.
+        /// </summary>
+        [JsonProperty(PropertyName = "confirmPassword", Required = Required.Always)]
+        [Required, DisplayName("Confirm password")]
+        public string ConfirmPassword { get; set; }
+    }
+
+    public class AdminUserResetPassword : BaseEntity
+    {
+        public AdminUserResetPassword() { }
+
+        public AdminUserResetPassword(AdminUserResetPasswordModel entity)
+        {
+            ResetPassword = entity.ResetPassword;
+            ConfirmPassword = entity.ConfirmPassword;
+        }
+
+        /// <summary>
+        /// Unique user identifier used for authentication.
+        /// </summary>
+        [JsonProperty(PropertyName = "resetPassword", Required = Required.Always)]
+        [Required, MinLength(3), MaxLength(25), DisplayName("Reset password")]
+        public string ResetPassword { get; set; }
+
+        /// <summary>
+        /// Hashed password used for authentication.
+        /// </summary>
+        [JsonProperty(PropertyName = "confirmPassword", Required = Required.Always)]
+        [Required, DisplayName("Confirm password")]
+        public string ConfirmPassword { get; set; }
     }
 }

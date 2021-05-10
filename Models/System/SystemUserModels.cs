@@ -15,11 +15,12 @@ namespace TangledServices.ServicePortal.API.Models
 
         public SystemUserModel(SystemUser entity)
         {
+            Id = entity.Id;
             NamePrefix = entity.NamePrefix;
             NameFirst = entity.NameFirst;
             NameLast = entity.NameLast;
             NameSuffix = entity.NameSuffix;
-            DisplayName = entity.DisplayName;
+            DisplayAs = entity.DisplayAs;
             ProfileImageUrl = entity.ProfileImageUrl;
             MustChangePasswordAtNextLogin = entity.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = entity.PasswordExpirationDateTime;
@@ -61,9 +62,9 @@ namespace TangledServices.ServicePortal.API.Models
         /// <summary>
         /// Unique identifier used when displaying the 'user' within the interface.
         /// </summary>
-        [JsonProperty(PropertyName = "displayName", Required = Required.Default)]
-        [MinLength(3), MaxLength(25), DisplayName("DisplayName")]
-        public string DisplayName { get; set; }
+        [JsonProperty(PropertyName = "displayAs", Required = Required.Default)]
+        [MinLength(3), MaxLength(25), DisplayName("Display as")]
+        public string DisplayAs { get; set; }
 
         /// <summary>
         /// URL of the user's profile image.
@@ -85,7 +86,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "passwordExpirationDateTime", Required = Required.Default)]
         [DisplayName("Password expiration date and time")]
-        public DateTime? PasswordExpirationDateTime { get; set; }
+        public string PasswordExpirationDateTime { get; set; }
 
         /// <summary>
         /// Controls whether this user can attempt to login.
@@ -129,13 +130,14 @@ namespace TangledServices.ServicePortal.API.Models
 
         public SystemUserAuthenticateModel(SystemAuthenticateUser entity)
         {
+            Id = entity.Id;
             NamePrefix = entity.NamePrefix;
             NameFirst = entity.NameFirst;
             NameLast = entity.NameLast;
             NameSuffix = entity.NameSuffix;
             Username = entity.Username;
             Password = entity.Password;
-            DisplayName = entity.DisplayName;
+            DisplayAs = entity.DisplayAs;
             ProfileImageUrl = entity.ProfileImageUrl;
             MustChangePasswordAtNextLogin = entity.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = entity.PasswordExpirationDateTime;

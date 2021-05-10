@@ -67,10 +67,10 @@
     {
       "id": "767b1bae-1b4b-4f5a-addd-d3e78601fc2c",
       "nameFirst": "{moniker}",
-      "nameLast": "Admin",
-      "username": "{moniker}.admin",
+      "nameLast": "Root",
+      "username": "{moniker}.root",
       "password": "password",
-      "displayName": "{moniker} Admin",
+      "displayAs": "{moniker} root",
       "mustChangePasswordAtNextLogin": false,
       "cloneToTenantDatabase": true,
       "enabled": true,
@@ -79,7 +79,7 @@
           "type": {
             "id": "36e8cc77-805b-4214-a53d-fdb4be9aa75c"
           },
-          "address": "{moniker}.admin@tangled.services"
+          "address": "{moniker}.root@tangled.services"
         }
       ],
       "phoneNumbers": [
@@ -90,7 +90,7 @@
           "number": "1112223333"
         }
       ],
-      "roles": ["{moniker} Admin"]
+      "roles": ["Admin Root"]
     }
   ]
 }

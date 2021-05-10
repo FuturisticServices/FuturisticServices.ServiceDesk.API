@@ -19,14 +19,14 @@ namespace TangledServices.ServicePortal.API.Services
 
     public class BillingInformationService : SystemBaseService, IBillingInformationService
     {
-        private readonly IAddressesService _addressService;
-        private readonly ISystemLookupItemsService _systemLookupItemService;
+        private readonly ISystemAddressService _addressService;
+        private readonly ISystemLookupItemService _systemLookupItemService;
         private readonly IHashingService _hashingService;
-        private readonly ISystemUsersManager _systemUsersManager;
+        private readonly ISystemUserManager _systemUsersManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public BillingInformationService(IAddressesService addressService, ISystemLookupItemsService systemLookupItemService, IHashingService hashingService, ISystemUsersManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public BillingInformationService(ISystemAddressService addressService, ISystemLookupItemService systemLookupItemService, IHashingService hashingService, ISystemUserManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _addressService = addressService;
             _systemLookupItemService = systemLookupItemService;

@@ -21,8 +21,8 @@ namespace TangledServices.ServicePortal.API.Models
         /// Associated LookupItem.WebsiteTypes.
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
-        [Required, DisplayName("Type")]
-        public SystemLookupItemValue Type { get; set; }
+        [Required, DataType(DataType.Url), DisplayName("Type")]
+        public SystemLookupItemValueModel Type { get; set; }
 
         [Required, DataType(DataType.Url)]
         public string Url { get; set; }

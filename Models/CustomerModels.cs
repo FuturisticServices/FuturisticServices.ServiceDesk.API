@@ -91,7 +91,7 @@ namespace TangledServices.ServicePortal.API.Models
         /// </summary>
         [JsonProperty(PropertyName = "users", Required = Required.Default)]
         [DisplayName("Users")]
-        public List<AdminUserModel> Users { get; set; }
+        public List<AdminAuthenticateUserModel> Users { get; set; }
 
         /// <summary>
         /// Determines if the tenant account is currently active.

@@ -13,6 +13,8 @@ namespace TangledServices.ServicePortal.API.Common
     {
         public SystemLookupItemNotFoundException() { }
 
+        public SystemLookupItemNotFoundException(Guid id) : base(string.Format("LookupItem with ID '{0}' not found in system database.", id.ToString())) { }
+
         public SystemLookupItemNotFoundException(string name) : base(string.Format("LookupItem '{0}' not found in system database.", name)) { }
     }
 
