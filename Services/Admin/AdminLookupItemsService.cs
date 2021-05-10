@@ -20,7 +20,7 @@ namespace TangledServices.ServicePortal.API.Services
     {
         Task<AdminLookupItem> GetItem(Enums.LookupItems item);
         Task<AdminLookupItem> GetItem(string itemName);
-        Task<AdminLookupItemValue> GetItem(string itemName, string id);
+        Task<AdminLookupItemValueModel> GetItem(string name, string id);
         Task<IEnumerable<AdminLookupItem>> GetItems();
         Task<AdminLookupItem> CreateItem(AdminLookupItemModel model);
         Task<AdminLookupItem> UpdateGroup(AdminLookupItem model);
@@ -51,10 +51,11 @@ namespace TangledServices.ServicePortal.API.Services
             return results;
         }
 
-        public async Task<AdminLookupItemValue> GetItem(string itemName, string id)
+        public async Task<AdminLookupItemValueModel> GetItem(string name, string id)
         {
-            AdminLookupItemValue results = await _adminLookupItemManager.GetItemAsync(itemName, id);
-            return results;
+            AdminLookupItemValue entity = await _adminLookupItemManager.GetItemAsync(name, id);
+            var model = new AdminLookupItemValueModel(entity);
+            return model;
         }
 
         public async Task<IEnumerable<AdminLookupItem>> GetItems()

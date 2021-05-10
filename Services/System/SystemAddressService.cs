@@ -9,20 +9,20 @@ using TangledServices.ServicePortal.API.Managers;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface IAddressesService
+    public interface ISystemAddressService
     {
         Task<SystemAddressModel> Validate(SystemAddressModel model);
     }
 
-    public class AddressesService : SystemBaseService, IAddressesService
+    public class SystemAddressService : SystemBaseService, ISystemAddressService
     {
-        private readonly ISystemLookupItemsService _systemLookupItemService;
+        private readonly ISystemLookupItemService _systemLookupItemService;
         private readonly IHashingService _hashingService;
-        private readonly ISystemUsersManager _systemUsersManager;
+        private readonly ISystemUserManager _systemUsersManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AddressesService(ISystemLookupItemsService systemLookupItemService, IHashingService hashingService, ISystemUsersManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemAddressService(ISystemLookupItemService systemLookupItemService, IHashingService hashingService, ISystemUserManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemLookupItemService = systemLookupItemService;
             _hashingService = hashingService;

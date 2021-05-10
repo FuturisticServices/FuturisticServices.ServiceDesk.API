@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,22 +12,25 @@ using TangledServices.ServicePortal.API.Entities;
 
 namespace TangledServices.ServicePortal.API.Managers
 {
-    public interface ISystemLookupItemsManager
+    public interface ISystemLookupItemManager
     {
         Task<IEnumerable<SystemLookupItem>> GetItemsAsync();
-        Task<SystemLookupItem> GetItemAsync(Enums.LookupItems group);
+
+        Task<SystemLookupItem> GetItemAsync(Guid id);
         Task<SystemLookupItem> GetItemAsync(string groupName);
+        Task<SystemLookupItem> GetItemAsync(Enums.LookupItems group);
+        Task<SystemLookupItem> GetItemAsync(Enums.LookupItems group, string id);
         Task<SystemLookupItemValue> GetItemAsync(string groupName, string id);
         Task<SystemLookupItem> CreateItemAsync(SystemLookupItem group);
         Task<SystemLookupItem> UpsertGroupAsync(SystemLookupItem group);
     }
 
-    public class SystemLookupItemsManager : SystemBaseManager, ISystemLookupItemsManager
+    public class SystemLookupItemManager : SystemBaseManager, ISystemLookupItemManager
     {
         internal IConfiguration _configuration;
         internal IWebHostEnvironment _webHostEnvironment;
 
-        public SystemLookupItemsManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", configuration, webHostEnvironment)
+        public SystemLookupItemManager(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base("LookupItems", configuration, webHostEnvironment)
         {
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
@@ -39,10 +43,12 @@ namespace TangledServices.ServicePortal.API.Managers
             return result;
         }
 
-        public async Task<SystemLookupItem> GetItemAsync(Enums.LookupItems group)
+        public async Task<SystemLookupItem> GetItemAsync(Guid id)
         {
-            SystemLookupItem result = await GetItemAsync(group.GetDescription());
-            return result;
+            var query = _container.GetItemLinqQueryable<SystemLookupItem>();
+            var iterator = query.Where(x => x.Id == id.ToString()).ToFeedIterator();
+            var result = await iterator.ReadNextAsync();
+            return result.FirstOrDefault();
         }
 
         public async Task<SystemLookupItem> GetItemAsync(string groupName)
@@ -53,6 +59,19 @@ namespace TangledServices.ServicePortal.API.Managers
             var iterator = query.Where(x => x.Name == groupName).ToFeedIterator();
             var result = await iterator.ReadNextAsync();
             return result.FirstOrDefault();
+        }
+
+        public async Task<SystemLookupItem> GetItemAsync(Enums.LookupItems group)
+        {
+            SystemLookupItem result = await GetItemAsync(group.GetDescription());
+            return result;
+        }
+
+        public async Task<SystemLookupItem> GetItemAsync(Enums.LookupItems group, string id)
+        {
+            SystemLookupItem result = await GetItemAsync(group.GetDescription());
+            result.Values.SingleOrDefault(x => x.Id == id);
+            return result;
         }
 
         public async Task<SystemLookupItemValue> GetItemAsync(string groupName, string id)

@@ -17,7 +17,7 @@ using TangledServices.ServicePortal.API.Managers;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface ISystemDepartmentsService
+    public interface ISystemDepartmentService
     {
         Task<IEnumerable<SystemDepartmentModel>> GetItems(bool flattenHierarchy = false, bool includeDeletedItems = false);
         Task<SystemDepartmentModel> GetItem(string id, bool includeSubDepartments = true, bool includeDeletedItems = false);
@@ -26,14 +26,14 @@ namespace TangledServices.ServicePortal.API.Services
         Task Delete(string id);
     }
 
-    public class SystemDepartmentsService : SystemBaseService, ISystemDepartmentsService
+    public class SystemDepartmentService : SystemBaseService, ISystemDepartmentService
     {
         private readonly ISystemDepartmentsManager _systemDepartmentsManager;
         private readonly IHashingService _hashingService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemDepartmentsService(ISystemDepartmentsManager systemDepartmentsManager, IHashingService hashingService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemDepartmentService(ISystemDepartmentsManager systemDepartmentsManager, IHashingService hashingService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemDepartmentsManager = systemDepartmentsManager;
             _hashingService = hashingService;

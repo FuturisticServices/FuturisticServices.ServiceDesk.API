@@ -30,7 +30,7 @@
           "nameLast": "Admin",
           "username": "tangled.admin",
           "password": "password",
-          "displayName": "Tangled Admin",
+          "displayAs": "Tangled Admin",
           "mustChangePasswordAtNextLogin": false,
           "enabled": true,
           "emailAddresses": [

@@ -553,11 +553,11 @@
           "users": [
             {
               "id": "f5c741cf-e8d3-48e4-b87b-cc8b08ce86ef",
-              "nameFirst": "Root",
-              "nameLast": "Admin",
-              "username": "root.admin",
+              "nameFirst": "System",
+              "nameLast": "Root",
+              "username": "system.root",
               "password": "password",
-              "displayName": "Root Admin",
+              "displayAs": "System Root",
               "mustChangePasswordAtNextLogin": false,
               "cloneToAdminDatabase": true,
               "enabled": true,
@@ -566,7 +566,7 @@
                   "type": {
                     "id": "36e8cc77-805b-4214-a53d-fdb4be9aa75c"
                   },
-                  "address": "root.admin@tangled.services"
+                  "address": "system.root@tangled.services"
                 }
               ],
               "phoneNumbers": [
@@ -577,7 +577,7 @@
                   "number": "1112223333"
                 }
               ],
-              "roles": ["Root Admin"]
+              "roles": ["System Root"]
             }
           ]
         },

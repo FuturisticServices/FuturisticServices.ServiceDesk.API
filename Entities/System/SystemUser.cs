@@ -20,7 +20,7 @@ namespace TangledServices.ServicePortal.API.Entities
             NameFirst = model.NameFirst;
             NameLast = model.NameLast;
             NameSuffix = model.NameSuffix;
-            DisplayName = model.DisplayName;
+            DisplayAs = model.DisplayAs;
             ProfileImageUrl = model.ProfileImageUrl;
             MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = model.PasswordExpirationDateTime;
@@ -62,9 +62,9 @@ namespace TangledServices.ServicePortal.API.Entities
         /// <summary>
         /// Unique identifier used when displaying the 'user' within the interface.
         /// </summary>
-        [JsonProperty(PropertyName = "displayName", Required = Required.Default)]
-        [MinLength(3), MaxLength(25), DisplayName("DisplayName")]
-        public string DisplayName { get; set; }
+        [JsonProperty(PropertyName = "displayAs", Required = Required.Default)]
+        [MinLength(3), MaxLength(25), DisplayName("Display as")]
+        public string DisplayAs { get; set; }
 
         /// <summary>
         /// URL of the user's profile image.
@@ -86,7 +86,7 @@ namespace TangledServices.ServicePortal.API.Entities
         /// </summary>
         [JsonProperty(PropertyName = "passwordExpirationDateTime", Required = Required.Default)]
         [DisplayName("Password expiration date and time")]
-        public DateTime? PasswordExpirationDateTime { get; set; }
+        public string PasswordExpirationDateTime { get; set; }
 
         /// <summary>
         /// Controls whether this user can attempt to login.
@@ -137,10 +137,10 @@ namespace TangledServices.ServicePortal.API.Entities
             NameSuffix = model.NameSuffix;
             Username = model.Username;
             Password = model.Password;
-            DisplayName = model.DisplayName;
+            DisplayAs = model.DisplayAs;
             ProfileImageUrl = model.ProfileImageUrl;
             MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
-            PasswordExpirationDateTime = model.PasswordExpirationDateTime;
+            PasswordExpirationDateTime = string.IsNullOrEmpty(model.PasswordExpirationDateTime) ? DateTime.Now.AddMonths(3).ToShortDateString() : model.PasswordExpirationDateTime;
             CloneToAdminDatabase = model.CloneToAdminDatabase;
             Enabled = model.Enabled;
             EmailAddresses = SystemEmailAddress.Construct(model.EmailAddresses);
@@ -157,7 +157,7 @@ namespace TangledServices.ServicePortal.API.Entities
             NameSuffix = model.NameSuffix;
             Username = entity.Username;
             Password = entity.Password;
-            DisplayName = model.DisplayName;
+            DisplayAs = model.DisplayAs;
             ProfileImageUrl = model.ProfileImageUrl;
             MustChangePasswordAtNextLogin = model.MustChangePasswordAtNextLogin;
             PasswordExpirationDateTime = model.PasswordExpirationDateTime;

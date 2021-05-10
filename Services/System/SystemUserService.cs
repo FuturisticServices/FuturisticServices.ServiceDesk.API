@@ -19,9 +19,9 @@ using TangledServices.ServicePortal.API.Models;
 
 namespace TangledServices.ServicePortal.API.Services
 {
-    public interface ISystemUsersService
+    public interface ISystemUserService
     {
-        Task CreateItem(SystemAuthenticateUser systemUser);
+        Task CreateItem(SystemUserAuthenticateModel systemUser);
         Task<SystemUserModel> UpdateItem(SystemUserModel model);
         Task<IEnumerable<SystemUser>> GetItems();
         Task<SystemAuthenticateUser> GetItem(Guid id);
@@ -34,24 +34,32 @@ namespace TangledServices.ServicePortal.API.Services
         Task DeleteItem(Guid id);
     }
 
-    public class SystemUsersService : SystemBaseService, ISystemUsersService
+    public class SystemUserService : SystemBaseService, ISystemUserService
     {
+        private readonly ISystemEmailAddressService _systemEmailAddressService;
+        private readonly ISystemPhoneNumberService _systemPhoneNumberService;
+        private readonly ISystemUserManager _systemUsersManager;
         private readonly IHashingService _hashingService;
-        private readonly ISystemUsersManager _systemUsersManager;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public SystemUsersService(IHashingService hashingService, ISystemUsersManager systemUsersManager, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public SystemUserService(ISystemPhoneNumberService systemPhoneNumberService, ISystemEmailAddressService systemEmailAddressService, ISystemUserManager systemUsersManager, IHashingService hashingService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
-            _hashingService = hashingService;
+            _systemPhoneNumberService = systemPhoneNumberService;
+            _systemEmailAddressService = systemEmailAddressService;
             _systemUsersManager = systemUsersManager;
+            _hashingService = hashingService;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
 
         #region Public methods
-        public async Task CreateItem(SystemAuthenticateUser systemUser)
+        public async Task CreateItem(SystemUserAuthenticateModel model)
         {
+            model = await Validate(model);
+
+            var systemUser = new SystemAuthenticateUser(model);
+            systemUser.Password = _hashingService.EncryptString(model.Password);
             await _systemUsersManager.CreateItemAsync(systemUser);
         }
 
@@ -79,6 +87,10 @@ namespace TangledServices.ServicePortal.API.Services
         public async Task<SystemAuthenticateUser> GetItem(Guid id)
         {
             var results = await _systemUsersManager.GetItemAsync(id);
+            if (results == null) throw new UserNotFoundException();
+
+            //var passwordExpirationDateTime = new DateTime(DateTime.Parse(results.PasswordExpirationDateTime.ToString()).Ticks, DateTimeKind.Utc).ToLocalTime().ToString("dd/MM/yyyy HH:mm");
+            //results.PasswordExpirationDateTime = new DateTime(DateTime.Parse(results.PasswordExpirationDateTime.ToString()).Ticks, DateTimeKind.Utc).ToLocalTime();
             return results;
         }
 
@@ -138,7 +150,9 @@ namespace TangledServices.ServicePortal.API.Services
             await _systemUsersManager.DeleteItemAsync(systemUser);
 
             systemUser.Username = model.ResetUsername;
-            await CreateItem(systemUser);
+
+            var systemUserModel = new SystemUserAuthenticateModel(systemUser);
+            await CreateItem(systemUserModel);
         }
 
         public async Task ResetPassword(SystemUserResetPasswordModel model)
@@ -196,6 +210,19 @@ namespace TangledServices.ServicePortal.API.Services
         {
             var systemUser = await GetItem(username);
             return systemUser != null;
+        }
+
+        private async Task<SystemUserAuthenticateModel> Validate(SystemUserAuthenticateModel model)
+        {
+            if (await UsernameAlreadyExists(model.Username)) throw new UsernameAlreadyExistsException(model.Username);
+
+            model.NameFirst = Helpers.ToTitleCase(model.NameFirst);
+            model.NameLast = Helpers.ToTitleCase(model.NameLast);
+
+            model.EmailAddresses = await _systemEmailAddressService.Validate(model.EmailAddresses);
+            model.PhoneNumbers = await _systemPhoneNumberService.Validate(model.PhoneNumbers);
+
+            return model;
         }
         #endregion Private methods
     }

@@ -22,15 +22,15 @@ namespace TangledServices.ServicePortal.API.Controllers
     [ApiController]
     public class SystemLookupItemsController : BaseController
     {
-        private readonly ISystemLookupItemsService _systemService;
+        private readonly ISystemLookupItemService _systemLookupItemService;
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         private readonly dynamic _response = new ExpandoObject();
 
-        public SystemLookupItemsController(ISystemLookupItemsService systemService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+        public SystemLookupItemsController(ISystemLookupItemService systemLookupItemService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            _systemService = systemService;
+            _systemLookupItemService = systemLookupItemService;
             _configuration = configuration;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -42,7 +42,6 @@ namespace TangledServices.ServicePortal.API.Controllers
         /// <returns>200 ~ OK</returns>
         /// <returns>400 ~ Bad request</returns>
         [HttpGet]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,67 +49,52 @@ namespace TangledServices.ServicePortal.API.Controllers
         {
             try
             {
-                dynamic response = new ExpandoObject();
+                var model = await _systemLookupItemService.GetItems();
 
-                var groups = await _systemService.GetItems();
-
-                if (groups.Any())
-                {
-                    response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("{0} groups retrieved.", groups.Count()));
-                    response.groups = groups;
-                    return Ok(new { response });
-                }
-
-                response.status = this.StatusCode(StatusCodes.Status200OK, "No groups found.");
+                responseModels.Add("Lookup Items", model);
+                response = new ApiResponse(HttpStatusCode.OK, "System LookupItems found.", null, responseModels);
                 return Ok(new { response });
             }
-            catch (Exception)
+            catch (SystemLookupItemsNotFoundException exception)
             {
-                dynamic response = new ExpandoObject();
-                response.items = null;
-                response.status = this.StatusCode(StatusCodes.Status400BadRequest, "Error retrieving groups.");
-
-                return BadRequest(new { response });
+                response = new ApiResponse(HttpStatusCode.Conflict, "System LookupItems not found.", null);
+                return Ok(new { response });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest("Error setting up tenant service desk. Error: " + exception.Message);
             }
         }
 
         /// <summary>
-        /// Retrieves all items in the [LookupItems] container with a group = {groupName} from the [TangledServices.ServicePortal] database.
+        /// Retrieves a System LookupItem group by ID or group name.
         /// </summary>
-        /// <param name="groupName">The name of group to retrieve.</param>
-        /// <returns>401 ~ Not authorized or invalid JWT token.</returns>
-        /// <returns>200 ~ OK</returns>
-        /// <returns>400 ~ Bad request</returns>
-        [HttpGet("{groupName}")]
-        [Authorize]
+        /// <param name="key"></param>
+        /// <returns></returns>
+        [HttpGet("{key}")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(string groupName)
+        public async Task<IActionResult> Get(string key)
         {
+            var isGuid = Guid.TryParse(key, out var id);
+
             try
             {
-                dynamic response = new ExpandoObject();
-                    
-                var group = await _systemService.GetItem(groupName);
-
-                if (group != null)
-                {
-                    response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("{0} '{1}' retrieved.", group.Values.Count(), groupName));
-                    response.data = group;
-                    return Ok(new { response });
-                }
-
-                response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("No '{0}' found.", groupName));
+                var model = isGuid ? await _systemLookupItemService.GetItem(id) : await _systemLookupItemService.GetItem(key);
+                var responseMessage = isGuid ? string.Format("System LookupItem with ID '{0}' found.", id) : string.Format("System LookupItem group '{0}' found.", key);
+                responseModels.Add("Lookup Items", model);
+                response = new ApiResponse(HttpStatusCode.OK, responseMessage, null, responseModels);
                 return Ok(new { response });
             }
-            catch (Exception)
+            catch (SystemLookupItemNotFoundException exception)
             {
-                dynamic response = new ExpandoObject();
-                response.items = null;
-                response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("Error retrieving '{0}'.", groupName));
-
-                return BadRequest(new { response });
+                response = new ApiResponse(HttpStatusCode.Conflict, isGuid ? string.Format("System LookupItem with ID '{0}' not found.", key) : string.Format("System LookupItem group '{0}' not found.", key), null);
+                return Ok(new { response });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest("Error setting up tenant service desk. Error: " + exception.Message);
             }
         }
 
@@ -131,7 +115,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         {
             try
             {
-                var existingGroup = await _systemService.CreateItem(model);
+                var existingGroup = await _systemLookupItemService.CreateItem(model);
 
                 if (existingGroup != null)
                 {
@@ -167,7 +151,7 @@ namespace TangledServices.ServicePortal.API.Controllers
         {
             try
             {
-                model = await _systemService.Update(model);
+                model = await _systemLookupItemService.Update(model);
 
                 responseModels.Add("systemLookupItem", model);
                 response = new ApiResponse(HttpStatusCode.OK, string.Format("SystemLookupItem '{0}' found.", model.DisplayAs), responseModels);

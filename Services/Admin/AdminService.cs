@@ -29,7 +29,7 @@ namespace TangledServices.ServicePortal.API.Services
     /// </summary>
     public class AdminService : AdminBaseService, IAdminService
     {
-        private readonly ISystemLookupItemsService _systemLookupItemService;
+        private readonly ISystemLookupItemService _systemLookupItemService;
         private readonly ICosmosDbManager _cosmosDbManager;
         private readonly IAdminManager _adminManager;
         private readonly IAdminLookupItemsManager _adminLookupItemsManager;
@@ -38,7 +38,7 @@ namespace TangledServices.ServicePortal.API.Services
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public AdminService(ISystemLookupItemsService systemLookupItemService, ICosmosDbManager cosmosDbManager, IAdminManager adminManager, IAdminLookupItemsManager adminLookupItemsManager, IAdminUsersManager customerUserAdminsManager, IHashingService hashingService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
+        public AdminService(ISystemLookupItemService systemLookupItemService, ICosmosDbManager cosmosDbManager, IAdminManager adminManager, IAdminLookupItemsManager adminLookupItemsManager, IAdminUsersManager customerUserAdminsManager, IHashingService hashingService, IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment)
         {
             _systemLookupItemService = systemLookupItemService;
             _cosmosDbManager = cosmosDbManager;

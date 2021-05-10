@@ -22,7 +22,7 @@ namespace TangledServices.ServicePortal.API.Entities
         //  Create entity from model.
         public SystemWebsite(SystemWebsiteModel model)
         {
-            Type = model.Type;
+            Type = new SystemLookupItemValue(model.Type);
             Url = model.Url;
         }
 

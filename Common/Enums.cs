@@ -63,8 +63,10 @@ namespace TangledServices.ServicePortal.API.Common
 
         public static class Role
         {
-            public const string Root = "Root Admin";
-            public const string User = "User";
+            public const string SystemRoot = "System Root";
+            public const string AdminRoot = "Admin Root";
+            public const string SystemUser = "System User";
+            public const string AdminUser = "Admin User";
         }
 
         public static string GetDescription<T>(this T enumValue) where T : struct, IConvertible
