@@ -71,7 +71,6 @@ namespace TangledServices.ServicePortal.API.Services
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = model.Name,
-                    DisplayAs = model.DisplayAs,
                     Values = await ConvertModelToEntity(model.Values.ToList())
                 };
 

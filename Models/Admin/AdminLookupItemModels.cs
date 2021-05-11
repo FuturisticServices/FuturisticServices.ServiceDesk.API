@@ -16,7 +16,6 @@ namespace TangledServices.ServicePortal.API.Models
         {
             Id = entity.Id;
             Name = entity.Name;
-            DisplayAs = entity.DisplayAs;
             Values = AdminLookupItemValueModel.Construct(entity.Values);
         }
 
@@ -34,7 +33,6 @@ namespace TangledServices.ServicePortal.API.Models
         {
             Id = entity.Id;
             Name = entity.Name;
-            DisplayAs = entity.DisplayAs;
             Values = AdminLookupItemValueModel.Construct(entity.Values);
         }
 
@@ -45,13 +43,6 @@ namespace TangledServices.ServicePortal.API.Models
         [JsonProperty(PropertyName = "name", Required = Required.Always)]
         [Required, MaxLength(50), DisplayName("Name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Friendly value to use for display.
-        /// </summary>
-        [JsonProperty(PropertyName = "displayAs", Required = Required.Always)]
-        [Required, MaxLength(50), DisplayName("Display as")]
-        public string DisplayAs { get; set; }
 
         /// <summary>
         /// List of values.

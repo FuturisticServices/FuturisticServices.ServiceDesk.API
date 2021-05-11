@@ -36,11 +36,9 @@ namespace TangledServices.ServicePortal.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all items in the [LookupItems] container from the [TangledServices.ServicePortal] database.
+        /// Retrieves all System LookupItem groups.
         /// </summary>
-        /// <returns>401 ~ Not authorized or invalid JWT token.</returns>
-        /// <returns>200 ~ OK</returns>
-        /// <returns>400 ~ Bad request</returns>
+        /// <returns>List of SystemLookupItemModel objects.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -67,10 +65,10 @@ namespace TangledServices.ServicePortal.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a System LookupItem group by ID or group name.
+        /// Retrieves an existing System LookupItem group.
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="key">Either a GUID (ID) or name of the System LookupItem group to retrieve.</param>
+        /// <returns>SystemLookupItemModel object.</returns>
         [HttpGet("{key}")]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -99,72 +97,111 @@ namespace TangledServices.ServicePortal.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new item in the [LookupItems] container in the [TangledServices.ServicePortal] database.
+        /// Creates a new System LookupItem group.
         /// </summary>
-        /// <param name="group">Object {LookupGroup} to create.</param>
-        /// <returns></returns>
-        /// /// <returns>401 ~ Not authorized or invalid JWT token.</returns>
-        /// <returns>200 ~ OK</returns>
-        /// <returns>400 ~ Bad request</returns>
+        /// <param name="model">SystemLookupItemModel object.</param>
+        /// <returns>SystemLookupItemModel object.</returns>
         [HttpPost]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] SystemLookupItemModel model)
+        public async Task<IActionResult> Create(SystemLookupItemModel model)
         {
             try
             {
-                var existingGroup = await _systemLookupItemService.CreateItem(model);
+                model = await _systemLookupItemService.CreateItem(model);
 
-                if (existingGroup != null)
-                {
-                    _response.status = this.StatusCode(StatusCodes.Status200OK, string.Format("LookupItem group '{0}' created.", model.Name));
-                    _response.model = model;
-                    return Ok(new { _response });
-                }
-
-                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("LookupItem group '{0}' already exists.", model.Name));
-                return BadRequest(new { _response });
+                responseModels.Add("LookupItem", model);
+                response = new ApiResponse(HttpStatusCode.OK, string.Format("LookupItem '{0}' created.", model.Name), responseModels);
+                return Ok(new { response });
             }
-            catch (Exception ex)
+            catch (SystemLookupItemAlreadyExistsException exception)
             {
-                _response.group = null;
-                _response.status = this.StatusCode(StatusCodes.Status400BadRequest, string.Format("Error creating LookupItem '{0}'. Error: {1}", model.Name, ex.Message));
-                return BadRequest(new { _response });
+                response = new ApiResponse(HttpStatusCode.Conflict, string.Format("System LookupItem group '{0}' already exists.", model.Name), exception, null);
+                return Unauthorized(new { response });
+            }
+            catch (Exception exception)
+            {
+                response = new ApiResponse(HttpStatusCode.BadRequest, string.Format("Error creating System LookupItem group '{0}'.", model.Name), exception, null);
+                return BadRequest(new { response });
             }
         }
 
         /// <summary>
-        /// Updates an existing SystemLookupItem item.
+        /// Updates an existing System LookupItem group.
         /// </summary>
         /// <param name="model">SystemLookupItemModel object.</param>
         /// <returns>401 ~ Not authorized or invalid JWT token.</returns>
         /// <returns>200 ~ OK</returns>
         /// <returns>400 ~ Bad request</returns>
         [HttpPut]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put([FromBody] SystemLookupItemModel model)
+        public async Task<IActionResult> Update(SystemLookupItemModel model)
         {
             try
             {
                 model = await _systemLookupItemService.Update(model);
 
                 responseModels.Add("systemLookupItem", model);
-                response = new ApiResponse(HttpStatusCode.OK, string.Format("SystemLookupItem '{0}' found.", model.DisplayAs), responseModels);
+                response = new ApiResponse(HttpStatusCode.OK, string.Format("System LookupItem '{0}' updated successfully.", model.Name), responseModels);
                 return Ok(new { response });
             }
             catch (SystemLookupItemNotFoundException exception)
             {
-                response = new ApiResponse(HttpStatusCode.Unauthorized, "Access denied", exception, null);
+                response = new ApiResponse(HttpStatusCode.NotFound, string.Format("System LookupItem '{0}' NOT found.", model.Name), exception, null);
                 return Unauthorized(new { response });
             }
             catch (Exception exception)
             {
                 return BadRequest("Error updating LookupItem in system database. Error: " + exception.Message);
+            }
+        }
+
+        [HttpDelete("{groupKey}/{itemKey}")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Delete(string groupKey, string itemKey)
+        {
+            var groupKeyIsGuid = Guid.TryParse(groupKey, out var groupId);
+            var itemKeyIsGuid = Guid.TryParse(itemKey, out var itemId);
+
+            try
+            {
+                var model = await _systemLookupItemService.DeleteItem(groupKey, itemKey);
+
+                var responseMessage = string.Empty;
+                if (groupKeyIsGuid && itemKeyIsGuid)
+                {
+                    responseMessage = string.Format("System LookupItem group ID '{0}', item ID '{1}' deleted successfully.", groupId, itemId);
+                }
+                else if (!groupKeyIsGuid && itemKeyIsGuid)
+                {
+                    responseMessage = string.Format("System LookupItem group '{0}', item ID '{1}' deleted successfully.", groupKey, itemId);
+                }
+                else if (groupKeyIsGuid && !itemKeyIsGuid)
+                {
+                    responseMessage = string.Format("System LookupItem group ID '{0}', item '{1}' deleted successfully.", groupId, itemKey);
+                }
+                else if (!groupKeyIsGuid && !itemKeyIsGuid)
+                {
+                    responseMessage = string.Format("System LookupItem group '{0}', item '{1}' deleted successfully.", groupKey, itemKey);
+                }
+
+                responseModels.Add("Lookup Item", model);
+                response = new ApiResponse(HttpStatusCode.OK, responseMessage, null, responseModels);
+                return Ok(new { response });
+            }
+            catch (SystemLookupItemNotFoundException exception)
+            {
+                response = new ApiResponse(HttpStatusCode.Conflict, exception.Message, null);
+                return Ok(new { response });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest("Error setting up tenant service desk. Error: " + exception.Message);
             }
         }
     }
