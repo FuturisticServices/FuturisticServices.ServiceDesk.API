@@ -15,5 +15,12 @@ namespace TangledServices.ServicePortal.API.Models
         [JsonProperty(PropertyName = "id", Required = Required.Default)]
         [DisplayName("ID")]
         public string Id { get; set; }
+
+        /// <summary>
+        /// A unique GUID identifier.
+        /// </summary>
+        [JsonProperty(PropertyName = "enabled", Required = Required.Always)]
+        [Required, DefaultValue(true), DisplayName("Enabled")]
+        public bool Enabled { get; set; } = true;
     }
 }

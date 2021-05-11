@@ -9,7 +9,6 @@
             {
               "id": "7b8c8afe-e071-41b4-a12b-d538f2d8b31f",
               "name": "Address Types",
-              "displayAs": "Address types",
               "cloneToAdminDatabase": true,
               "values": [
                 {
@@ -33,7 +32,6 @@
             {
               "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
               "name": "Phone Number Types",
-              "displayAs": "Phone number types",
               "cloneToAdminDatabase": true,
               "values": [
                 {
@@ -57,7 +55,6 @@
             {
               "id": "18852c3c-e79b-4525-bd66-423b6d20b0fa",
               "name": "Countries",
-              "displayAs": "Countries",
               "cloneToAdminDatabase": true,
               "values": [
                 {
@@ -80,7 +77,6 @@
             {
               "id": "fb3369c9-3e67-46ea-823b-2b73d07dcf52",
               "name": "Email Address Types",
-              "displayAs": "Email address types",
               "cloneToAdminDatabase": true,
               "values": [
                 {
@@ -104,7 +100,6 @@
             {
               "id": "7b630eb4-7cbb-417b-8749-96667eb3aa7c",
               "name": "Website Types",
-              "displayAs": "Website types",
               "cloneToAdminDatabase": true,
               "values": [
                 {
@@ -126,9 +121,51 @@
               ]
             },
             {
+              "id": "6f1ecfc4-dcc6-41eb-b9ee-ed9ccbb59709",
+              "name": "Ticket Statuses",
+              "cloneToAdminDatabase": true,
+              "values": [
+                  {
+                    "id": "f82a1c92-aeb9-48b7-a21a-bd73afe68956",
+                    "name": "Hold"
+                  },
+                  {
+                    "id": "3f0621d6-719f-4449-a765-e476fb4fbd67",
+                    "name": "Security Consult"
+                  },
+                  {
+                    "id": "109ac7aa-8659-4326-a7eb-f9b227212b84",
+                    "name": "To Do"
+                  },
+                  {
+                    "id": "44d00948-f2b9-4071-821d-7ed0e841ec22",
+                    "name": "In Progress"
+                  },
+                  {
+                    "id": "809f509c-142b-4cb1-81ba-8f1342e76613",
+                    "name": "Code Review"
+                  },
+                  {
+                    "id": "9ecdc7b2-be4c-4d6a-aa4f-a2ba7069dc41",
+                    "name": "Quality Assurance"
+                  },
+                  {
+                    "id": "2c6be1b4-eaaa-4cb2-99df-854b3800f01e",
+                    "name": "Product Owner Acceptance"
+                  },
+                  {
+                    "id": "538d786f-d944-48a0-87ba-40596804fbb7",
+                    "name": "Deploy"
+                  },
+                  {
+                    "id": "4aea259e-089b-4bf9-9659-a3734b4648d6",
+                    "name": "Closed"
+                  }
+              ]
+            },
+            {
               "id": "97106d33-68c4-48b0-b39c-21eaf84f29e6",
               "name": "States",
-              "displayAs": "States",
               "cloneToAdminDatabase": true,
               "values": [
                 {
@@ -431,7 +468,6 @@
             {
               "id": "24f1c565-c184-4cdb-8698-6493bc2ea089",
               "name": "Database Platforms",
-              "displayAs": "Database platforms",
               "cloneToAdminDatabase": false,
               "values": [
                 {
@@ -447,8 +483,6 @@
             {
               "id": "9261271b-e63c-4ee7-97cf-fef2cf73dba4",
               "name": "Subscription Renewal Timeframes",
-              "displayAs": "Subscription renewal timeframes",
-              "cloneToAdminDatabase": false,
               "values": [
                 {
                   "name": "Monthly",
@@ -588,7 +622,6 @@
           {
             "id": "884e771d-327e-49a6-a567-ddadac1b8761",
             "name": "Accounting",
-            "displayAs": "Accounting",
             "abbreviation": "ACCT",
             "isDeleted": true
           },
@@ -596,7 +629,6 @@
             "id": "545605e2-3510-411f-9322-d2c3d8e24bae",
             "parentId": "884e771d-327e-49a6-a567-ddadac1b8761",
             "name": "Accounts Receivable",
-            "displayAs": "Accounts Receivable",
             "abbreviation": "ACCT-AR",
             "isDeleted": true
           },
@@ -604,14 +636,12 @@
             "id": "faa49b4d-246f-4b26-beec-aead2912b1e9",
             "parentId": "884e771d-327e-49a6-a567-ddadac1b8761",
             "name": "Accounts Payable",
-            "displayAs": "Accounts Payable",
             "abbreviation": "ACCT-AP",
             "isDeleted": true
           },
           {
             "id": "cbc96690-3e1a-4c36-be7c-8c9656e7802a",
             "name": "Information Technology",
-            "displayAs": "Information Technology",
             "abbreviation": "IT",
             "isDeleted": true
           },
@@ -619,7 +649,6 @@
             "id": "eed5beea-5062-4f7a-9dbd-2e4572c6d110",
             "parentId": "cbc96690-3e1a-4c36-be7c-8c9656e7802a",
             "name": "Interface Development",
-            "displayAs": "Interface Development",
             "abbreviation": "IT-WD",
             "isDeleted": true
           },
@@ -627,7 +656,6 @@
             "id": "1d0d5ca5-73de-44e2-8d21-24485fd5688e",
             "parentId": "eed5beea-5062-4f7a-9dbd-2e4572c6d110",
             "name": "Mobile Device Development",
-            "displayAs": "Mobile Device Development",
             "abbreviation": "IT-WD-MDD",
             "isDeleted": true
           },
@@ -635,7 +663,6 @@
             "id": "0efa68dc-d4ea-494a-ab9c-55e80ef2473f",
             "parentId": "eed5beea-5062-4f7a-9dbd-2e4572c6d110",
             "name": "Web Browser Development",
-            "displayAs": "Web Browser Development",
             "abbreviation": "IT-WD-WBD",
             "isDeleted": true
           },
@@ -643,7 +670,6 @@
             "id": "b18d945e-1588-44bd-8754-9de1f098ca3a",
             "parentId": "cbc96690-3e1a-4c36-be7c-8c9656e7802a",
             "name": "API Development",
-            "displayAs": "API Development",
             "abbreviation": "IT-API",
             "isDeleted": true
           },
@@ -651,14 +677,12 @@
             "id": "9dcbde50-4d59-415c-88c9-c9cb1e3e4d24",
             "parentId": "cbc96690-3e1a-4c36-be7c-8c9656e7802a",
             "name": "Database Development",
-            "displayAs": "Database Development",
             "abbreviation": "IT-DB",
             "isDeleted": true
           },
           {
             "id": "b29bf150-df46-4ded-86a6-2c51e0912d8f",
             "name": "Operations",
-            "displayAs": "Operations",
             "abbreviation": "OPS",
             "isDeleted": true
           },
@@ -666,7 +690,6 @@
             "id": "8e1861fc-c408-4802-9955-f191884b573f",
             "parentId": "b29bf150-df46-4ded-86a6-2c51e0912d8f",
             "name": "Human Resources",
-            "displayAs": "Human Resources",
             "abbreviation": "OPS-HR",
             "isDeleted": true
           },
@@ -674,7 +697,6 @@
             "id": "9c29b2ff-fa23-4b0c-9454-c704f9478d92",
             "parentId": "b29bf150-df46-4ded-86a6-2c51e0912d8f",
             "name": "Janatorial",
-            "displayAs": "Janatorial",
             "abbreviation": "OPS-JAN",
             "isDeleted": true
           }

@@ -13,15 +13,18 @@ namespace TangledServices.ServicePortal.API.Entities
 {
     public class SystemLookupItem: BaseEntity
     {
-        public SystemLookupItem() { }
+        public SystemLookupItem() 
+        {
+            Enabled = true;
+        }
 
         public SystemLookupItem(SystemLookupItemModel model)
         {
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
             Name = model.Name;
-            DisplayAs = model.DisplayAs;
             CloneToAdminDatabase = model.CloneToAdminDatabase;
-            Values = SystemLookupItemValue.ConvertModelToEntity(model.Values);
+            Values = SystemLookupItemValue.Construct(model.Values);
+            Enabled = model.Enabled;
         }
 
         public static IEnumerable<SystemLookupItem> Construct(IEnumerable<SystemLookupItemModel> models)
@@ -41,13 +44,6 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "name", Required=Required.Always)]
         [Required, MaxLength(50), DisplayName("Name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Friendly value to use for display.
-        /// </summary>
-        [JsonProperty(PropertyName = "displayAs", Required = Required.Always)]
-        [Required, MaxLength(50), DisplayName("Display as")]
-        public string DisplayAs { get; set; }
 
         /// <summary>
         /// Whether to clone this item when a admin database is being created.
@@ -73,9 +69,11 @@ namespace TangledServices.ServicePortal.API.Entities
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
             Name = model.Name;
             Abbreviation = model.Abbreviation;
+            Description = model.Description;
+            Enabled = model.Enabled;
         }
 
-        public static IEnumerable<SystemLookupItemValue> ConvertModelToEntity(IEnumerable<SystemLookupItemValueModel> values)
+        public static IEnumerable<SystemLookupItemValue> Construct(IEnumerable<SystemLookupItemValueModel> values)
         {
             List<SystemLookupItemValue> model = new List<SystemLookupItemValue>();
             foreach (SystemLookupItemValueModel value in values)
@@ -86,7 +84,7 @@ namespace TangledServices.ServicePortal.API.Entities
         }
 
         /// <summary>
-        /// System value. *** SHOULD NOT CHANGE!!!!
+        /// Name of the item.
         /// </summary>
         [JsonProperty(PropertyName = "name", Required = Required.Default)]
         [MaxLength(50), DisplayName("Name")]
@@ -98,5 +96,12 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "abbreviation", Required = Required.Default)]
         [MaxLength(10), DisplayName("Abbreviation")]
         public string Abbreviation { get; set; }
+
+        /// <summary>
+        /// Description and/or purpose of the value.
+        /// </summary>
+        [JsonProperty(PropertyName = "description", Required = Required.Default)]
+        [DisplayName("Description")]
+        public string Description { get; set; }
     }
 }

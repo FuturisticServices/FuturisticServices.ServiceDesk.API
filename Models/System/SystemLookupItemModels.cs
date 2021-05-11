@@ -10,15 +10,18 @@ namespace TangledServices.ServicePortal.API.Models
 {
     public class SystemLookupItemModel : BaseModel
     {
-        public SystemLookupItemModel() { }
+        public SystemLookupItemModel() 
+        {
+            Enabled = true;    
+        }
 
         public SystemLookupItemModel(SystemLookupItem entity)
         {
             Id = entity.Id;
             Name = entity.Name;
-            DisplayAs = entity.DisplayAs;
             CloneToAdminDatabase = entity.CloneToAdminDatabase;
             Values = SystemLookupItemValueModel.Construct(entity.Values);
+            Enabled = entity.Enabled;
         }
 
         public static IEnumerable<SystemLookupItemModel> Construct(IEnumerable<SystemLookupItem> entities)
@@ -38,13 +41,6 @@ namespace TangledServices.ServicePortal.API.Models
         [JsonProperty(PropertyName = "name", Required = Required.Always)]
         [Required, MaxLength(50), DisplayName("Name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Friendly value to use for display.
-        /// </summary>
-        [JsonProperty(PropertyName = "displayAs", Required=Required.Always)]
-        [Required, MaxLength(50), DisplayName("Display as")]
-        public string DisplayAs { get; set; }
 
         /// <summary>
         /// Whether to clone this item when a admin database is being created.
@@ -70,6 +66,7 @@ namespace TangledServices.ServicePortal.API.Models
             Id = entity.Id;
             Name = entity.Name;
             Abbreviation = entity.Abbreviation;
+            Description = entity.Description;
         }
 
         public static IEnumerable<SystemLookupItemValueModel> Construct(IEnumerable<SystemLookupItemValue> values)
@@ -83,7 +80,7 @@ namespace TangledServices.ServicePortal.API.Models
         }
 
         /// <summary>
-        /// System value. *** SHOULD NOT CHANGE!!!!
+        /// Name of the item.
         /// </summary>
         [JsonProperty(PropertyName = "name", Required = Required.Default)]
         [MaxLength(50), DisplayName("Name")]
@@ -95,5 +92,12 @@ namespace TangledServices.ServicePortal.API.Models
         [JsonProperty(PropertyName = "abbreviation", Required = Required.Default)]
         [MaxLength(10), DisplayName("Abbreviation")]
         public string Abbreviation { get; set; }
+
+        /// <summary>
+        /// Description and/or purpose of the value.
+        /// </summary>
+        [JsonProperty(PropertyName = "description", Required = Required.Default)]
+        [DisplayName("Description")]
+        public string Description { get; set; }
     }
 }

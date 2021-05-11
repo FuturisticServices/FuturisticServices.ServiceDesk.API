@@ -18,7 +18,6 @@ namespace TangledServices.ServicePortal.API.Models
             Id = entity.Id;
             ParentId = entity.ParentId;
             Name = entity.Name;
-            DisplayAs = entity.DisplayAs;
             Abbreviation = entity.Abbreviation;
             SubDepartments = Construct(entity.SubDepartments);
             IsDeleted = entity.IsDeleted;
@@ -50,13 +49,6 @@ namespace TangledServices.ServicePortal.API.Models
         [JsonProperty(PropertyName = "name", Required = Required.Always)]
         [Required, MaxLength(50), DisplayName("Name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Name associated to the department.
-        /// </summary>
-        [JsonProperty(PropertyName = "displayAs", Required = Required.Always)]
-        [Required, MaxLength(50), DisplayName("Display as")]
-        public string DisplayAs { get; set; }
 
         /// <summary>
         /// Abbreviation associated to the department.

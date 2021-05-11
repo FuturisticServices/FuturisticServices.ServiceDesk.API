@@ -89,13 +89,6 @@ namespace TangledServices.ServicePortal.API.Entities
         public string PasswordExpirationDateTime { get; set; }
 
         /// <summary>
-        /// Controls whether this user can attempt to login.
-        /// </summary>
-        [JsonProperty(PropertyName = "enabled", Required = Required.Always)]
-        [Required, DefaultValue(true), DisplayName("Enabled")]
-        public bool Enabled { get; set; }
-
-        /// <summary>
         /// Email addresses associated to the user.
         /// </summary>
         [JsonProperty(PropertyName = "emailAddresses", Required = Required.Default)]

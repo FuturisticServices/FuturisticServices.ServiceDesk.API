@@ -23,6 +23,15 @@ namespace TangledServices.ServicePortal.API.Services
         Task<IEnumerable<SystemLookupItemModel>> GetItems();
         Task<SystemLookupItemModel> CreateItem(SystemLookupItemModel model);
         Task<SystemLookupItemModel> Update(SystemLookupItemModel model);
+
+        //Task<SystemLookupItemModel> DeleteItem(Guid groupId, Guid itemId);
+
+        //Task<SystemLookupItemModel> DeleteItem(string groupName, Guid itemId);
+
+        //Task<SystemLookupItemModel> DeleteItem(Guid groupId, string itemName);
+
+        //Task<SystemLookupItemModel> DeleteItem(string groupName, string itemName);
+        Task<SystemLookupItemModel> DeleteItem(string groupKey, string itemKey);
     }
 
     public class SystemLookupItemService : SystemBaseService, ISystemLookupItemService
@@ -50,7 +59,7 @@ namespace TangledServices.ServicePortal.API.Services
         public async Task<SystemLookupItemModel> GetItem(string name)
         {
             var group = await _systemLookupItemManager.GetItemAsync(name);
-            if (group == null) throw new SystemLookupItemNotFoundException(name);
+            if (group == null) return null;
 
             var model = new SystemLookupItemModel(group);
             return model;
@@ -88,31 +97,114 @@ namespace TangledServices.ServicePortal.API.Services
 
         public async Task<SystemLookupItemModel> CreateItem(SystemLookupItemModel model)
         {
-            if (await GetItem(model.Name) == null)
-            {
-                SystemLookupItem entity = new SystemLookupItem(model);
-                entity = await _systemLookupItemManager.CreateItemAsync(entity);
-                model = new SystemLookupItemModel(entity);
-                return model;
-            }
+            if (await GetItem(model.Name) != null) throw new SystemLookupItemAlreadyExistsException(model.Name);
 
-            throw new SystemLookupItemAlreadyExistsException(model.Name);
+            SystemLookupItem entity = new SystemLookupItem(model);
+            entity = await _systemLookupItemManager.CreateItemAsync(entity);
+            model = new SystemLookupItemModel(entity);
+            return model;
         }
 
         public async Task<SystemLookupItemModel> Update(SystemLookupItemModel model)
         {
-            var entity = await _systemLookupItemManager.GetItemAsync(model.Id);
+            var entity = await _systemLookupItemManager.GetItemAsync(new Guid(model.Id));
             if (entity == null) throw new SystemLookupItemNotFoundException();
 
-            if (entity != null)
+            entity = new SystemLookupItem(model);
+            entity = await _systemLookupItemManager.UpsertGroupAsync(entity);
+            model = new SystemLookupItemModel(entity);
+            return model;
+        }
+
+        //public async Task<SystemLookupItemModel> DeleteItem(Guid groupId, Guid itemId)
+        //{
+        //    var group = await _systemLookupItemManager.GetItemAsync(groupId);
+        //    if (group == null) throw new SystemLookupItemNotFoundException();
+
+        //    var item = group.Values.SingleOrDefault(x => x.Id == itemId.ToString());
+        //    if (item == null) throw new SystemLookupItemNotFoundException();
+
+        //    item.Enabled = false;
+
+        //    var model = new SystemLookupItemModel(group);
+        //    return model;
+        //}
+
+        //public async Task<SystemLookupItemModel> DeleteItem(string groupName, Guid itemId)
+        //{
+        //    var group = await _systemLookupItemManager.GetItemAsync(groupName);
+        //    if (group == null) throw new SystemLookupItemNotFoundException();
+
+        //    var item = group.Values.SingleOrDefault(x => x.Id == itemId.ToString());
+        //    if (item == null) throw new SystemLookupItemNotFoundException();
+
+        //    item.Enabled = false;
+
+        //    var model = new SystemLookupItemModel(group);
+        //    return model;
+        //}
+
+        //public async Task<SystemLookupItemModel> DeleteItem(Guid groupId, string itemName)
+        //{
+        //    var group = await _systemLookupItemManager.GetItemAsync(groupId);
+        //    if (group == null) throw new SystemLookupItemNotFoundException();
+
+        //    var item = group.Values.SingleOrDefault(x => x.Name == itemName);
+        //    if (item == null) throw new SystemLookupItemNotFoundException();
+
+        //    item.Enabled = false;
+
+        //    var model = new SystemLookupItemModel(group);
+        //    return model;
+        //}
+
+        //public async Task<SystemLookupItemModel> DeleteItem(string groupName, string itemName)
+        //{
+        //    var group = await _systemLookupItemManager.GetItemAsync(groupName);
+        //    if (group == null) throw new SystemLookupItemNotFoundException();
+
+        //    var item = group.Values.SingleOrDefault(x => x.Name == itemName);
+        //    if (item == null) throw new SystemLookupItemNotFoundException();
+
+        //    item.Enabled = false;
+
+        //    var model = new SystemLookupItemModel(group);
+        //    return model;
+        //}
+
+        public async Task<SystemLookupItemModel> DeleteItem(string groupKey, string itemKey)
+        {
+            var groupKeyIsGuid = Guid.TryParse(groupKey, out var groupId);
+            var itemKeyIsGuid = Guid.TryParse(itemKey, out var itemId);
+
+            var group = new SystemLookupItem();
+            if (groupKeyIsGuid)
             {
-                entity.Values.ToList().ForEach(x => x.Id = x.Id != null ? x.Id : Guid.NewGuid().ToString());
-                entity = await _systemLookupItemManager.UpsertGroupAsync(entity);
-                model = new SystemLookupItemModel(entity);
-                return model;
+                group = await _systemLookupItemManager.GetItemAsync(groupId);
+                if (group == null) throw new SystemLookupItemNotFoundException(string.Format("System LookupItem group ID '{0}', item ID '{1}' deleted successfully.", groupId, itemId));
+            }
+            else
+            {
+                group = await _systemLookupItemManager.GetItemAsync(groupKey);
+                if (group == null) throw new SystemLookupItemNotFoundException(string.Format("System LookupItem group '{0}', item ID '{1}' deleted successfully.", groupKey, itemId));
             }
 
-            return null;
+            var item = new SystemLookupItemValue();
+            if (itemKeyIsGuid)
+            {
+                item = group.Values.SingleOrDefault(x => x.Id == itemKey);
+                if (item == null) throw new SystemLookupItemNotFoundException(string.Format("System LookupItem group ID '{0}', item '{1}' deleted successfully.", groupId, itemKey));
+            }
+            else
+            {
+                item = group.Values.SingleOrDefault(x => x.Name == itemKey);
+                if (group == null) throw new SystemLookupItemNotFoundException(string.Format("System LookupItem group '{0}', item '{1}' deleted successfully.", groupKey, itemKey));
+            }
+
+            item.Enabled = false;
+
+            var model = new SystemLookupItemModel(group);
+            return model;
         }
     }
 }

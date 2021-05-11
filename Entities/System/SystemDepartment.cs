@@ -18,7 +18,6 @@ namespace TangledServices.ServicePortal.API.Entities
             Id = string.IsNullOrWhiteSpace(model.Id) ? Guid.NewGuid().ToString() : model.Id;
             ParentId = model.ParentId;
             Name = model.Name;
-            DisplayAs = model.DisplayAs;
             Abbreviation = model.Abbreviation;
             SubDepartments = Construct(model.SubDepartments);
             IsDeleted = model.IsDeleted;
@@ -49,13 +48,6 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "name", Required = Required.Always)]
         [Required, MaxLength(50), DisplayName("Name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Name associated to the department.
-        /// </summary>
-        [JsonProperty(PropertyName = "displayAs", Required = Required.Always)]
-        [Required, MaxLength(50), DisplayName("Display as")]
-        public string DisplayAs { get; set; }
 
         /// <summary>
         /// Abbreviation associated to the department.

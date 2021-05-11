@@ -19,7 +19,6 @@ namespace TangledServices.ServicePortal.API.Entities
         {
             Id = string.IsNullOrEmpty(model.Id) ? Guid.NewGuid().ToString() : model.Id;
             Name = model.Name;
-            DisplayAs = model.DisplayAs;
             Values = AdminLookupItemValue.Convert(model.Values);
         }
 
@@ -40,13 +39,6 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "name", Required = Required.Always)]
         [Required, MaxLength(50), DisplayName("Name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Friendly value to use for display.
-        /// </summary>
-        [JsonProperty(PropertyName = "displayAs", Required = Required.Always)]
-        [Required, MaxLength(50), DisplayName("Display as")]
-        public string DisplayAs { get; set; }
 
         /// <summary>
         /// List of values.

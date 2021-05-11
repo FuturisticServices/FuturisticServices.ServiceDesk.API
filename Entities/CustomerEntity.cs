@@ -83,12 +83,5 @@ namespace TangledServices.ServicePortal.API.Entities
         [JsonProperty(PropertyName = "pointOfContact", Required = Required.Always)]
         [Required]
         public PointOfContact PointOfContact { get; set; }
-
-        /// <summary>
-        /// Determines if the tenant account is currently active.
-        /// </summary>
-        [JsonProperty(PropertyName = "enabled", Required = Required.Always)]
-        [Required, DisplayName("Enabled")]
-        public bool Enabled { get; set; }
     }
 }
